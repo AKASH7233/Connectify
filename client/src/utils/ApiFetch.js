@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const Base_url = "https://connectify-six.vercel.app"
+const Base_url = "https://connectify-app-tau.vercel.app"
 
 const axiosInstance = axios.create({
     baseURL: Base_url,

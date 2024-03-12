@@ -5,7 +5,7 @@ import  cookieParser from 'cookie-parser'
 const app = express()
 
 app.use(cors({
-    origin: "https://connectify-six.vercel.app", 
+    origin: "https://connectify-app-tau.vercel.app", 
     credentials: true
 }))
 app.use(cookieParser())
