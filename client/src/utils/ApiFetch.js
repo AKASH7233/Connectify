@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const Base_url = "https://connectify-server-two.vercel.app/api/v1"
+const Base_url = "http://localhost:8000/api/v1"
 
 const axiosInstance = axios.create({
     baseURL: Base_url,

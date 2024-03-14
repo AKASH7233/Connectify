@@ -180,6 +180,7 @@ const userLiked = asyncHandler( async(req,res)=>{
         },
         {
             $project: {
+                'users._id':1,
                 'users.username': 1,
                 'users.ProfileImage': 1
             }
