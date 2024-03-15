@@ -4,9 +4,12 @@ import App from './App.jsx'
 import './index.css'
 import { Toaster,ToastBar } from 'react-hot-toast'
 import {CookiesProvider} from 'react-cookie'
+import{Provider} from 'react-redux'
+import { store } from './redux/store.js'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <CookiesProvider>
+  <Provider store = {store}>
+    <CookiesProvider>
    <Toaster>
   {(t) => (
     <ToastBar
@@ -30,4 +33,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   />
     <App />
   </CookiesProvider>,
+  </Provider>
 )

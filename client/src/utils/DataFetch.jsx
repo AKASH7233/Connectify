@@ -1,25 +1,32 @@
 import { useEffect, useState } from 'react'
 import axiosInstance from './ApiFetch'
+import toast from 'react-hot-toast'
 
 function DataFetch(url, info) {
     const [data,setData] = useState([])
     const [loading,setLoading] = useState(false)
     const fetch = async()=>{
         try {
-            let response = await axiosInstance.post(url,{info})
+            let response =  await axiosInstance.post(url,info)
             setLoading(true)
-            console.log(response.data)
             setData(response.data)
+            console.log(response.data);
+            if(response.data.message){
+                toast.success(response.data.message)
+            }
+            if(response?.data.error){
+                toast.error(response.data.error)
+            }
             setLoading(false)
         } catch (error) {
             setLoading(false)
             setData(error)
         }
+        
     }
     useEffect(()=> {
       fetch()
     },[]) 
-    console.log(data,loading);
     return [data,loading]
 }
 

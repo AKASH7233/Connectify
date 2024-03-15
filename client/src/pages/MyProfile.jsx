@@ -4,27 +4,15 @@ import profileImg from '../assets/profile.png'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import ProfileHeader from '../components/ProfileHeader'
+import { useDispatch, useSelector } from 'react-redux'
 
 function MyProfile() {
     const navigate = useNavigate()
-    let [response,setResponse] = useState({})
-    const fetch = async() => {
-            let data =  await axiosInstance.post('/user/profile')
-            setResponse(data.data)
-
-            if(response?.error){
-              toast.error(response?.error)
-              navigate('/login')
-            }
-}
-
-    useEffect(()=>{
-        fetch()
-    },[])
-    console.log(response);
+    const user = useSelector(state => state?.auth?.user).user
+    console.log(user);
   return (
     <div className='bg-black text-white'>
-        <ProfileHeader username={response?.data?.username} name={response?.data?.fullName} followers={response?.data?.followers || 0 } following={response?.data?.following || 0} profileImg={response?.data?.ProfileImage} bio = {response?.data?.bio || ""}/>
+        <ProfileHeader username={user?.username} name={user?.fullName} followers={user?.followers || 0 } following={user?.following || 0} profileImg={user?.ProfileImage} bio = {user?.bio || ""}/>
     </div>
   )
 }

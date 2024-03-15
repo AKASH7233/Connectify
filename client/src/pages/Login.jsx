@@ -3,9 +3,12 @@ import axiosInstance from '../utils/ApiFetch'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import setCookies from '../utils/Cookies/AddCookies'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../redux/authSlice'
 
 function Login() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [userInfo, setUserInfo] = useState({
       username: "",
       email: "",
@@ -15,25 +18,14 @@ function Login() {
     const eventHandler = (e) =>{
       setUserInfo({...userInfo, [e.target.name]: e.target.value})
     }
-    const fetch = async()=>{
-      let response = await axiosInstance.post('/user/login',userInfo)
-      
-      console.log(response);
-      if(response?.data.message){
-        toast.success(response.data.message)
-        console.log(response);
-        setCookies('user_id',response?.data.data.user._id)
+    
+    const search = async (e)=> {
+      e.preventDefault(); 
+      const response = await dispatch(login(userInfo))
+      if(response?.payload.message){
         navigate('/')
       }
-      if(response?.data?.error){
-        toast.error(response.data.error);
-      }
     }
-    const search = (e)=> {
-      e.preventDefault();
-      fetch()
-    }
-
 
   return (
     <div className='w-[100vw] h-[100vh]  px-4 bg-[#000000] overflow-hidden'>

@@ -3,9 +3,12 @@ import axiosInstance from '../utils/ApiFetch'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import { BsPersonCircle } from "react-icons/bs";
+import { useDispatch } from 'react-redux';
+import { createAccount } from '../redux/authSlice';
 
 function Register() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [userInfo, setUserInfo] = useState({
       fullName: "",
       username: "",
@@ -29,20 +32,13 @@ function Register() {
     const eventHandler = (e) =>{
       setUserInfo({...userInfo, [e.target.name]: e.target.value})
     }
-    const fetch = async()=>{
-      let response = await axiosInstance.post('/user/register',userInfo)
-      if(response?.data.message){
-        toast.success(response.data.message)
-        navigate('/login')
-      }
-      if(response?.data?.error){
-        toast.error(response.data.error);
-      }
-    }
-    const search = (e)=> {
+
+    const search = async(e)=> {
       e.preventDefault();
-      fetch()
-      console.log(userInfo);
+      const response = await dispatch(createAccount(userInfo))
+      if(response?.payload.message){
+        navigate('/')
+      }
     }
 
 
