@@ -23,13 +23,17 @@ function Like({post}) {
     setSearch(prev=> !prev)
   } 
 
+  let random = Math.floor(Math.random() * likedBy?.length)
+  console.log(random)
+  const LikedBy = likedBy?.length >= 1 ? likedBy[random].users.username : '' 
+
   return (
     <div className='flex gap-x-3 relative items-center py-4 '>
         <button onClick={fetch}  className='mx-2 text-2xl'>
           {isAlreadyLiked ? <FaHeart className='  text-[#C147E9]'/> : <FaRegHeart className='text-white'/>}
         </button>
           <span className='absolute top-10 left-4 text-white'>{likedBy?.length}</span>
-          <LikedBy likedBy={likedBy}/>
+          <h2 className={`${likedBy?.length >= 1  ? 'block': 'invisible'} text-white`}>Liked By {LikedBy}</h2>
     </div>
   )
 }
