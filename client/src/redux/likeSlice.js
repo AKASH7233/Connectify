@@ -24,9 +24,7 @@ export const postlikes = createAsyncThunk(`like/postlikes` , async(data)=>{
      const responsePromise = await axiosInstance.post(`/like/postlikes/${data}`)
 
      const response = await responsePromise;
- 
      return response.data;
-
    } catch (error) {
         toast.error(error.message)
         throw error
@@ -55,8 +53,10 @@ export const likeSlice = createSlice({
         builder
 
         .addCase(postlikes.fulfilled ,(state,action)=>{
-            state.LikedBy = action?.payload?.data
+            state.LikedBy = action?.payload?.data?.likedUsers
+            state.LikedBy = action?.payload?.data?.isliked
             localStorage.setItem('likedBy', JSON.stringify(action?.payload?.data))
+            localStorage.setItem('isLiked',JSON.stringify(action?.payload?.data))
         })
 
     }

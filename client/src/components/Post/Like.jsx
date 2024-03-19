@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { CiHeart } from "react-icons/ci";
-import axiosInstance from '../../utils/ApiFetch';
-import { FaHeart } from "react-icons/fa";
-import getCookies from '../../utils/Cookies/GetCookie';
+import LikedBy from './LikedBy';
+import { FaHeart , FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { postlikes,togglelike } from '../../redux/likeSlice';
 
@@ -10,15 +8,13 @@ import { postlikes,togglelike } from '../../redux/likeSlice';
 function Like({post}) {
   const dispatch = useDispatch()
   const [isAlreadyLiked,setIsAlreadyLiked] = useState(false)
-  console.log(isAlreadyLiked);
-  const [LikedBy,setLikedBy] = useState(null)
+  const [likedBy,setlikedBy] = useState()
   const [search , setSearch ] = useState(false)
    useEffect(()=>{
    ;(async()=>{
       let postLikes = await dispatch(postlikes(post._id))
-      setLikedBy(postLikes?.payload?.data)
-      console.log(LikedBy);
-      setIsAlreadyLiked(postLikes?.payload?.data?.isLiked);
+      setlikedBy(postLikes?.payload?.data?.likedUsers)
+      setIsAlreadyLiked(postLikes?.payload?.data?.isliked[0]?.isLiked);
     })()
   },[search])
 
@@ -27,14 +23,13 @@ function Like({post}) {
     setSearch(prev=> !prev)
   } 
 
-  console.log(LikedBy);
   return (
-    <div className='flex gap-x-3 items-center py-4 '>
-        <button onClick={fetch} className='relative text-white'>
-          {isAlreadyLiked ? 'liked' : 'no'}
-          <span className='absolute top-6 left-3 text-white'>{LikedBy?.length}</span></button>
-        <h2 className={`${LikedBy?.length >= 1  ? 'block': 'invisible'} text-white`}>Liked By {LikedBy?.users?.username}</h2>
-        <h2></h2>
+    <div className='flex gap-x-3 relative items-center py-4 '>
+        <button onClick={fetch}  className='mx-2 text-2xl'>
+          {isAlreadyLiked ? <FaHeart className='  text-[#C147E9]'/> : <FaRegHeart className='text-white'/>}
+        </button>
+          <span className='absolute top-10 left-4 text-white'>{likedBy?.length}</span>
+          <LikedBy likedBy={likedBy}/>
     </div>
   )
 }
