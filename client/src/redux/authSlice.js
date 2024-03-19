@@ -55,12 +55,12 @@ export const logout = createAsyncThunk('auth/logout',async()=>{
     try {
         const responsePromise = axiosInstance.post('/user/logout');
         toast.promise(responsePromise, {
-            loading: "Creating Account...",
+            loading: "Logging out",
             success: (response) => {
-                return response.data?.message || "Login SuccessFul"
+                return response.data?.message || "Logout  SuccessFul"
             },
             error: (error) => {
-                return error.response?.message || "Login Failed ! in redux part"
+                return error.response?.message || "Logout Failed ! in redux part"
             }
         })
 
@@ -76,12 +76,12 @@ export const getUserData = createAsyncThunk('auth/getUserData',async()=>{
    try{
         const responsePromise = axiosInstance.post('/user/profile');
         toast.promise(responsePromise, {
-            loading: "Creating Account...",
+            loading: "Fetching Data...",
             success: (response) => {
                 return response.data?.message
             },
             error: (error) => {
-                return error.response?.message || "Login Failed ! in redux part"
+                return error.response?.message || " Fetching Failed ! in redux part"
             }
         })
 
@@ -97,12 +97,12 @@ export const updateProfile = createAsyncThunk('auth/updateProfile',async(url,dat
     try {
             const responsePromise =  axiosInstance.post(url,data);
             toast.promise(responsePromise, {
-                loading: "Creating Account...",
+                loading: "updating Profile...",
                 success: (response) => {
                     return response.data?.message
                 },
                 error: (error) => {
-                    return error.response?.message || "Login Failed ! in redux part"
+                    return error.response?.message || "Profile updation Failed ! in redux part"
                 }
             })
 

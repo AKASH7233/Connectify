@@ -91,12 +91,12 @@ const UserRegister = asyncHandler( async (req,res) => {
    }
 })  
 
-const userLogin = asyncHandler( async(req,res) => {
+const userLogin = asyncHandler( async(req,res,next) => {
     try {
         const {username, email , password} = req.body
     
         if([email,username,password].some((field)=> field?.trim() === "")){
-            throw new ApiError(400,'Every Field should be filled')
+            return next(new ApiError(400,'Every Field should be filled'))
         }
     
         const user = await User.findOne({
@@ -106,7 +106,7 @@ const userLogin = asyncHandler( async(req,res) => {
         })
     
         if(!user){
-            throw new ApiError(401, "User does not exists !")
+            throw next(new ApiError(401, "User does not exists !"))
         }
     
         
@@ -114,7 +114,7 @@ const userLogin = asyncHandler( async(req,res) => {
         const isPasswordCorrect = await user.isPasswordCorrect(password)
         
         if(!isPasswordCorrect){
-            throw new ApiError(401, "Invalid password")
+            throw next(new ApiError(401, "Invalid password"))
         }
     
         const {accessToken,refreshToken} = await generateRefreshTokenAndAccessToken(user?._id)
