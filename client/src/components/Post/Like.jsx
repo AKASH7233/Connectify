@@ -17,6 +17,7 @@ function Like({post}) {
    ;(async()=>{
       let postLikes = await dispatch(postlikes(post._id))
       setLikedBy(postLikes?.payload?.data)
+      console.log(LikedBy);
       setIsAlreadyLiked(postLikes?.payload?.data?.isLiked);
     })()
   },[search])
@@ -25,13 +26,12 @@ function Like({post}) {
     await dispatch((togglelike(post._id)))
     setSearch(prev=> !prev)
   } 
-  console.log(isAlreadyLiked);
 
   console.log(LikedBy);
   return (
     <div className='flex gap-x-3 items-center py-4 '>
         <button onClick={fetch} className='relative text-white'>
-          {isAlreadyLiked ? 'hello' : 'hell'}
+          {isAlreadyLiked ? 'liked' : 'no'}
           <span className='absolute top-6 left-3 text-white'>{LikedBy?.length}</span></button>
         <h2 className={`${LikedBy?.length >= 1  ? 'block': 'invisible'} text-white`}>Liked By {LikedBy?.users?.username}</h2>
         <h2></h2>

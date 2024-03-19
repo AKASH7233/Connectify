@@ -25,29 +25,6 @@ const showPosts = asyncHandler( async(_,res,next)=>{
         {
             $unwind: "$owner"
         },
-        // {
-        //     $lookup:{
-        //         from: 'likes',
-        //         let :{"user" : "$req.user._id"},
-        //         // pipeline: [(
-        //         //     {
-        //         //         $addFields: {
-        //         //             isLiked: {
-        //         //                 $cond: {
-        //         //                     if: { $in: ["$req.user._id", "$likes.likedBy"] },
-        //         //                     then: true,
-        //         //                     else: false
-        //         //                 }
-        //         //             }
-        //         //         } 
-        //         //     }
-        //         // )],
-        //         as: 'user'
-        //     }
-        // },
-        // {
-        //     $unwind: "$user"
-        // },
         {
             $project:{
                 "owner.password": 0,
@@ -62,7 +39,7 @@ const showPosts = asyncHandler( async(_,res,next)=>{
         }
     ])
 
-    console.log(getAllposts);
+    // console.log(getAllposts);
     return res.status(200)
     .json(
         new ApiResponse(
