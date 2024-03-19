@@ -1,15 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-import Login from './pages/Login'
+
+import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Register from './pages/Register'
+
+import viteLogo from '/vite.svg'
+
+import reactLogo from './assets/react.svg'
 import Feed from './pages/Feed'
+import Home from './pages/Home'
+import Login from './pages/Login'
 import MyProfile from './pages/MyProfile'
+import Register from './pages/Register'
+import Search from './pages/Search'
 import UploadPost from './pages/UploadPost'
 import DataFetch from './utils/DataFetch'
-import Search from './pages/Search'
 
 function App() {
 
@@ -17,10 +21,12 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          <Route path='/' element={<Home />}/>
           <Route path='/register' element = {<Register/>} />
           <Route path='/login' element = {<Login/>} />
-          <Route path='/' element={<Feed />}/>
+
           <Route path='/myProfile' element={<MyProfile />}/>
+          <Route path='/feed' element={<Feed />} />
           <Route path='/uploadPost' element ={<UploadPost/>} />
           <Route path='/test' element= {<DataFetch/>}/>
           <Route path='/search' element={<Search/>}/>

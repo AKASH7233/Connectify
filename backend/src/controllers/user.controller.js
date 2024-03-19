@@ -99,9 +99,6 @@ const userLogin = asyncHandler( async(req,res) => {
             throw new ApiError(400,'Every Field should be filled')
         }
     
-        if(password.length < 8){
-            throw new ApiError(401, "Password should contain atleast 8 characters")
-        }
         const user = await User.findOne({
             $or: [
                 {username}, {email}

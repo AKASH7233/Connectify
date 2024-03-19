@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
+
 import axiosInstance from "../utils/ApiFetch";
 
 const initialState = {
@@ -9,16 +10,20 @@ const initialState = {
 
 export const createAccount = createAsyncThunk('auth/register', async(data)=>{
     try {
-        const responsePromise = axiosInstance.post('/user/register',data)
-        if(responsePromise?.data.message){
-            toast.success(responsePromise?.data.message)
-        }
-        if(responsePromise?.data.error){
-            toast.error(responsePromise?.data.error)
-        }
-        const response = await responsePromise;
+        const responsePromise = axiosInstance.post('/user/register',data);
+        toast.promise(responsePromise,{
+            loading : "Creating Account...",
+            success : (response)=>{
+                return response.data?.message
+            },
+            error : (error)=>{
+                return error.response?.message || "Register Failed ! in redux part"
+            }
+        })
 
+        const response = await responsePromise;
         return response.data;
+
     } catch (error) {
         toast.error(error || "Something went Wrong !")
         throw error;
@@ -27,16 +32,19 @@ export const createAccount = createAsyncThunk('auth/register', async(data)=>{
 
 export const login = createAsyncThunk('auth/login',async(data)=>{
     try {
-        const responsePromise = await axiosInstance.post('/user/login',data)
-        if(responsePromise?.data.message){
-            toast.success(responsePromise?.data.message)
-        }
-        if(responsePromise?.data.error){
-            toast.error(responsePromise?.data.error)
-        }
-        const response =  responsePromise
-        return response.data
-        
+        const responsePromise =  axiosInstance.post('/user/login',data)
+        toast.promise(responsePromise, {
+            loading: "logining...",
+            success: (response) => {
+                return response.data?.message
+            },
+            error: (error) => {
+                return error.response?.message || "Login Failed ! in redux part"
+            }
+        })
+        const response = await responsePromise;
+        console.log(response)
+        return response.data;
     } catch (error) {
         toast.error(error.message || "Something Went Wrong")
         throw error
@@ -45,17 +53,19 @@ export const login = createAsyncThunk('auth/login',async(data)=>{
 
 export const logout = createAsyncThunk('auth/logout',async()=>{
     try {
-        const responsePromise = await axiosInstance.post('/user/logout');
+        const responsePromise = axiosInstance.post('/user/logout');
+        toast.promise(responsePromise, {
+            loading: "Creating Account...",
+            success: (response) => {
+                return response.data?.message || "Login SuccessFul"
+            },
+            error: (error) => {
+                return error.response?.message || "Login Failed ! in redux part"
+            }
+        })
 
-        if(responsePromise?.data.message){
-            toast.success(responsePromise?.data.message)
-        }
-        if(responsePromise?.data.error){
-            toast.error(responsePromise?.data.error)
-        }
-
-        const response = responsePromise
-        return response;
+        const response = await responsePromise;
+        return response.data;
     } catch (error) {
         toast.error(error.message)
         throw error
@@ -64,17 +74,19 @@ export const logout = createAsyncThunk('auth/logout',async()=>{
 
 export const getUserData = createAsyncThunk('auth/getUserData',async()=>{
    try{
-        const responsePromise = await axiosInstance.post('/user/profile');
+        const responsePromise = axiosInstance.post('/user/profile');
+        toast.promise(responsePromise, {
+            loading: "Creating Account...",
+            success: (response) => {
+                return response.data?.message
+            },
+            error: (error) => {
+                return error.response?.message || "Login Failed ! in redux part"
+            }
+        })
 
-        if(responsePromise?.data.message){
-            toast.success(responsePromise?.data.message)
-        }
-        if(responsePromise?.data.error){
-            toast.error(responsePromise?.data.error)
-        }
-
-        const response = responsePromise
-        return response;
+        const response = await responsePromise;
+        return response.data;
     } catch (error) {
         toast.error(error.message)
         throw error
@@ -83,17 +95,19 @@ export const getUserData = createAsyncThunk('auth/getUserData',async()=>{
 
 export const updateProfile = createAsyncThunk('auth/updateProfile',async(url,data)=>{
     try {
-            const responsePromise = await axiosInstance.post(url,data);
-        
-            if(responsePromise?.data.message){
-                toast.success(responsePromise?.data.message)
-            }
-            if(responsePromise?.data.error){
-                toast.error(responsePromise?.data.error)
-            }
-        
-            const response = responsePromise;
-            return response
+            const responsePromise =  axiosInstance.post(url,data);
+            toast.promise(responsePromise, {
+                loading: "Creating Account...",
+                success: (response) => {
+                    return response.data?.message
+                },
+                error: (error) => {
+                    return error.response?.message || "Login Failed ! in redux part"
+                }
+            })
+
+            const response = await responsePromise;
+            return response.data;
     } catch (error) {
         toast.error(`Failed To update`)
         throw error

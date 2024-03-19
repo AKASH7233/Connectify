@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import axiosInstance from '../utils/ApiFetch'
 import toast from 'react-hot-toast'
-import { Link, useNavigate } from 'react-router-dom'
-import setCookies from '../utils/Cookies/AddCookies'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+
 import { login } from '../redux/authSlice'
+import axiosInstance from '../utils/ApiFetch'
+import setCookies from '../utils/Cookies/AddCookies'
 
 function Login() {
     const navigate = useNavigate()
@@ -21,6 +22,12 @@ function Login() {
     
     const search = async (e)=> {
       e.preventDefault(); 
+
+      if(!userInfo.username || !userInfo.email  || !userInfo.password ){
+        toast.error('All field are required')
+        return;
+      }
+
       const response = await dispatch(login(userInfo))
       if(response?.payload.message){
         navigate('/')
@@ -28,20 +35,18 @@ function Login() {
     }
 
   return (
-    <div className='w-[100vw] h-[100vh]  px-4 bg-[#000000] overflow-hidden'>
-      <h2 className='text-white text-4xl mt-20  text-center'>logo</h2>
-      <div className='flex justify-center items-center my-16'>
-      <div className='border relative px-4 py-4 w-64 h-60 border-white'>
-        <input type="text" className='px-3 py-2 rounded-sm border outline-none focus:none text-black my-4' name='username' value={userInfo.username} onChange={eventHandler} placeholder='Enter your UserName'/>
-        <input type="email" className='px-3 py-2 rounded-sm border outline-none focus:none text-black my-4' name='email' value={userInfo.email} onChange={eventHandler} placeholder='Enter Your Email'/>
-        <input type="password" className='px-3 py-2 rounded-sm border outline-none focus:none text-black my-4' name='password' value={userInfo.password} onChange={eventHandler} placeholder='Enter Password' />
-        <button className = 'bg-[#C147E9] px-24 text-lg py-2 mt-8 rounded-lg'  onClick={search}>Login</button>
-        <p className="text-white text-center text-sm my-4 ">
+    <div className='flex items-center justify-center h-screen bg-gray-900'>
+      <div className='p-10 bg-white rounded-lg shadow-2xl w-1/3'>
+        <h2 className='text-3xl font-bold mb-5 text-gray-900 text-center'>Login</h2>
+        <input type="text" className='border p-2 w-full mb-3 rounded-md outline-none' name='username' value={userInfo.username} onChange={eventHandler} placeholder='Enter your UserName'/>
+        <input type="email" className='border p-2 w-full mb-3 rounded-md outline-none' name='email' value={userInfo.email} onChange={eventHandler} placeholder='Enter Your Email'/>
+        <input type="password" className='border p-2 w-full mb-3 rounded-md outline-none' name='password' value={userInfo.password} onChange={eventHandler} placeholder='Enter Password' />
+        <button className = 'bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded font-medium w-full'  onClick={search}>Login</button>
+        <p className="text-center text-sm my-4 ">
           Does not Have an account?
           <br />Create an account
-          <Link to={`/register`} className="underline mx-2">   Register</Link>
+          <Link to={`/register`} className="underline mx-2 text-blue-500">Register</Link>
         </p>
-      </div>
       </div>
     </div>
   )
