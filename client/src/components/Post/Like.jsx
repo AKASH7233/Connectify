@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import LikedBy from './LikedBy';
+import LikedBy from './viewPost/viewPost';
 import { FaHeart , FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { postlikes,togglelike } from '../../redux/likeSlice';
