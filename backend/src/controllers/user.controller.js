@@ -189,18 +189,71 @@ const userLogout = asyncHandler( async(req,res)=>{
 
 const currentUser = asyncHandler( async(req,res)=>{
     try {
-        const user  = await User.findById(req.user._id).select("-password -refreshToken -email")
-    
+        const user  = req.user?.username
+        
         if(!user){
             throw new ApiError(500,"Failed to Fetch Your Profile")
         }
+
+        const profile = await User.aggregate([
+            {
+                $match: {
+                    username: user?.toLowerCase()
+                }
+            },
+            {
+                $lookup:{
+                    from: "follows",
+                    localField: "_id",
+                    foreignField: "followedTo",
+                    as: "followers"
+                }
+            },
+            {
+                $lookup: {
+                    from : "follows",
+                    localField: "_id",
+                    foreignField: "followedBy",
+                    as: "following"
+                }
+            },
+            {
+                $addFields: {
+                    FollowersCount:{
+                        $size: "$followers"
+                    },
+                    FollowingCount: {
+                        $size: "$following"
+                    },
+                    isFollowing:{
+                        $cond: {
+                            if: {$in: [req?.user?._id, "$followers.following"]},
+                            then: true,
+                            else: false
+                        }
+                    }
+                }
+    
+            },
+            {
+                $project:{
+                    username: 1,
+                    avatar:1,
+                    fullName: 1,
+                    coverImage:1,
+                    FollowersCount:1,
+                    FollowingCount:1,
+                    posts:1,
+                }
+            }
+        ])
     
         return res
         .status(200)
         .json(
             new ApiResponse(
                 200,
-                user,
+                profile,
                 "Fetched Profile successfully !!"
             )
         )

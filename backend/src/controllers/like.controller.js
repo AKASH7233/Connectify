@@ -159,33 +159,45 @@ const userLiked = asyncHandler( async(req,res)=>{
                 post: new mongoose.Types.ObjectId(postId)
             },
         },
-        {
-            $group:{
-                _id:'post',
-                likedBy: {
-                    $push : "$likedBy"
-                }
-            }
-        },
-        {
-            $lookup:{
-                from: 'users',
-                localField: 'likedBy',
-                foreignField: '_id',
-                as: 'users'
-            }
-        },
-        {
-            $unwind: '$users'
-        },
-        {
-            $project: {
-                'users._id':1,
-                'users.username': 1,
-                'users.ProfileImage': 1
-            }
-        },
-        
+        // {
+        //     $group:{
+        //         _id:'post',
+        //         likedBy: {
+        //             $push : "$likedBy"
+        //         }
+        //     }
+        // },
+        // {
+        //     $lookup:{
+        //         from: 'users',
+        //         localField: 'likedBy',
+        //         foreignField: '_id',
+        //         as: 'users'
+        //     }
+        // },
+        // // {
+        // //     $addFields: {
+        // //         isLiked : {
+        // //             $cond: {
+        // //                 if : {$in : [req.user?._id , "$users._id"]},
+        // //                 then: true,
+        // //                 else: false
+        // //             }
+        // //         }
+        // //     }
+        // // },
+        // {
+        //     $unwind: '$users'
+        // },
+        // {
+        //     $project: {
+        //         'users._id':1,
+        //         'users.username': 1,
+        //         'users.ProfileImage': 1,
+        //         // isLiked : 1
+        //     }
+        // },
+
     ])
 
     console.log(`likes`,likedUsers);
