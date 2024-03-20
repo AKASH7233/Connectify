@@ -6,7 +6,7 @@ const router = Router();
 router.use(verifyJWT)
 
 router.route("/togglefollow/:userTofollow").post(toggleFollow)
-router.route("/followers/:followedBy").post(Followers)
+router.route("/followers/:followedTo").post(Followers)
 router.route("/following/:followingTo").post(following)
 
 export default router

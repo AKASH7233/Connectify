@@ -50,6 +50,7 @@ const toggleFollow = asyncHandler( async(req,res)=>{
 const Followers = asyncHandler( async(req,res)=>{
     const {followedTo} = req.params;
     
+    console.log(followedTo);
     if(!followedTo){
         throw new ApiError(400, "Followed id does not exist")
     }
@@ -61,31 +62,34 @@ const Followers = asyncHandler( async(req,res)=>{
             }
         },
         {
-            $group:{
-                _id: "followedTo",
-                followers: {$push: req?.user._id}
+            $lookup:{
+                from: "users",
+                localField: "followedBy",
+                foreignField: "_id",
+                as: "followers",
             }
         },
         {
-            $unwind : '$followedBy'
+            $unwind: '$followers'
         },
         {
             $project:{
                 _id:0,
-                followers: 1
+                'followers.username': 1,
+                'followers.fullName': 1,
+                'followers.ProfileImage': 1
             }
-        }
+        },
     ])
 
-    console.log(follower);
+    console.log('followerss',follower);
     if(!follower || follower.length === 0 ){
         return res
         .status(200)
-        .json(new ApiResponse(200, [], "No subscribers found for the channel"));
+        .json(new ApiResponse(200, [], "No Followers found for the channel"));
 
     }
 
-    console.log(`followers`, follower)
     return res
     .status(200)
     .json(
@@ -98,10 +102,10 @@ const Followers = asyncHandler( async(req,res)=>{
 })
 
 const following = asyncHandler( async(req,res)=>{
-    const {followingTo} = req.params;
+    const {followingBy} = req.params;
     
-    console.log(followingTo);
-    if(!followingTo){
+    console.log(followingBy);
+    if(!followingBy){
         throw new ApiError(400,"Invalid Following Id")
     }
 
@@ -112,17 +116,24 @@ const following = asyncHandler( async(req,res)=>{
             }
         },
         {
-            $group:{
-                _id:"followedBy",
-                following: {$push:"$followedBy"}
+            $lookup:{
+                from: "users",
+                localField: "followedTo",
+                foreignField: "_id",
+                as: "followings",
             }
         },
         {
+            $unwind: '$followings'
+        },
+        {
             $project:{
-                _id: 0,
-                following:1
+                _id:0,
+                'followings.username': 1,
+                'followings.fullName': 1,
+                'followings.ProfileImage': 1
             }
-        }
+        },
     ])
 
     if(!followings || followings.length === 0 ){
