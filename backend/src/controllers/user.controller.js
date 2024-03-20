@@ -222,13 +222,6 @@ const currentUser = asyncHandler( async(req,res)=>{
                     FollowingCount: {
                         $size: "$following"
                     },
-                    isFollowing:{
-                        $cond: {
-                            if: {$in: [req?.user?._id, "$followers.following"]},
-                            then: true,
-                            else: false
-                        }
-                    }
                 }
     
             },
@@ -244,6 +237,30 @@ const currentUser = asyncHandler( async(req,res)=>{
                 }
             }
         ])
+        
+        // let post = await User.aggregate([
+        //     {
+        //         $lookup: {
+        //             from : 'posts',
+        //             localField: '_id',
+        //             foreignField: 'postedBy',
+        //             pipeline: [
+        //                 {
+        //                     $match: {
+        //                         postedBy : new mongoose.Types.ObjectId(req.user?._id)
+        //                     }
+        //                 },8712105111
+        //                 {
+        //                     $group: {
+                                
+        //                     }
+        //                 }
+        //             ],
+        //             as: 'post'
+        //         }
+        //     }
+        // ])
+        // console.log(post);
     
         return res
         .status(200)

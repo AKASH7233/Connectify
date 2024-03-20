@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import LikedBy from './viewPost/viewPost';
-import { FaHeart , FaRegHeart } from "react-icons/fa";
+import { FaHeart , FaRegHeart , FaRegComment} from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { postlikes,togglelike } from '../../redux/likeSlice';
-
+import { TbMessage } from "react-icons/tb"
 
 function Like({post}) {
   const dispatch = useDispatch()
   const [isAlreadyLiked,setIsAlreadyLiked] = useState(false)
   const [likedBy,setlikedBy] = useState()
   const [search , setSearch ] = useState(false)
+  const [viewLike,showLikes] = useState(false)
    useEffect(()=>{
    ;(async()=>{
       let postLikes = await dispatch(postlikes(post._id))
@@ -33,7 +34,8 @@ function Like({post}) {
           {isAlreadyLiked ? <FaHeart className='  text-[#C147E9]'/> : <FaRegHeart className='text-white'/>}
         </button>
           <span className='absolute top-10 left-4 text-white'>{likedBy?.length}</span>
-          <h2 className={`${likedBy?.length >= 1  ? 'block': 'invisible'} text-white`}>Liked By {LikedBy}</h2>
+          <h2 onClick = {showLikes} className={`${likedBy?.length >= 1  ? 'block': 'invisible'} text-white text-lg`}>Liked By {LikedBy}</h2>
+          <TbMessage  className='text-white absolute text-3xl right-4'/>
     </div>
   )
 }

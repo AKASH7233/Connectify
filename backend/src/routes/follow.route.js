@@ -7,6 +7,6 @@ router.use(verifyJWT)
 
 router.route("/togglefollow/:userTofollow").post(toggleFollow)
 router.route("/followers/:followedTo").post(Followers)
-router.route("/following/:followingTo").post(following)
+router.route("/following/:followingBy").post(following)
 
 export default router

@@ -10,11 +10,13 @@ const ProfileHeader = () => {
   const dispatch = useDispatch()
   const response = useSelector(state => state?.auth?.user).user
   const [user,setUser] = useState(response)
-  useEffect(async ()=>{
-  let response = await dispatch(getUserData())
-  setUser(response.payload?.data.data[0])
+  useEffect(()=>{
+    ;(async ()=>{
+      let response = await dispatch(getUserData())
+       setUser(response?.payload?.data[0])
+      })()
   },[])
-  console.log(user);
+  
     const profile = profileImg ? profileImg : profileimg
   
     return (
