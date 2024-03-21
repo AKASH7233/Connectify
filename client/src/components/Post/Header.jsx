@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import profile from '../../assets/profile.png'
 import { Link } from 'react-router-dom'
-import getCookies from '../../utils/Cookies/GetCookie';
+
+import profile from '../../assets/profile.png'
 import axiosInstance from '../../utils/ApiFetch';
+import getCookies from '../../utils/Cookies/GetCookie';
 
 function Header({post}) {
     const profileImg = post?.owner.profileImage? post?.owner.profileImage : profile

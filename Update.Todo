@@ -1,0 +1,14 @@
+Daily Record 
+
+22:03:2024 , 2:47 Am (night):
+    Added show comments feature to the show comment in comment route/controller . 
+    Improve the post comment feature in the comment controller 
+     a. Remove unnecessary fetching of User from Mongoose as user is
+        already verified in the middleware.
+     b. Remove Additional of complete Detail of the user in the comment
+        object. We only need the user id . By doing this we can reduce
+        the size of the comment object and also reduce the number of
+        queries to the database.
+     c. Populate : With the help of the user id we can fetch the user 
+        details from the database. In Model there is already Reference
+        to the user so we can populate the user details from the user
