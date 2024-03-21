@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import {useNavigate} from 'react-router-dom'
-import Post from '../components/Post/Post'
 import { useDispatch} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+
+import Post from '../components/Post/Post'
 import { getPosts } from '../redux/postSlice'
 
  function Feed () {
@@ -9,7 +10,7 @@ import { getPosts } from '../redux/postSlice'
   const dispatch = useDispatch()
   const [posts,setPosts] = useState(null)
   useEffect(()=>{
-    ;(async()=>{
+    (async()=>{
       let data = await (dispatch(getPosts()))
       setPosts(data.payload.data)
    })()
