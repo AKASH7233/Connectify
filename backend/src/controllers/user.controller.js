@@ -4,7 +4,7 @@ import { ApiResponse } from "../utils/apiResponse.js"
 import { User } from "../models/user.model.js"
 import { uploadToCloudinary } from "../utils/cloudinary.js"
 import jwt from "jsonwebtoken"
-import { ApiErrResponse } from "../utils/apiErrResponse.js"
+import { ApiErrResponse } from "../utils/ApiErrResponse.js"
 
 const generateRefreshTokenAndAccessToken = async(userid) => {
     const user = await User.findById(userid)
