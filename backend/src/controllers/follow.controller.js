@@ -2,7 +2,6 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { Follow } from "../models/follow.model.js";
-import mongoose from "mongoose";
 
 const toggleFollow = asyncHandler( async(req,res)=>{
     const {userTofollow} = req.params;
