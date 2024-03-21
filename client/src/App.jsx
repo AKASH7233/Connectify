@@ -1,11 +1,7 @@
 import './App.css'
 
-import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import viteLogo from '/vite.svg'
-
-import reactLogo from './assets/react.svg'
 import Feed from './pages/Feed'
 import Home from './pages/Home'
 import Login from './pages/Login'
