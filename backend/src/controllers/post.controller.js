@@ -5,7 +5,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
 import mongoose from "mongoose";
-import { ApiErrResponse } from "../utils/apiErrResponse.js";
+import { ApiErrResponse } from "../utils/ApiErrResponse.js";
 
 const showPosts = asyncHandler( async(_,res,next)=>{
     const getAllposts = await Post.aggregate([

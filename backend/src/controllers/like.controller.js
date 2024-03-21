@@ -4,7 +4,7 @@ import {ApiResponse} from "../utils/apiResponse.js"
 import { Like } from '../models/likes.model.js'
 import  mongoose, { isValidObjectId } from 'mongoose'
 import { User } from '../models/user.model.js'
-import { ApiErrResponse } from '../utils/apiErrResponse.js'
+import { ApiErrResponse } from '../utils/ApiErrResponse.js'
 import {Post} from '../models/post.model.js'
  
 
