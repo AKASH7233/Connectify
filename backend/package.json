@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "npm i",
     "dev": "nodemon -r dotenv/config --experimental-json-modules index.js",
     "start": "node index.js"
   },
