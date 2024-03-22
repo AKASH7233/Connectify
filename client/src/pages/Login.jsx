@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { login } from '../redux/authSlice'
-import axiosInstance from '../utils/ApiFetch'
-import setCookies from '../utils/Cookies/AddCookies'
 
 function Login() {
     const navigate = useNavigate()

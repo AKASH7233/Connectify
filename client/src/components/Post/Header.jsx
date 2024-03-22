@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 import profile from '../../assets/profile.png'
 import axiosInstance from '../../utils/ApiFetch';
-import getCookies from '../../utils/Cookies/GetCookie';
 
 function Header({post}) {
     const profileImg = post?.owner.profileImage? post?.owner.profileImage : profile
