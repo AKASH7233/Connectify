@@ -1,48 +1,42 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import profile from '../../assets/profile.png'
+import profileImage from '../../assets/profile.png'
 import axiosInstance from '../../utils/ApiFetch';
+import { useDispatch, useSelector } from 'react-redux';
+import { profile } from '../../redux/usersSlice';
+import { toggleFollow } from '../../redux/followSlice';
 
 function Header({post}) {
-    const profileImg = post?.owner.profileImage? post?.owner.profileImage : profile
-    const currentUser = getCookies('user_id');
-    const user_id = post?.owner?._id === currentUser ? 'myprofile' : `/user/${post?.owner?._id}`
-    const [isFollowed,setIsFollowed] = useState()
-    console.log(currentUser);
-    const check =  async()=>{
-      let following = await axiosInstance.post(`/follow/following/${post?.owner._id}`)
-      
-      const followed = following?.data.data[0].following == 0 ? false : following?.data.data[0].following.map((id)=>(currentUser == id)) 
-      console.log(String(followed));
-      const selfAcccount = post?.owner?._id == currentUser
-      console.log(selfAcccount);
-      if(followed || selfAcccount){
-        setIsFollowed(true)
-      }
-    }  
-
+    const currentUser = useSelector(state=> state?.auth?.user)
+    const profileImg = post?.owner.profileImage? post?.owner.profileImage : profileImage
+    const dispatch = useDispatch()
+    const isFollow = useSelector(state=>state?.user?.isFollow)
+    const [isFollowed,setIsFollowed] = useState(isFollow)
+    console.log(post?.owner?._id);
     useEffect(()=>{
-     check()
+      ;(async()=>{
+        let response = await dispatch(profile(post?.owner?._id))
+        setIsFollowed(response?.payload?.data[0]?.isFollowed)
+      })()
     },[])
 
     const fetch = async() => {
-      let resposne = await axiosInstance.post(`/follow/togglefollow/${post?.owner?._id}`)
-      console.log(resposne);
-      setIsFollowed((prev)=>!prev)
+      let response = await dispatch(toggleFollow(post?._id))
+      console.log(response);
     }
 
 
   return (
     <div>
         <div className='bg-black text-gray-400 flex justify-between py-3 px-4'>
-            <Link to={`${user_id}`}>
+            <Link to={``}>
                 <div className='flex gap-x-3 items-center'>
                 <img src={profileImg} alt="post_file" className='w-10'/>
                 <h2>{post?.owner.username}</h2>
                 </div>
             </Link>
-            <button className={` bg-[#C147E9] text-white px-4`} onClick={fetch} >{isFollowed?'Unfollow': 'Follow'}</button>
+            <button className={` ${isFollowed ? 'invisible' : 'block' } bg-[#C147E9] text-white px-4`} onClick={fetch} >{isFollowed?'Unfollow': 'Follow'}</button>
          </div>
          <div className='h-72 w-[100vw]'>
             <img src={post?.postFile} alt="postImg" className='h-72 w-[100vw] object-fill'/>

@@ -3,8 +3,7 @@ import axiosInstance from "../utils/ApiFetch"
 import toast from "react-hot-toast"
 
 const initialState = {
-    isFollow: false,
-    user: {}
+    users: {}
 }
 
 export const toggleFollow = createAsyncThunk('follow/toggleFollow',async(data)=>{
@@ -31,7 +30,7 @@ export const toggleFollow = createAsyncThunk('follow/toggleFollow',async(data)=>
 export const Following = createAsyncThunk('follow/Following',async(data)=>{
     try {
         console.log(`/follow/following/${data}`);
-        const responsePromise = axiosInstance.post(`follow/following/${data}`)
+        const responsePromise = axiosInstance.post(`/follow/following/${data}`)
        
         toast.promise(responsePromise,{
             loading: 'Fetching Following List...',
@@ -79,7 +78,7 @@ export const followSlice = createSlice({
     extraReducers: (builder)=>{
         builder
         .addCase(toggleFollow.fulfilled,(state,action)=>{
-            state.user = action.payload?.data
+            state.users = action.payload?.data
         })
     }
 })

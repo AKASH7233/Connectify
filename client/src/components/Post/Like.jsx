@@ -25,7 +25,6 @@ function Like({post}) {
   } 
 
   let random = Math.floor(Math.random() * likedBy?.length)
-  console.log(random)
   const LikedBy = likedBy?.length >= 1 ? likedBy[random].users.username : '' 
 
   return (
