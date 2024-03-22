@@ -23,7 +23,7 @@ const showComments = asyncHandler( async(req,res,next)=>{
           }
 
           const comments = await Comment.find({ post: postId })
-               .populate("commentedBy", "username fullName email")
+               .populate("commentedBy", "username fullName ProfileImage")
                .sort({ createdAt: -1 })
                .skip(skip)
                .limit(20)

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IoMdSend } from "react-icons/io";
 import toast from 'react-hot-toast';
 import { addComments, showComments } from '../../../redux/commentSlice';
+import ViewComment from './ViewComment';
 
 function Comment({post}) {
     const dispatch = useDispatch()
@@ -13,8 +14,8 @@ function Comment({post}) {
     useEffect(()=>{
         ;(async()=>{
             let response= await dispatch(showComments(post?._id))
-            setComment(response)
-            console.log(response);
+            console.log(response?.payload?.data);
+            setComment(response?.payload?.data)
         })()
     },[reRender])
 
@@ -24,9 +25,7 @@ function Comment({post}) {
             toast.error('Comment is required !')
             return null
         }
-        console.log(addComment);
-        let response = await dispatch(addComments({url:`${post?._id}`,comment:addComment}))
-        console.log(response);
+        await dispatch(addComments({url:`${post?._id}`,comment:addComment}))
         setReRender(prev=>!prev)
     }
   return (
@@ -37,7 +36,13 @@ function Comment({post}) {
         onChange={(e)=>{setAddComment(e.target.value)}}
         />
         <button onClick={uploadComment}><IoMdSend className='text-white'/></button>
-
+        {
+            Comment.length > 0 ?  <div>
+            {Comment?.map((comment)=>(
+                <ViewComment info={comment}/>
+            ))}
+        </div> : 'No Comments'
+        }
     </div>
   )
 }

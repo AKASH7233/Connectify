@@ -12,7 +12,7 @@ import { getPosts } from '../redux/postSlice'
   useEffect(()=>{
     (async()=>{
       let data = await (dispatch(getPosts()))
-      setPosts(data.payload.data)
+      setPosts(data?.payload.data)
    })()
   },[])
   return (

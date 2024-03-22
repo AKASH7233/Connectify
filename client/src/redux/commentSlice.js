@@ -3,7 +3,7 @@ import axiosInstance from '../utils/ApiFetch'
 import toast from 'react-hot-toast'
 
 const initialState = {
-    comments : {} || JSON.parse(localStorage.getItem('Comment')),
+    comments : JSON.parse(localStorage.getItem('Comment')) || [],
     mycomment : {}
 }
 
@@ -26,7 +26,7 @@ export const addComments = createAsyncThunk('comment/addCommments',async(data)=>
 
 export const showComments = createAsyncThunk('comment/showComments',async(data)=>{
 
-    const responsePromise = axiosInstance.post(`/comment/showcomments/${data}`)
+    const responsePromise = axiosInstance.get(`/comment/showcomments/${data}`)
     
     const response = await responsePromise;
     return response.data
@@ -77,7 +77,7 @@ export const commentSlice = createSlice({
             localStorage.setItem('my Comment',JSON.stringify(action.payload?.data))
         })
         .addCase(showComments.fulfilled,(state,action)=>{
-            state.comments = action.payload?.data
+            state.comments.push(action.payload?.data)
             localStorage.setItem('Comment',JSON.stringify(action.payload?.data))
         })
         .addCase(editComment.fulfilled,(state,action)=>{

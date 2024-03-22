@@ -1,5 +1,4 @@
 import React,{useState, useEffect} from 'react';
-import profileimg from '../assets/profile.png'
 import profileImg from '../assets/profile.png'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
