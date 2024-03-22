@@ -8,7 +8,6 @@ const initialState = {
 }
 
 export const profile = createAsyncThunk('auth/profile',async(data)=>{
-    console.log(data);
     const responsePromise = axiosInstance.post(`/user/userprofile/${data}`)
 
     // toast.promise(responsePromise, {

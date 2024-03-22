@@ -600,7 +600,7 @@ const getUserProfile = asyncHandler( async(req,res)=>{
     if(!profile){
         throw new ApiError(400,"user does not exist")
     }
-    console.log(profile);
+    // console.log(profile);
 
     // const isFollowed = await Follow.aggregate([
     //     // {

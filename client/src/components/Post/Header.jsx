@@ -13,7 +13,6 @@ function Header({post}) {
     const dispatch = useDispatch()
     const isFollow = useSelector(state=>state?.user?.isFollow)
     const [isFollowed,setIsFollowed] = useState(isFollow)
-    console.log(post?.owner?._id);
     useEffect(()=>{
       ;(async()=>{
         let response = await dispatch(profile(post?.owner?._id))

@@ -97,6 +97,7 @@ const showComments = asyncHandler( async(req,res,next)=>{
 const postComment = asyncHandler( async(req,res)=>{
     const {postId} = req.params;
     const {comment} = req.body;
+    console.log(comment);
 
     if(!comment){
          throw new ApiError(400, "Comment is Required")
@@ -119,11 +120,6 @@ const postComment = asyncHandler( async(req,res)=>{
         commentedBy : req.user._id
    })
    console.log(comments)
-
-   if(!comments) {
-        throw new ApiError(500, "Failed to add Comment")
-   }
-
 
    return res
    .status(200)

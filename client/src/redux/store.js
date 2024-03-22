@@ -4,6 +4,7 @@ import postReducer from './postSlice.js'
 import likeReducer from './likeSlice.js'
 import followReducer from './followSlice.js'
 import userReducer from './usersSlice.js'
+import commentReducer from "./commentSlice.js";
 
 export const store = configureStore({
     reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
         like : likeReducer,
         follow : followReducer,
         user : userReducer,
+        comment : commentReducer
     }
 })
