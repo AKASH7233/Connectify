@@ -1,9 +1,9 @@
 import React,{useState, useEffect} from 'react';
-import profileImg from '../assets/profile.png'
+import profileImg from '../../../assets/profile.png'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserData } from '../redux/authSlice'
+import { getUserData } from '../../../redux/authSlice'
 
 const ProfileHeader = () => {
   const dispatch = useDispatch()

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import ProfileHeader from '../components/ProfileHeader'
+import ProfileHeader from '../components/Post/Profile/ProfileHeader'
 import Follow from '../components/Post/FollowerLists/Follow'
 
 function MyProfile() {

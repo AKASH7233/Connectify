@@ -3,7 +3,6 @@ import profileImg from '../../../assets/profile.png'
 import { Link } from 'react-router-dom';
 
 function ViewComment({info}) {
-    console.log(info);
     const profileImage = info?.commentedBy?.ProfileImage ? info?.commentedBy?.ProfileImage : profileImg
   return (
     <div className='text-white bg-red-400 z-50'>

@@ -588,9 +588,9 @@ const getUserProfile = asyncHandler( async(req,res)=>{
         {
             $project:{
                 username: 1,
-                avatar:1,
+                posts:1,
                 fullName: 1,
-                coverImage:1,
+                ProfileImage:1,
                 FollowersCount:1,
                 FollowingCount:1,
                 isFollowed: 1

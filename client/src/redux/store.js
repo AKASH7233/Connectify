@@ -12,7 +12,7 @@ export const store = configureStore({
         post : postReducer,
         like : likeReducer,
         follow : followReducer,
-        user : userReducer,
+        visitedUser : userReducer,
         comment : commentReducer
     }
 })

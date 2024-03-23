@@ -9,10 +9,12 @@ import { toggleFollow } from '../../redux/followSlice';
 
 function Header({post}) {
     const currentUser = useSelector(state=> state?.auth?.user)
+    const currentUserId = currentUser[0]?._id
     const profileImg = post?.owner.profileImage? post?.owner.profileImage : profileImage
     const dispatch = useDispatch()
     const isFollow = useSelector(state=>state?.user?.isFollow)
     const [isFollowed,setIsFollowed] = useState(isFollow)
+    const userId = currentUserId == post?.owner?._id ? 'myprofile' : `user/${post?.owner?._id}`
     useEffect(()=>{
       ;(async()=>{
         let response = await dispatch(profile(post?.owner?._id))
@@ -21,15 +23,14 @@ function Header({post}) {
     },[])
 
     const fetch = async() => {
-      let response = await dispatch(toggleFollow(post?._id))
-      console.log(response);
+      await dispatch(toggleFollow(post?._id))
     }
 
 
   return (
     <div>
         <div className='bg-black text-gray-400 flex justify-between py-3 px-4'>
-            <Link to={``}>
+            <Link to={`/${userId}`}>
                 <div className='flex gap-x-3 items-center'>
                 <img src={profileImg} alt="post_file" className='w-10'/>
                 <h2>{post?.owner.username}</h2>

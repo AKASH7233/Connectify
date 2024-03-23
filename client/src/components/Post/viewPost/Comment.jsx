@@ -14,7 +14,6 @@ function Comment({post}) {
     useEffect(()=>{
         ;(async()=>{
             let response= await dispatch(showComments(post?._id))
-            console.log(response?.payload?.data);
             setComment(response?.payload?.data)
         })()
     },[reRender])
@@ -38,8 +37,8 @@ function Comment({post}) {
         <button onClick={uploadComment}><IoMdSend className='text-white'/></button>
         {
             Comment.length > 0 ?  <div>
-            {Comment?.map((comment)=>(
-                <ViewComment info={comment}/>
+            {Comment?.map((comment,i)=>(
+                <ViewComment key={i} info={comment}/>
             ))}
         </div> : 'No Comments'
         }

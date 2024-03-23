@@ -10,6 +10,7 @@ import Register from './pages/Register'
 import Search from './pages/Search'
 import UploadPost from './pages/UploadPost'
 import DataFetch from './utils/DataFetch'
+import UserProfile from './pages/UserProfile'
 
 function App() {
 
@@ -20,7 +21,7 @@ function App() {
           <Route path='/' element={<Home />}/>
           <Route path='/register' element = {<Register/>} />
           <Route path='/login' element = {<Login/>} />
-
+          <Route path='/user/:userId' element={<UserProfile/>}/>
           <Route path='/myProfile' element={<MyProfile />}/>
           <Route path='/feed' element={<Feed />} />
           <Route path='/uploadPost' element ={<UploadPost/>} />
