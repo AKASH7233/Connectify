@@ -228,6 +228,19 @@ const currentUser = asyncHandler( async(req,res)=>{
     
             },
             {
+                $lookup: {
+                    from: 'posts',
+                    pipeline: [
+                        {
+                            $match: {
+                                postedBy : new mongoose.Types.ObjectId(req?.user._id)
+                            }
+                        },
+                    ],
+                    as:'posts',
+                }
+            },
+            {
                 $project:{
                     username: 1,
                     avatar:1,
@@ -235,7 +248,8 @@ const currentUser = asyncHandler( async(req,res)=>{
                     coverImage:1,
                     FollowersCount:1,
                     FollowingCount:1,
-                    posts:1,
+                    "posts._id":1,
+                    "posts.postFile":1,
                 }
             }
         ])
@@ -586,9 +600,23 @@ const getUserProfile = asyncHandler( async(req,res)=>{
             }
         },
         {
+            $lookup: {
+                from: 'posts',
+                pipeline: [
+                    {
+                        $match: {
+                            postedBy : new mongoose.Types.ObjectId(userId)
+                        }
+                    },
+                ],
+                as:'posts',
+            }
+        },
+        {
             $project:{
                 username: 1,
-                posts:1,
+                "posts._id":1,
+                "posts.postFile": 1,
                 fullName: 1,
                 ProfileImage:1,
                 FollowersCount:1,
@@ -600,8 +628,6 @@ const getUserProfile = asyncHandler( async(req,res)=>{
     if(!profile){
         throw new ApiError(400,"user does not exist")
     }
-    // console.log(profile);
-
     // const isFollowed = await Follow.aggregate([
     //     // {
     //     //     $match:{
