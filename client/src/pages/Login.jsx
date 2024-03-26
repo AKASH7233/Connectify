@@ -25,10 +25,11 @@ function Login() {
         toast.error('All field are required')
         return;
       }
-
+      
       const response = await dispatch(login(userInfo))
       if(response?.payload.message){
-        navigate('/')
+        if(screen.width > 400) return navigate('/')
+        navigate('/feed')
       }
     }
 

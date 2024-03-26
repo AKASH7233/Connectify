@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import LikedBy from './viewPost/viewPost';
-import { FaHeart , FaRegHeart , FaRegComment} from "react-icons/fa";
+import { FaHeart , FaRegHeart , FaRegBookmark, FaBookmark} from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { postlikes,togglelike } from '../../redux/likeSlice';
 import { TbMessage } from "react-icons/tb"
+import { IoIosShareAlt } from "react-icons/io";
 
 function Like({post}) {
   const dispatch = useDispatch()
@@ -11,6 +12,7 @@ function Like({post}) {
   const [likedBy,setlikedBy] = useState()
   const [search , setSearch ] = useState(false)
   const [viewLike,showLikes] = useState(false)
+  const [addToBookMark,setAddToBookMark] = useState(false)
    useEffect(()=>{
    ;(async()=>{
       let postLikes = await dispatch(postlikes(post._id))
@@ -27,15 +29,30 @@ function Like({post}) {
   let random = Math.floor(Math.random() * likedBy?.length)
   const LikedBy = likedBy?.length >= 1 ? likedBy[random].users.username : '' 
 
+  const addBookMark = () => {
+    setAddToBookMark(prev => !prev)
+  }
   return (
-    <div className='flex gap-x-3 relative items-center py-4 '>
-        <button onClick={fetch}  className='mx-2 text-2xl'>
-          {isAlreadyLiked ? <FaHeart className='  text-[#C147E9]'/> : <FaRegHeart className='text-white'/>}
+    <>
+      <div className='flex gap-x-3 relative items-center my-4 mx-2 border-b border-gray-500 pb-1'>
+        <button onClick={fetch}  className='mx-2 text-xl'>
+          {isAlreadyLiked ? <FaHeart className='  text-red-400'/> : <FaRegHeart className='text-white'/>}
         </button>
-          <span className='absolute top-10 left-4 text-white'>{likedBy?.length}</span>
-          <h2 onClick = {showLikes} className={`${likedBy?.length >= 1  ? 'block': 'invisible'} text-white text-lg`}>Liked By {LikedBy}</h2>
-          <TbMessage  className='text-white absolute text-3xl right-4'/>
-    </div>
+         <div className='flex items-center gap-1'>
+            <h2 className='text-sm text-white'>Liked By</h2>
+            <h2 onClick = {showLikes} className={`${likedBy?.length >= 1  ? 'block': 'invisible'} text-white text-md`}>{LikedBy}</h2>
+          </div>
+          <button onClick={addBookMark} className='text-md absolute right-3 text-gray-300'>
+            {addToBookMark ? <FaBookmark/> : <FaRegBookmark />}
+          </button>
+          {/* //<FaBookmark/> */}
+      </div>
+      <div className='text-gray-400 text-sm flex justify-evenly -my-3 pb-1 border-b mb-3 border-gray-400'>
+        <h2>{likedBy?.length} {likedBy?.length > 1 ? 'Likes': 'like'}</h2>
+        <h2>comments</h2>
+        <h2 className='flex items-center gap-1'><IoIosShareAlt className='text-gray-400'/> share</h2>
+      </div>
+    </>
   )
 }
 

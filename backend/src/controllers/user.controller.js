@@ -245,7 +245,7 @@ const currentUser = asyncHandler( async(req,res)=>{
                     username: 1,
                     avatar:1,
                     fullName: 1,
-                    coverImage:1,
+                    ProfileImage:1,
                     FollowersCount:1,
                     FollowingCount:1,
                     "posts._id":1,

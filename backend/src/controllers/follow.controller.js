@@ -74,7 +74,6 @@ const Followers = asyncHandler( async(req,res)=>{
         },
         {
             $project:{
-                _id:0,
                 'followers.username': 1,
                 'followers.fullName': 1,
                 'followers.ProfileImage': 1
@@ -128,7 +127,6 @@ const following = asyncHandler( async(req,res)=>{
         },
         {
             $project:{
-                _id:0,
                 'followings.username': 1,
                 'followings.fullName': 1,
                 'followings.ProfileImage': 1

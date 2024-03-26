@@ -3,21 +3,29 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Followers, Following } from '../../../redux/followSlice'
 import { getUserData } from '../../../redux/authSlice'
 import { following } from '../../../../../backend/src/controllers/follow.controller'
+import Header from '../Header'
+import UserHeader from '../../userHeader/UserHeader'
 
-function Follow() {
+
+function Follow({userId}) {
     const dispatch = useDispatch()
-    const user = useSelector(state=>state?.auth?.user)
-    const userID = user[0]?._id
+    const [users,SetUsers] = useState(null)
+
+    const load = async() => {
+      let response = await dispatch(Followers(userId))
+      SetUsers(response?.payload?.data)
+      console.log(response);
+    }
+    console.log(users);
+
     useEffect(()=>{
-      ;(async()=>{
-        console.log(userID);
-        let response = await dispatch(Followers(userID))
-        console.log(response);
-    })()
+      load()
     },[])
   return (
     <div>
-
+      {users?.map((user)=>( 
+        <UserHeader key={user?._id} user={user.followers} userId={user?._id}/>
+      ))}
     </div>
   )
 }

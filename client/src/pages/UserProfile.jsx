@@ -6,6 +6,7 @@ import ProfileImg from '../assets/profile.png'
 import { toggleFollow } from '../redux/followSlice'
 import ProfileHeader from '../components/Post/Profile/ProfileHeader'
 import ProfileFooter from '../components/Post/Profile/ProfileFooter'
+import Follow from '../components/Post/FollowerLists/Follow'
 
 function UserProfile() {
     const dispatch = useDispatch()
@@ -32,6 +33,7 @@ function UserProfile() {
     <div className='bg-black text-white'>
       <ProfileHeader user={user} follow={true} toggle={toggle}/>
       <ProfileFooter user={user} />
+      {<Follow userId={userId}/>}
     </div>
   )
 }
