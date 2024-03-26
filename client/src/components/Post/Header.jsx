@@ -41,8 +41,8 @@ function Header({post}) {
             </Link>
             <button className={` ${isFollowed ? 'invisible' : 'block' } bg-blue-500 rounded-lg  text-white px-5 text-md`} onClick={fetch} >{isFollowed?'Unfollow': 'Follow'}</button>
          </div>
-         <div className='h-72 px-4 rounded-xl w-full'>
-            <img src={post?.postFile} alt="postImg" className='h-full w-[100vw]  object-fill'/>
+         <div className='h-72 px-2 rounded-xl w-full'>
+            <img src={post?.postFile} alt="postImg" className='h-full w-[100vw] rounded-md object-fill'/>
         </div>
     </div>
   )
