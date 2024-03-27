@@ -3,8 +3,8 @@ import axiosInstance from "../utils/ApiFetch"
 import toast from "react-hot-toast"
 
 const initialState = {
-    isFollow: false,
-    user: {}
+    Followers: {},
+    Following: {}
 }
 
 export const toggleFollow = createAsyncThunk('follow/toggleFollow',async(data)=>{
@@ -17,7 +17,7 @@ export const toggleFollow = createAsyncThunk('follow/toggleFollow',async(data)=>
                 return response?.data?.message
             },
             error : (error)=>{
-                return error.response?.message || "Register Failed ! in redux part"
+                return error.response?.message || "Follow Toggling Failed ! in redux part"
             }
         })
     
@@ -31,7 +31,7 @@ export const toggleFollow = createAsyncThunk('follow/toggleFollow',async(data)=>
 export const Following = createAsyncThunk('follow/Following',async(data)=>{
     try {
         console.log(`/follow/following/${data}`);
-        const responsePromise = axiosInstance.post(`follow/following/${data}`)
+        const responsePromise = axiosInstance.post(`/follow/following/${data}`)
        
         toast.promise(responsePromise,{
             loading: 'Fetching Following List...',
@@ -39,7 +39,7 @@ export const Following = createAsyncThunk('follow/Following',async(data)=>{
                 return response?.data?.message
             },
             error : (error)=>{
-                return error.response?.message || "Register Failed ! in redux part"
+                return error.response?.message || "Failed to Fetch Following list ! in redux part"
             }
         })
     
@@ -53,6 +53,7 @@ export const Following = createAsyncThunk('follow/Following',async(data)=>{
 
 export const Followers = createAsyncThunk('follow/Followers',async(data)=>{
     try {
+        console.log(data);
         const responsePromise = axiosInstance.post(`/follow/followers/${data}`)
     
         toast.promise(responsePromise,{
@@ -61,7 +62,7 @@ export const Followers = createAsyncThunk('follow/Followers',async(data)=>{
                 return response?.data?.message
             },
             error : (error)=>{
-                return error.response?.message || "Register Failed ! in redux part"
+                return error.response?.message || "Failed to Fetch Follower List ! in redux part"
             }
         })
     
@@ -69,6 +70,7 @@ export const Followers = createAsyncThunk('follow/Followers',async(data)=>{
         return response.data;
     } catch (error) {
         toast.error(error.message)
+        throw error
     }
 })
 
@@ -78,8 +80,11 @@ export const followSlice = createSlice({
     reducers:{},
     extraReducers: (builder)=>{
         builder
-        .addCase(toggleFollow.fulfilled,(state,action)=>{
-            state.user = action.payload?.data
+        .addCase(Followers.fulfilled,(state,action)=>{
+            state.Followers = action.payload?.data
+        })
+        .addCase(Following.fulfilled,(state,action)=>{
+            state.Following = action.payload?.data
         })
     }
 })

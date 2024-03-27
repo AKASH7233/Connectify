@@ -219,7 +219,7 @@ const userLiked = asyncHandler( async(req,res)=>{
             }
         }
     ])
-    console.log(`likedBy`,isliked);
+    // console.log(`likedBy`,isliked);
     return res
     .status(200)
     .json(

@@ -5,6 +5,8 @@ import { User } from "../models/user.model.js"
 import { uploadToCloudinary } from "../utils/cloudinary.js"
 import jwt from "jsonwebtoken"
 import { ApiErrResponse } from "../utils/ApiErrResponse.js"
+import {Follow} from "../models/follow.model.js"
+import mongoose from "mongoose"
 
 const generateRefreshTokenAndAccessToken = async(userid) => {
     const user = await User.findById(userid)
@@ -226,14 +228,28 @@ const currentUser = asyncHandler( async(req,res)=>{
     
             },
             {
+                $lookup: {
+                    from: 'posts',
+                    pipeline: [
+                        {
+                            $match: {
+                                postedBy : new mongoose.Types.ObjectId(req?.user._id)
+                            }
+                        },
+                    ],
+                    as:'posts',
+                }
+            },
+            {
                 $project:{
                     username: 1,
                     avatar:1,
                     fullName: 1,
-                    coverImage:1,
+                    ProfileImage:1,
                     FollowersCount:1,
                     FollowingCount:1,
-                    posts:1,
+                    "posts._id":1,
+                    "posts.postFile":1,
                 }
             }
         ])
@@ -538,16 +554,16 @@ const deleteUser = asyncHandler( async (req,res)=> {
 })
 
 const getUserProfile = asyncHandler( async(req,res)=>{
-    const {username} = req.params;
+    const {userId} = req.params;
 
-    if(!username){
-        throw new ApiError(400, "Invalid Username")
+    if(!userId){
+        throw new ApiError(400, "Invalid userId")
     }
 
     const profile = await User.aggregate([
         {
             $match: {
-                username: username?.toLowerCase()
+                _id: new mongoose.Types.ObjectId(userId)
             }
         },
         {
@@ -574,34 +590,78 @@ const getUserProfile = asyncHandler( async(req,res)=>{
                 FollowingCount: {
                     $size: "$following"
                 },
-                isFollowing:{
+                isFollowed: {
                     $cond: {
-                        if: {$in: [req?.user?._id, "$followers.following"]},
+                        if: {$in: [req.user?._id, "$followers.followedBy"]},
                         then: true,
-                        else: false
+                        else:false
                     }
                 }
             }
-
+        },
+        {
+            $lookup: {
+                from: 'posts',
+                pipeline: [
+                    {
+                        $match: {
+                            postedBy : new mongoose.Types.ObjectId(userId)
+                        }
+                    },
+                ],
+                as:'posts',
+            }
         },
         {
             $project:{
                 username: 1,
-                avatar:1,
+                "posts._id":1,
+                "posts.postFile": 1,
                 fullName: 1,
-                coverImage:1,
+                ProfileImage:1,
                 FollowersCount:1,
                 FollowingCount:1,
-                isFollowing:1,
-                posts:1,
+                isFollowed: 1
             }
         }
     ])
-
     if(!profile){
         throw new ApiError(400,"user does not exist")
     }
-
+    // const isFollowed = await Follow.aggregate([
+    //     // {
+    //     //     $match:{
+    //     //         followedBy: new mongoose.Types.ObjectId(req?.user?._id)
+    //     //     }
+    //     // },
+    //     {
+    //        $group: {
+    //         _id: '$followedTo',
+    //         followers: {
+    //             $push: '$followedBy'
+    //         }
+    //        }
+    //     },
+        
+    //     {
+    //         $addFields: {
+    //             isFollowed: {
+    //                 $cond: {
+    //                     if:{$in: [req.user?._id , '$followers']},
+    //                     then: true,
+    //                     else: false
+    //                 }
+    //             }
+    //         }
+    //     },
+    //     {
+    //         $project:{
+    //             _id:0,
+    //             isFollowed: 1
+    //         }
+    //     }
+    // ])
+    // console.log('isfollow',isFollowed);
     return res
     .status(200)
     .json(

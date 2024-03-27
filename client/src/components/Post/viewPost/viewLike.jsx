@@ -1,7 +1,6 @@
 import React from 'react'
 
 function viewLike() {
-    const 
   return (
     <div>
 

@@ -12,12 +12,12 @@ import { getPosts } from '../redux/postSlice'
   useEffect(()=>{
     (async()=>{
       let data = await (dispatch(getPosts()))
-      setPosts(data.payload.data)
+      setPosts(data?.payload.data)
    })()
   },[])
   return (
     <div>
-      <div>
+      <div className='bg-gray-800 flex flex-col gap-4'>
         {posts?.map((post)=>(
               <Post key={post._id} post={post}/>
         ))}

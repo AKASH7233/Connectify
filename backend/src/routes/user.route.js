@@ -38,10 +38,6 @@ router.route('/logout').post(
     verifyJWT,
     userLogout
 )
-router.route('/logout').post(
-    verifyJWT,
-    userLogout
-)
 router.route('/profile').post(
     verifyJWT,
     currentUser
@@ -94,7 +90,7 @@ router.route('/deleteUser').post(
     verifyJWT,
     deleteUser
 )
-router.route('/profile/:username').post(
+router.route('/userprofile/:userId').post(
     verifyJWT,
     getUserProfile
 )
