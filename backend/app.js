@@ -20,6 +20,7 @@ import likeRouter from "./src/routes/like.route.js"
 import commentRouter from "./src/routes/comment.route.js" 
 import searchRouter from "./src/routes/search.route.js"
 import followRouter from "./src/routes/follow.route.js"
+import chatRouter from "./src/routes/ChatRoute.js"
 
 
 app.use('/api/v1/user', router)
@@ -28,6 +29,7 @@ app.use('/api/v1/like', likeRouter)
 app.use('/api/v1/comment', commentRouter)
 app.use('/api/v1/search', searchRouter)
 app.use('/api/v1/follow', followRouter)
+app.use('/api/v1/chat', chatRouter)
 //http://localhost:8000/api/v1/user/register
 
 export {app}
