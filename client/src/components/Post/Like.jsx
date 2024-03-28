@@ -6,7 +6,7 @@ import { postlikes,togglelike } from '../../redux/likeSlice';
 import { TbMessage } from "react-icons/tb"
 import { IoIosShareAlt } from "react-icons/io";
 
-function Like({post}) {
+function Like({post, toggle}) {
   const dispatch = useDispatch()
   const [isAlreadyLiked,setIsAlreadyLiked] = useState(false)
   const [likedBy,setlikedBy] = useState()
@@ -32,6 +32,10 @@ function Like({post}) {
   const addBookMark = () => {
     setAddToBookMark(prev => !prev)
   }
+  
+    const togglelike = () =>{
+      toggle()
+    }
   return (
     <>
       <div className='flex gap-x-3 relative items-center my-4 mx-2 border-b border-gray-500 pb-1'>
@@ -48,7 +52,7 @@ function Like({post}) {
           {/* //<FaBookmark/> */}
       </div>
       <div className='text-gray-400 text-sm flex justify-evenly -my-3 pb-1 border-b mb-3 border-gray-400'>
-        <h2>{likedBy?.length} {likedBy?.length > 1 ? 'Likes': 'like'}</h2>
+        <button onClick={togglelike}>{likedBy?.length} {likedBy?.length > 1 ? 'Likes': 'like'}</button>
         <h2>comments</h2>
         <h2 className='flex items-center gap-1'><IoIosShareAlt className='text-gray-400'/> share</h2>
       </div>

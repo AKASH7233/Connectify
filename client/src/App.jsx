@@ -15,7 +15,7 @@ import UserProfile from './pages/UserProfile'
 function App() {
 
   return (
-    <>
+    <div className='relative'>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />}/>
@@ -29,7 +29,7 @@ function App() {
           <Route path='/search' element={<Search/>}/>
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   )
 }
 

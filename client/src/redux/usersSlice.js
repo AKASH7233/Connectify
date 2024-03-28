@@ -11,16 +11,6 @@ export const profile = createAsyncThunk('auth/profile',async(data)=>{
     console.log(data);
     const responsePromise = axiosInstance.post(`/user/userprofile/${data}`)
 
-    // toast.promise(responsePromise, {
-    //     loading: "updating Profile...",
-    //     success: (response) => {
-    //         return response.data?.message
-    //     },
-    //     error: (error) => {
-    //         return error.response?.message || "Profile Fetching Failed ! in redux part"
-    //     }
-    // })
-
     const response = await responsePromise;
     return response.data;
     

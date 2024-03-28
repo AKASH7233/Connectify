@@ -17,7 +17,7 @@ import { getPosts } from '../redux/postSlice'
   },[])
   return (
     <div>
-      <div className='bg-gray-800 flex flex-col gap-4'>
+      <div className='bg-gray-800 relative flex flex-col gap-4'>
         {posts?.map((post)=>(
               <Post key={post._id} post={post}/>
         ))}
