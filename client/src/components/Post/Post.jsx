@@ -14,24 +14,24 @@ const Post = ({ post, toggleMode}) => {
   const [liked,setLiked] = useState()
   const [showLikes,setShowLikes] = useState(false)
 
-  const existingComments = useSelector(state=> state.comment?.comments)
-  const [allComment,setAllComment] = useState(existingComments)
+  const [allComment,setAllComment] = useState()
   const [showAllComments,setAllShowComments] = useState(false)
-  const [reRender,setReRender] = useState(false)
 
   useEffect(()=>{
     ;(async()=>{
       let response = await dispatch(postlikes(post?._id))
       setLiked(response?.payload?.data?.likedUsers)
     })()
-  },[reRender])
+  },[])
 
+  const loadComments = async()=>{
+    let response= await dispatch(showComments(post?._id))
+    setAllComment(response?.payload?.data)
+    console.log(response);
+  }
   useEffect(()=>{
-    ;(async()=>{
-        let response= await dispatch(showComments(post?._id))
-        setAllComment(response?.payload?.data)
-    })()
-},[reRender])
+    loadComments()
+  },[])
   const togglelike = () =>{
     setShowLikes(true)
     toggleMode()
@@ -47,12 +47,15 @@ const Post = ({ post, toggleMode}) => {
     setAllShowComments(false)
     toggleMode()
   }
+  const loadlastComment = () => {
+    loadComments()
+  }
   return (
     <div className='relative my-4' >
       <div className={`py-2 bg-black rounded-md `}>
       <Header post={post}/>
       <Like post={post} togglelikes={togglelike} toggleComments={toggleComment}/>
-      <Comment post={post} />
+      <Comment post={post} loadlastComment={loadlastComment}/>
       </div>
 
       {showLikes && 
@@ -61,7 +64,7 @@ const Post = ({ post, toggleMode}) => {
             <button className='p-2 rounded-[50%] text-white bg-gray-900 bg-opacity-90 border-2 border-gray-700' onClick={goback}><IoArrowBackOutline  className='text-xl'/></button>
             <h2 className='text-white '>Post liked by</h2>
           </div>
-          <div>
+          <div className='min-h-[40vh]'>
           {liked?.length > 0 ? <ViewLikes post={post}/> : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Like !</div>}
           </div>
           </div>
@@ -72,7 +75,7 @@ const Post = ({ post, toggleMode}) => {
             <button className='p-2 rounded-[50%] text-white bg-gray-900 bg-opacity-90 border-2 border-gray-700' onClick={goback}><IoArrowBackOutline  className='text-xl'/></button>
             <h2 className='text-white '>comments</h2>
           </div>
-          <div>
+          <div className='min-h-[40vh]'>
           {liked?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
           </div>
           </div>

@@ -6,7 +6,7 @@ import { addComments, showComments } from '../../../redux/commentSlice';
 import ViewComment from './ViewComment';
 import profile from '../../../assets/profile.png'
 
-function Comment({post}) {
+function Comment({post, loadlastComment}) {
     const dispatch = useDispatch()
     const currentUserProfileImg = useSelector(state => state?.auth?.user)?.ProfileImage
     const [addComment,setAddComment] = useState('')
@@ -20,7 +20,7 @@ function Comment({post}) {
         }
         await dispatch(addComments({url:`${post?._id}`,comment:addComment}))
         setAddComment('')
-
+        loadlastComment()
     }
   return (
     <>
