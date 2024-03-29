@@ -9,6 +9,7 @@ import { getPosts } from '../redux/postSlice'
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [posts,setPosts] = useState(null)
+  const [inViewMode,setInViewMode] = useState(false)
   useEffect(()=>{
     (async()=>{
       let data = await (dispatch(getPosts()))
@@ -17,7 +18,7 @@ import { getPosts } from '../redux/postSlice'
   },[])
   return (
     <div>
-      <div className='bg-gray-800 flex flex-col gap-4'>
+      <div className={`bg-gray-800 relative flex flex-col gap-4 ${inViewMode ? 'overflow-hidden' : ''}`}>
         {posts?.map((post)=>(
               <Post key={post._id} post={post}/>
         ))}

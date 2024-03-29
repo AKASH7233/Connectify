@@ -6,12 +6,13 @@ import { postlikes,togglelike } from '../../redux/likeSlice';
 import { TbMessage } from "react-icons/tb"
 import { IoIosShareAlt } from "react-icons/io";
 
-function Like({post}) {
+function Like({post, togglelikes, toggleComments}) {
   const dispatch = useDispatch()
   const [isAlreadyLiked,setIsAlreadyLiked] = useState(false)
   const [likedBy,setlikedBy] = useState()
   const [search , setSearch ] = useState(false)
   const [viewLike,showLikes] = useState(false)
+  const [viewComment, setViewComment] = useState(false)
   const [addToBookMark,setAddToBookMark] = useState(false)
    useEffect(()=>{
    ;(async()=>{
@@ -22,7 +23,7 @@ function Like({post}) {
   },[search])
 
   const fetch = async() => {
-    await dispatch((togglelike(post._id)))
+    await dispatch((togglelike(post?._id)))
     setSearch(prev=> !prev)
   } 
 
@@ -32,9 +33,17 @@ function Like({post}) {
   const addBookMark = () => {
     setAddToBookMark(prev => !prev)
   }
+  
+    const togglelike = () =>{
+      togglelikes()
+    }
+    
+    const toggleComment = () => {
+      toggleComments()
+    }
   return (
     <>
-      <div className='flex gap-x-3 relative items-center my-4 mx-2 border-b border-gray-500 pb-1'>
+      <div className='flex gap-x-3 relative items-center mt-2 mb-4 mx-2 border-b border-gray-500 pb-1'>
         <button onClick={fetch}  className='mx-2 text-xl'>
           {isAlreadyLiked ? <FaHeart className='  text-red-400'/> : <FaRegHeart className='text-white'/>}
         </button>
@@ -45,11 +54,10 @@ function Like({post}) {
           <button onClick={addBookMark} className='text-md absolute right-3 text-gray-300'>
             {addToBookMark ? <FaBookmark/> : <FaRegBookmark />}
           </button>
-          {/* //<FaBookmark/> */}
       </div>
       <div className='text-gray-400 text-sm flex justify-evenly -my-3 pb-1 border-b mb-3 border-gray-400'>
-        <h2>{likedBy?.length} {likedBy?.length > 1 ? 'Likes': 'like'}</h2>
-        <h2>comments</h2>
+        <button onClick={togglelike}>{likedBy?.length} {likedBy?.length > 1 ? 'Likes': 'like'}</button>
+        <button onClick={toggleComment}>comments</button>
         <h2 className='flex items-center gap-1'><IoIosShareAlt className='text-gray-400'/> share</h2>
       </div>
     </>

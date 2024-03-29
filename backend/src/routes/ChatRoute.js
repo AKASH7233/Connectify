@@ -7,8 +7,8 @@ router.get('/', (req, res) => {
   res.send('Hello from chat route');
 });
 
-router.post('/',createChat);
+router.post('/chat',createChat);
 router.get('/:userId',userChats);
-router.get('/find/:firstUserId/:secondUserId',findChat);
+// router.get('/find/:firstUserId/:secondUserId',findChat);
 
 export default router;

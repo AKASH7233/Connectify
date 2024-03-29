@@ -1,14 +1,83 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Like from './Like';
 import Comment from './viewPost/Comment';
+import ViewLikes from './viewPost/viewLike';
+import { IoArrowBackOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from 'react-redux';
+import { postlikes } from '../../redux/likeSlice';
+import { showComments } from '../../redux/commentSlice';
+import ViewComment from './viewPost/ViewComment';
 
 const Post = ({ post }) => {
+  const dispatch = useDispatch()
+  const [liked,setLiked] = useState()
+  const [showLikes,setShowLikes] = useState(false)
+
+  const existingComments = useSelector(state=> state.comment?.comments)
+  const [allComment,setAllComment] = useState(existingComments)
+  const [showAllComments,setAllShowComments] = useState(false)
+  const [reRender,setReRender] = useState(false)
+
+  const [viewMode,setViewMode] = useState(false)
+  useEffect(()=>{
+    ;(async()=>{
+      let response = await dispatch(postlikes(post?._id))
+      setLiked(response?.payload?.data?.likedUsers)
+    })()
+  },[reRender])
+
+  useEffect(()=>{
+    ;(async()=>{
+        let response= await dispatch(showComments(post?._id))
+        setAllComment(response?.payload?.data)
+    })()
+},[reRender])
+  const togglelike = () =>{
+    setShowLikes(true)
+    setViewMode(true)
+  }
+
+  const toggleComment = () =>{
+    setAllShowComments(true)
+    setViewMode(true)
+  }
+
+  const goback = () =>{
+    setShowLikes(false)
+    setAllShowComments(false)
+    setViewMode(false)
+  }
   return (
-    <div className='h-[75vh] bg-black rounded-md '>
+    <div className='relative' >
+      <div className={`py-2 bg-black rounded-md ${viewMode ? 'h-[100vh] overflow:hidden' : 'block'}`}>
       <Header post={post}/>
-      <Like post={post}/>
-      <Comment post={post}/>
+      <Like post={post} togglelikes={togglelike} toggleComments={toggleComment}/>
+      <Comment post={post} />
+      </div>
+
+      {showLikes && 
+        <div className='absolute bg-black -bottom-40 min-h-[50vh] max-h-[50vh] z-10 w-full'>
+          <div className='flex items-center my-2 px-4 gap-x-16'>
+            <button className='p-2 rounded-[50%] text-white bg-gray-900 bg-opacity-90 border-2 border-gray-700' onClick={goback}><IoArrowBackOutline  className='text-xl'/></button>
+            <h2 className='text-white '>Post liked by</h2>
+          </div>
+          <div>
+          {liked?.length > 0 ? <ViewLikes post={post}/> : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Like !</div>}
+          </div>
+          </div>
+      }
+      {showAllComments && 
+        <div className='absolute bg-black -bottom-40 max-h-[50vh]  min-h-[50vh] z-10 w-full'>
+          <div className='flex items-center my-2 px-4 gap-x-16'>
+            <button className='p-2 rounded-[50%] text-white bg-gray-900 bg-opacity-90 border-2 border-gray-700' onClick={goback}><IoArrowBackOutline  className='text-xl'/></button>
+            <h2 className='text-white '>comments</h2>
+          </div>
+          <div>
+          {liked?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
+          </div>
+          </div>
+      }
     </div>
   );
 };

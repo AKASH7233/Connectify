@@ -44,6 +44,7 @@ function Header({post}) {
          <div className='h-72 px-2 rounded-xl w-full'>
             <img src={post?.postFile} alt="postImg" className='h-full w-[100vw] rounded-md object-fill'/>
         </div>
+        <h2 className='text-white mt-2 mx-4'>{post?.title}</h2>
     </div>
   )
 }

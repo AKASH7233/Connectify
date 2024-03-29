@@ -10,27 +10,23 @@ function UserHeader({user, userId}) {
     console.log(userId);
     const profileImg =  user?.ProfileImage ? user?.ProfileImage : profileimg
     const dispatch = useDispatch()
-    const currentUserId = useSelector(state => state?.auth?.user[0])?._id
+    const currentUserId = useSelector(state => state?.auth?.user[0])?._id || useSelector(state => state?.auth?.user)?.users?._id
     console.log(currentUserId);
     const [isFollowed,setIsFollowed] = useState(false)
     const userID = currentUserId == userId ? 'myprofile' : `user/${userId}`
-    const navigate = useNavigate()
-
-    const load = async() => {
+    
+    const search = async() =>{
         let response = await dispatch(profile(userId))
-        console.log(response);
-        console.log(response?.payload);
-        setIsFollowed(response?.payload?.data[0]?.isFollowed)
-        
-    }
-
+        setIsFollowed(response?.payload?.data[0]?.isFollowed);
+        console.log(response?.payload?.data[0]?.username ,response?.payload?.data[0]?.isFollowed);
+      }
     useEffect(()=>{
-        load()
+        search()
     },[])
 
-    const fetch = async() => {
-        await dispatch(toggleFollow(userId))
-        load()
+    const toggle = async() => {
+        await dispatch(toggleFollow(user?._id))
+        search()
     }
   return (
     <div>
@@ -41,7 +37,7 @@ function UserHeader({user, userId}) {
                 <h2>{user?.username}</h2>
                 </div>
             </Link>
-            <button className={` ${isFollowed ? 'invisible' : 'block' } bg-[#C147E9] text-white px-4`} onClick={fetch} >{isFollowed?'Unfollow': 'Follow'}</button>
+            <button className={`${isFollowed ? 'invisible' : 'block'} bg-blue-500 text-white px-4 text-sm rounded-sm`} onClick={toggle} >{isFollowed?'Unfollow': 'Follow'}</button>
          </div>
     </div>
   )
