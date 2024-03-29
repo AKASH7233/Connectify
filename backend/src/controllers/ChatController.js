@@ -1,5 +1,5 @@
-import ChatModel from "../models/ChatModel";
-import { ApiError } from "../utils/ApiError";
+import ChatModel from "../models/ChatModel.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const createChat = async (req, res,next) => {
     const newChat = new ChatModel({
