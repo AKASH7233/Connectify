@@ -9,7 +9,7 @@ import { postlikes } from '../../redux/likeSlice';
 import { showComments } from '../../redux/commentSlice';
 import ViewComment from './viewPost/ViewComment';
 
-const Post = ({ post }) => {
+const Post = ({ post, toggleMode}) => {
   const dispatch = useDispatch()
   const [liked,setLiked] = useState()
   const [showLikes,setShowLikes] = useState(false)
@@ -19,7 +19,6 @@ const Post = ({ post }) => {
   const [showAllComments,setAllShowComments] = useState(false)
   const [reRender,setReRender] = useState(false)
 
-  const [viewMode,setViewMode] = useState(false)
   useEffect(()=>{
     ;(async()=>{
       let response = await dispatch(postlikes(post?._id))
@@ -35,29 +34,29 @@ const Post = ({ post }) => {
 },[reRender])
   const togglelike = () =>{
     setShowLikes(true)
-    setViewMode(true)
+    toggleMode()
   }
 
   const toggleComment = () =>{
     setAllShowComments(true)
-    setViewMode(true)
+    toggleMode()
   }
 
   const goback = () =>{
     setShowLikes(false)
     setAllShowComments(false)
-    setViewMode(false)
+    toggleMode()
   }
   return (
-    <div className='relative' >
-      <div className={`py-2 bg-black rounded-md ${viewMode ? 'h-[100vh] overflow:hidden' : 'block'}`}>
+    <div className='relative my-4' >
+      <div className={`py-2 bg-black rounded-md `}>
       <Header post={post}/>
       <Like post={post} togglelikes={togglelike} toggleComments={toggleComment}/>
       <Comment post={post} />
       </div>
 
       {showLikes && 
-        <div className='absolute bg-black -bottom-40 min-h-[50vh] max-h-[50vh] z-10 w-full'>
+        <div className='absolute bg-black -bottom-56 min-h-[50vh] max-h-[50vh] z-10 w-full whitespace-nowrap overflow-y-auto'>
           <div className='flex items-center my-2 px-4 gap-x-16'>
             <button className='p-2 rounded-[50%] text-white bg-gray-900 bg-opacity-90 border-2 border-gray-700' onClick={goback}><IoArrowBackOutline  className='text-xl'/></button>
             <h2 className='text-white '>Post liked by</h2>
@@ -68,7 +67,7 @@ const Post = ({ post }) => {
           </div>
       }
       {showAllComments && 
-        <div className='absolute bg-black -bottom-40 max-h-[50vh]  min-h-[50vh] z-10 w-full'>
+        <div className='absolute bg-black -bottom-56 max-h-[50vh]  min-h-[60vh] z-10 w-full whitespace-nowrap overflow-y-auto'>
           <div className='flex items-center my-2 px-4 gap-x-16'>
             <button className='p-2 rounded-[50%] text-white bg-gray-900 bg-opacity-90 border-2 border-gray-700' onClick={goback}><IoArrowBackOutline  className='text-xl'/></button>
             <h2 className='text-white '>comments</h2>

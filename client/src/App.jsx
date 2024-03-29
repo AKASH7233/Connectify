@@ -15,7 +15,7 @@ import UserProfile from './pages/UserProfile'
 function App() {
 
   return (
-    <div className='relative'>
+    <div className=''>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />}/>
