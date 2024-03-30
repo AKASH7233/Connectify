@@ -27,7 +27,6 @@ const Post = ({ post, toggleMode}) => {
   const loadComments = async()=>{
     let response= await dispatch(showComments(post?._id))
     setAllComment(response?.payload?.data)
-    console.log(response);
   }
   useEffect(()=>{
     loadComments()
