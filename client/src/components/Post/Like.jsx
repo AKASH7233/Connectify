@@ -24,7 +24,8 @@ function Like({post, togglelikes, toggleComments}) {
 
   const fetch = async() => {
     await dispatch((togglelike(post?._id)))
-    setSearch(prev=> !prev)
+    console.log('toggle');
+    setSearch(!search)
   } 
 
   let random = Math.floor(Math.random() * likedBy?.length)
@@ -34,7 +35,7 @@ function Like({post, togglelikes, toggleComments}) {
     setAddToBookMark(prev => !prev)
   }
   
-    const togglelike = () =>{
+    const fetchNewLikes = () =>{
       togglelikes()
     }
     
@@ -56,7 +57,7 @@ function Like({post, togglelikes, toggleComments}) {
           </button>
       </div>
       <div className='text-gray-400 text-sm flex justify-evenly -my-3 pb-1 border-b mb-3 border-gray-400'>
-        <button onClick={togglelike}>{likedBy?.length} {likedBy?.length > 1 ? 'Likes': 'like'}</button>
+        <button onClick={fetchNewLikes}>{likedBy?.length} {likedBy?.length > 1 ? 'Likes': 'like'}</button>
         <button onClick={toggleComment}>comments</button>
         <h2 className='flex items-center gap-1'><IoIosShareAlt className='text-gray-400'/> share</h2>
       </div>

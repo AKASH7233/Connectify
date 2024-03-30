@@ -3,7 +3,8 @@ import axiosInstance from "../utils/ApiFetch";
 import toast from "react-hot-toast";
 
 const initialState = {
-    LikedBy : {} || JSON.parse(localStorage.getItem('likedBy'))
+    LikedBy : {} || JSON.parse(localStorage.getItem('likedBy')),
+    likedPost: {} || JSON.parse(localStorage.getItem('likedPosts'))
 }
 
 export const togglelike = createAsyncThunk('like/togglelike',async(data)=>{
@@ -59,6 +60,10 @@ export const likeSlice = createSlice({
             localStorage.setItem('isLiked',JSON.stringify(action?.payload?.data))
         })
 
+        .addCase(postliked.fulfilled ,(state,action)=>{
+            state.likedPost = action?.payload?.data
+            localStorage.setItem('likedPosts',JSON.stringify(action?.payload?.data))
+        })
     }
 })
 

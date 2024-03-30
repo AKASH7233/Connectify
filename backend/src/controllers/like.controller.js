@@ -11,15 +11,14 @@ import {Post} from '../models/post.model.js'
 const toggleLike = asyncHandler( async(req,res)=>{
     try {
         const {postId} = req.params
-        const post = await Post.findById(postId)
-        const likedUser = await User.findById(req.user._id)
     
         if(!isValidObjectId(postId)){
             throw new ApiError(400, "Post Id is not Valid")
         }
     
         const postliked = await Like.findOne({
-            likedBy : likedUser
+            post : postId,
+            likedBy : req.user?._id
         })
     
         let like;
@@ -27,7 +26,7 @@ const toggleLike = asyncHandler( async(req,res)=>{
     
         if(postliked){
             unlike = await Like.deleteOne({
-                likedBy : likedUser
+                post: postId
             })
             if(!unlike){
                 throw new ApiError(500, "Failed To unlike the post")
@@ -35,8 +34,8 @@ const toggleLike = asyncHandler( async(req,res)=>{
         }
         else{
             like = await Like.create({
-                post: post,
-                likedBy: likedUser
+                post: postId,
+                likedBy: req.user?._id
             })
     
             if(!like){
