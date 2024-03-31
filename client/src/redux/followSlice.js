@@ -33,16 +33,6 @@ export const Following = createAsyncThunk('follow/Following',async(data)=>{
         console.log(`/follow/following/${data}`);
         const responsePromise = axiosInstance.post(`/follow/following/${data}`)
        
-        toast.promise(responsePromise,{
-            loading: 'Fetching Following List...',
-            success: (response)=>{
-                return response?.data?.message
-            },
-            error : (error)=>{
-                return error.response?.message || "Failed to Fetch Following list ! in redux part"
-            }
-        })
-    
         const response = await responsePromise
         return response.data;
     } catch (error) {
@@ -55,16 +45,6 @@ export const Followers = createAsyncThunk('follow/Followers',async(data)=>{
     try {
         console.log(data);
         const responsePromise = axiosInstance.post(`/follow/followers/${data}`)
-    
-        toast.promise(responsePromise,{
-            loading: 'Fetching Followers List...',
-            success: (response)=>{
-                return response?.data?.message
-            },
-            error : (error)=>{
-                return error.response?.message || "Failed to Fetch Follower List ! in redux part"
-            }
-        })
     
         const response = await responsePromise
         return response.data;
