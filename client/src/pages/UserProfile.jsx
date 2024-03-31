@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { profile } from '../redux/usersSlice'
 import { useParams } from 'react-router-dom'
-import ProfileImg from '../assets/profile.png'
 import { toggleFollow } from '../redux/followSlice'
 import ProfileHeader from '../components/Post/Profile/ProfileHeader'
 import ProfileFooter from '../components/Post/Profile/ProfileFooter'
-import Follow from '../components/Post/FollowerLists/Follow'
 
 function UserProfile() {
     const dispatch = useDispatch()
@@ -30,10 +28,9 @@ function UserProfile() {
         search()
     }
   return (
-    <div className='bg-black text-white'>
+    <div className='bg-black relative min-h-[100vh] text-white'>
       <ProfileHeader user={user} follow={true} toggle={toggle}/>
       <ProfileFooter user={user} />
-      {<Follow userId={userId}/>}
     </div>
   )
 }

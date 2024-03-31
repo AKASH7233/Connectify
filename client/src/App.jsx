@@ -11,6 +11,7 @@ import Search from './pages/Search'
 import UploadPost from './pages/UploadPost'
 import DataFetch from './utils/DataFetch'
 import UserProfile from './pages/UserProfile'
+import Follow from './components/Post/FollowerLists/Follow'
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           <Route path='/uploadPost' element ={<UploadPost/>} />
           <Route path='/test' element= {<DataFetch/>}/>
           <Route path='/search' element={<Search/>}/>
+          <Route path='/followlist/:type/:userId' element={<Follow/>} />
         </Routes>
       </BrowserRouter>
     </div>

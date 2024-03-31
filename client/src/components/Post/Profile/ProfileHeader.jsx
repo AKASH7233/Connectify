@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react';
 import profileImg from '../../../assets/profile.png'
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { BsThreeDots } from "react-icons/bs";
 import { IoArrowBackOutline } from "react-icons/io5";
 
@@ -32,14 +32,19 @@ const ProfileHeader = ({user, follow, toggle}) => {
               <h2 className='text-center'>{user?.posts?.length}</h2>
               <p className='text-gray-500'>{user?.posts?.length > 1 ? 'Posts' : 'Post' }</p>
             </div>
+           <Link to={`/followlist/Followers/${user?._id}`}>
             <div>
-              <h2 className='text-center'>{user?.FollowersCount}</h2>
-              <p className='text-gray-500'>{user?.FollowersCount > 1 ? 'Followers' : 'Follower' }</p>
-            </div>
-            <div>
+                <h2 className='text-center'>{user?.FollowersCount}</h2>
+                <p className='text-gray-500'>{user?.FollowersCount > 1 ? 'Followers' : 'Follower' }</p>
+              </div>
+           </Link>
+           <Link to={`/followlist/Following/${user?._id}`}>
+           <div>
               <h2 className='text-center'>{user?.FollowingCount}</h2>
               <p className='text-gray-500'>{user?.FollowingCount > 1 ? 'Followings' : 'Following'  }</p>
             </div>
+           </Link>
+            
           </div>
           {
             follow ? <div className='flex mt-7 gap-3 px-2'>

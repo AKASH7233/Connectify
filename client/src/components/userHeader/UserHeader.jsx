@@ -6,17 +6,19 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toggleFollow } from '../../redux/followSlice'
 
 
-function UserHeader({user, userId}) {
-    console.log(userId);
+function UserHeader({user}) {
+    console.log(user);
     const profileImg =  user?.ProfileImage ? user?.ProfileImage : profileimg
     const dispatch = useDispatch()
     const currentUserId = useSelector(state => state?.auth?.user[0])?._id || useSelector(state => state?.auth?.user)?.users?._id
     console.log(currentUserId);
     const [isFollowed,setIsFollowed] = useState(false)
-    const userID = currentUserId == userId ? 'myprofile' : `user/${userId}`
-    
+    const selfAccount = currentUserId == user?._id 
+    const userID = selfAccount ? 'myprofile' : `user/${user?._id}`
+  
     const search = async() =>{
-        let response = await dispatch(profile(userId))
+        let response = await dispatch(profile(user?._id))
+        console.log(response);
         setIsFollowed(response?.payload?.data[0]?.isFollowed);
         console.log(response?.payload?.data[0]?.username ,response?.payload?.data[0]?.isFollowed);
       }
@@ -37,7 +39,7 @@ function UserHeader({user, userId}) {
                 <h2>{user?.username}</h2>
                 </div>
             </Link>
-            <button className={`${isFollowed ? 'invisible' : 'block'} bg-blue-500 text-white px-4 text-sm rounded-sm`} onClick={toggle} >{isFollowed?'Unfollow': 'Follow'}</button>
+            <button className={`${isFollowed ? 'bg-gray-400' : 'block'} ${selfAccount ? 'invisible' : 'block'} bg-blue-500 text-white w-24 text-sm rounded-sm`}  onClick={toggle}>{isFollowed?'Following': 'Follow'}</button>
          </div>
     </div>
   )

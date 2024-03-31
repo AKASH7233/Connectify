@@ -70,11 +70,11 @@ const Post = ({ post, toggleMode}) => {
       }
       {showAllComments && 
         <div className='absolute bg-black -bottom-56 max-h-[50vh]  min-h-[60vh] z-10 w-full whitespace-nowrap overflow-y-auto'>
-          <div className='flex items-center my-2 px-4 gap-x-16'>
+          <div className='flex items-center py-2 px-4 border-b bg-black gap-x-16 fixed w-full'>
             <button className='p-2 rounded-[50%] text-white bg-gray-900 bg-opacity-90 border-2 border-gray-700' onClick={goback}><IoArrowBackOutline  className='text-xl'/></button>
             <h2 className='text-white '>comments</h2>
           </div>
-          <div className='min-h-[40vh]'>
+          <div className='min-h-[40vh] mt-16'>
           {liked?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
           </div>
           </div>
