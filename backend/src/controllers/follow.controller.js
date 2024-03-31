@@ -74,6 +74,7 @@ const Followers = asyncHandler( async(req,res)=>{
         },
         {
             $project:{
+                'followers._id':1,
                 'followers.username': 1,
                 'followers.fullName': 1,
                 'followers.ProfileImage': 1
@@ -111,7 +112,7 @@ const following = asyncHandler( async(req,res)=>{
     const followings = await Follow.aggregate([
         {
             $match: {
-                followedBy : new mongoose.Types.ObjectId(req?.user?._id)
+                followedBy : new mongoose.Types.ObjectId(followingBy)
             }
         },
         {
@@ -127,6 +128,7 @@ const following = asyncHandler( async(req,res)=>{
         },
         {
             $project:{
+                'followings._id':1,
                 'followings.username': 1,
                 'followings.fullName': 1,
                 'followings.ProfileImage': 1
