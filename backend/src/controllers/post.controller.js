@@ -293,6 +293,55 @@ const postComments = asyncHandler( async(req,res)=>{
     )
 })
 
+const visitedPost = asyncHandler(async (req,res)=>{
+    const {postId} = req.params
+
+    if(!postId){
+        throw new ApiError('Invalid PostID')
+    }
+
+    const post = await Post.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(postId)
+            }
+        },
+        {
+            $lookup: {
+              from: "users", 
+              localField: "postedBy",
+              foreignField: "_id",  
+              as: "owner"  
+            }
+        },
+        {
+            $unwind: "$owner"
+        },
+        {
+            $project:{
+                "owner.password": 0,
+                "owner.fullName": 0,
+                "owner.email": 0,
+                "owner.coverImage": 0,
+                "owner.posts": 0,
+                "owner.createdAt": 0,
+                "owner.updatedAt": 0,
+                "owner.refreshToken": 0,
+            }
+        }
+    ])
+    console.log(post);
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            post,
+            'Visited Post'
+        )
+    )
+})
+
 export {
     uploadPost,
     updatePostTitle,
@@ -300,5 +349,6 @@ export {
     showPosts,
     hidePost,
     showPostLikes,
-    postComments
+    postComments,
+    visitedPost
 }
