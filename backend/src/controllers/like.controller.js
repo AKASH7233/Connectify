@@ -3,9 +3,7 @@ import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/apiResponse.js"
 import { Like } from '../models/likes.model.js'
 import  mongoose, { isValidObjectId } from 'mongoose'
-import { User } from '../models/user.model.js'
 import { ApiErrResponse } from '../utils/ApiErrResponse.js'
-import {Post} from '../models/post.model.js'
  
 
 const toggleLike = asyncHandler( async(req,res)=>{
@@ -26,7 +24,8 @@ const toggleLike = asyncHandler( async(req,res)=>{
     
         if(postliked){
             unlike = await Like.deleteOne({
-                post: postId
+                post: postId,
+                likedBy : req.user?._id
             })
             if(!unlike){
                 throw new ApiError(500, "Failed To unlike the post")
