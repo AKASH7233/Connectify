@@ -11,11 +11,9 @@ import Register from './pages/Register'
 import Search from './pages/Search'
 import UploadPost from './pages/UploadPost'
 import UserProfile from './pages/UserProfile'
-<<<<<<< HEAD
 import Follow from './components/Post/FollowerLists/Follow'
-=======
 import DataFetch from './utils/DataFetch'
->>>>>>> f1725ae3699c155c29fce636a6050a2725b3e491
+import ViewPost from './components/Post/viewPost/viewPost'
 
 function App() {
 
@@ -32,11 +30,11 @@ function App() {
           <Route path='/uploadPost' element ={<UploadPost/>} />
           <Route path='/test' element= {<DataFetch/>}/>
           <Route path='/search' element={<Search/>}/>
-<<<<<<< HEAD
+
           <Route path='/followlist/:type/:userId' element={<Follow/>} />
-=======
+
           <Route path='/chat' element={<Chat/>}/>
->>>>>>> f1725ae3699c155c29fce636a6050a2725b3e491
+          <Route path='/viewpost/:postId/:type' element={<ViewPost />} />
         </Routes>
       </BrowserRouter>
     </div>

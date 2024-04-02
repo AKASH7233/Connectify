@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import profileImage from '../../assets/profile.png'
-import axiosInstance from '../../utils/ApiFetch';
 import { useDispatch, useSelector } from 'react-redux';
 import { profile } from '../../redux/usersSlice';
 import { toggleFollow } from '../../redux/followSlice';
 
 function Header({post}) {
+    console.log(post);
     const currentUser = useSelector(state=> state?.auth?.user)
     const currentUserId = currentUser[0]?._id
     const profileImg = post?.owner.ProfileImage ? post?.owner.ProfileImage : profileImage
     const dispatch = useDispatch()
     const isFollow = useSelector(state => state.visitedUser?.users[0]?.isFollowed)
-    const [isFollowed,setIsFollowed] = useState(isFollow)
+    const [isFollowing,setIsFollowing] = useState(isFollow)
     const userId = currentUserId == post?.owner?._id ? 'myprofile' : `user/${post?.owner?._id}`
     
     let postAt;
@@ -37,9 +37,8 @@ function Header({post}) {
     }
 
     const load = async() =>{
-      console.log(post?.owner?._id);
       let response = await dispatch(profile(post?.owner?._id))
-      setIsFollowed(response?.payload?.data[0]?.isFollowed)
+      setIsFollowing(response?.payload?.data[0]?.isFollowed)
     }
   
     useEffect(()=>{
@@ -62,7 +61,7 @@ function Header({post}) {
                 </div>
                 </div>
             </Link>
-            <button className={` ${isFollowed ? 'invisible' : 'block' } bg-blue-500 rounded-lg  text-white px-5 text-md`} onClick={fetch} >{isFollowed?'Unfollow': 'Follow'}</button>
+            <button className={` ${isFollowing ? 'invisible' : 'block' } bg-blue-500 rounded  text-white px-5 text-md`} onClick={fetch} >{isFollowing?'Unfollow': 'Follow'}</button>
          </div>
          <div className='h-72 px-2 rounded-xl w-full'>
             <img src={post?.postFile} alt="postImg" className='h-full w-[100vw] rounded-md object-fill'/>

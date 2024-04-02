@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import LikedBy from './viewPost/viewPost';
 import { FaHeart , FaRegHeart , FaRegBookmark, FaBookmark} from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { postlikes,togglelike } from '../../redux/likeSlice';
 import { TbMessage } from "react-icons/tb"
 import { IoIosShareAlt } from "react-icons/io";
+import { Link } from 'react-router-dom';
 
 function Like({post, togglelikes, toggleComments}) {
   const dispatch = useDispatch()
@@ -57,8 +57,12 @@ function Like({post, togglelikes, toggleComments}) {
           </button>
       </div>
       <div className='text-gray-400 text-sm flex justify-evenly -my-3 pb-1 border-b mb-3 border-gray-400'>
+        <Link to={`/viewpost/${post?._id}/likes`}>
         <button onClick={fetchNewLikes}>{likedBy?.length} {likedBy?.length > 1 ? 'Likes': 'like'}</button>
-        <button onClick={toggleComment}>comments</button>
+        </Link> 
+        <Link to={`/viewpost/${post?._id}/comment`}>
+          <button>comments</button> 
+        </Link>
         <h2 className='flex items-center gap-1'><IoIosShareAlt className='text-gray-400'/> share</h2>
       </div>
     </>
