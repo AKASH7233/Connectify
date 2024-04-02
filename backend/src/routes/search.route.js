@@ -5,6 +5,6 @@ import { search } from "../controllers/search.controller.js";
 const router = Router()
 router.use(verifyJWT)
 
-router.route('/search/:search').post(search)
+router.route('/search/:search').get(search)
 
 export default router

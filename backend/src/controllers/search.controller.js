@@ -26,12 +26,13 @@ const search = asyncHandler( async(req,res)=>{
     if(response.length <= 0 && responsePost.length <=0){
         throw new ApiError(400, `username ${search} does not exists also Post related to ${search} does not exist !!`)
     }
+    console.log(response);
     return res
     .status(200)
     .json(
         new ApiResponse(
             200,
-            response.length > 0 ? response : responsePost,
+            response.length > 0 ? response : {post : responsePost},
             "Search successfully !!"
         )
     )
