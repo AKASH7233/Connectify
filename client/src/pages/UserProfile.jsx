@@ -11,12 +11,10 @@ function UserProfile() {
     const userFromSlice = useSelector(state => state.visitedUser?.users)
     const [user,setUser] = useState(userFromSlice)
     const {userId} = useParams()
-    console.log(userId);
     
     const search = async() =>{
       let response = await dispatch(profile(userId))
       setUser(response?.payload?.data[0]);
-      console.log(response);
     }
 
     useEffect(()=>{

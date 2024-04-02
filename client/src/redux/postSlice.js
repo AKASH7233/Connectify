@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../utils/ApiFetch";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 const initialState = {
     posts: [] || JSON.parse(localStorage.getItem('posts')),
     postFile: null || JSON.parse(localStorage.getItem('postFile')),
-    title : '' || JSON.parse(localStorage.getItem('title'))
+    title : '' || JSON.parse(localStorage.getItem('title')),
+    visitedPost : {} || JSON.parse(localStorage.getItem('visitedPost'))
 }
 
 export const getPosts = createAsyncThunk('post/getpost',async()=>{
@@ -26,6 +26,27 @@ export const getPosts = createAsyncThunk('post/getpost',async()=>{
         return response.data
     } catch (error) {
         toast.error('Failed To Fetch Posts')
+        throw error   
+    }
+})
+
+export const getVisitedPosts = createAsyncThunk('post/getVisitedpost',async(data)=>{
+    try {
+        const responsePromise = await axiosInstance.post(`/post/visitedpost/${data}`)
+    
+        if(responsePromise?.data.message){
+            toast.success(responsePromise?.data.message)
+        }
+        if(responsePromise?.data.error){
+            toast.error(responsePromise?.data.error)
+            navigate('/login')
+        }
+    
+        const response = responsePromise
+    
+        return response.data
+    } catch (error) {
+        toast.error('Failed To Fetch Post')
         throw error   
     }
 })
@@ -104,6 +125,10 @@ export const postSlice = createSlice({
             localStorage.setItem('title',JSON.stringify(action?.payload?.title))
             state.postFile = action.payload.file;
             state.postFile = action.payload.title;
+        })
+        .addCase(getVisitedPosts.fulfilled,(state,action)=>{
+            state.visitedPost = action.payload
+            localStorage.setItem('visitedPost',JSON.stringify(action?.payload))
         })
 
     }

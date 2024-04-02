@@ -1,16 +1,80 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Header from '../Header'
+import Like from '../Like';
+import Comment from './Comment';
+import { useParams } from 'react-router-dom';
+import { getVisitedPosts } from '@/redux/postSlice';
+import ViewLikes from './viewLike';
+import ViewComment from './ViewComment';
+import { showComments } from '@/redux/commentSlice';
 
+function ViewPost() {
+    const {postId} = useParams()
+    const {type} = useParams()
+    const dispatch = useDispatch()
+    const [postInfo,setPostInfo] = useState()
 
-function LikedBy() {
+    const [allComment,setAllComment] = useState()
+    const [showSection,setShowSection] = useState(type)
+    
+    const moveToTop = () =>{
+      window.scrollTo(0,0)
+    }
+    moveToTop()
+    useEffect(()=>{
+      ;(async()=>{
+        let response = await dispatch(getVisitedPosts(postId))
+        console.log(response);
+        setPostInfo(response?.payload?.data[0])
+      })()
+    },[])
+    
+    useEffect(()=>{
+      setShowSection(type)
+    },[type])
 
+    useEffect(()=>{
+      ;(async()=>{
+        let response= await dispatch(showComments(postId))
+        console.log(response);
+        setAllComment(response?.payload?.data)
+      })()
+    },[])
+    console.log();
     return (
-    <div>
-     <Header/>
-     <Post />
+    <div className='bg-gray-950 min-h-[100vh]'>
+    {
+      postInfo &&
+      <>
+        <div className='bg-black py-2'>
+          <Header post={postInfo}/>
+          <Like post={postInfo}/>
+          <Comment post = {postInfo} />
+        </div> 
+        <div>
+          { showSection == "likes" ?
+            <div className='my-2 relative'>
+            <h2 className='text-white px-4  italic my-5'>Liked By</h2>
+            <h2 className=' mx-4 w-16 h-[2px] rounded-xl bg-gray-400 absolute top-7 '></h2>
+            <div>
+              <ViewLikes post={postInfo}/>
+            </div>
+          </div>
+          :
+          <div className='my-2 relative'>
+            <h2 className='text-white px-4  italic my-5'>comments</h2>
+            <h2 className=' mx-4 w-20 h-[2px] rounded-xl bg-gray-400 absolute top-7 '></h2>
+            <div>
+            {allComment?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
+            </div>
+          </div>
+          }
+        </div>
+      </>
+    }
     </div>
   )
 }
 
-export default LikedBy
+export default ViewPost

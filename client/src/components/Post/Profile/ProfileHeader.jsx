@@ -48,8 +48,8 @@ const ProfileHeader = ({user, follow, toggle}) => {
           </div>
           {
             follow ? <div className='flex mt-7 gap-3 px-2'>
-            <button className='px-6 py-2 w-40 rounded-lg bg-blue-500 ' onClick={togglefollow}>{user?.isFollowed ? 'UnFollow' : 'Follow' }</button>
-            <button className='px-6 py-2 w-40 rounded-lg bg-gray-800 '>Message</button>
+            <button className='px-6 py-2 w-40 rounded-xl bg-blue-500 ' onClick={togglefollow}>{user?.isFollowed ? 'UnFollow' : 'Follow' }</button>
+            <button className='px-6 py-2 w-40 rounded-xl bg-gray-800 '>Message</button>
         </div> : <button className='mx-3 px-10 my-2 py-3 w-80 rounded-lg text-lg bg-blue-500 '>Edit Your Profile</button>
           }
       </div>
