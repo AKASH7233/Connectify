@@ -7,13 +7,11 @@ import { profile } from '../../redux/usersSlice';
 import { toggleFollow } from '../../redux/followSlice';
 
 function Header({post}) {
-    console.log(post);
     const currentUser = useSelector(state=> state?.auth?.user)
-    const currentUserId = currentUser[0]?._id
+    const currentUserId = currentUser?.user?._id
     const profileImg = post?.owner.ProfileImage ? post?.owner.ProfileImage : profileImage
     const dispatch = useDispatch()
-    const isFollow = useSelector(state => state.visitedUser?.users[0]?.isFollowed)
-    const [isFollowing,setIsFollowing] = useState(isFollow)
+    const [isFollowing,setIsFollowing] = useState()
     const userId = currentUserId == post?.owner?._id ? 'myprofile' : `user/${post?.owner?._id}`
     
     let postAt;
@@ -46,7 +44,7 @@ function Header({post}) {
     },[])
 
     const fetch = async() => {
-      await dispatch(toggleFollow(post?._id))
+      await dispatch(toggleFollow(post?.owner?._id))
       load()
     }
   return (
