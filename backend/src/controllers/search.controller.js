@@ -15,7 +15,7 @@ const search = asyncHandler( async(req,res)=>{
     let response
     let responsePost
     if(search){
-        response = await User.find({username: search.toLowerCase()}).select("username ProfileImage Description")
+        response = await User.find({ $or : [{username: {$regex : search.toLowerCase()}},{fullName: {$regex : search.toLowerCase()}}]}).select("username ProfileImage Description")
     }
 
     if(response.length === 0){
