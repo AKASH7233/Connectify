@@ -11,20 +11,19 @@ function Search() {
         
     // },[inp])
 
-    const load = async(e) => {
-      e.preventDefault()
+    const load = async() => {
       if (!inp) {
-        toast.error('Enter the username ')
         return;
       }
       if (inp.length < 3) {
-        toast.error('Field must contain 3 characters')
         return;
       }
         let response = await axiosInstance.get(`/search/search/${inp}`)
-        console.log(response);
         setOptions(response?.data?.data)
     }
+    useEffect(()=>{
+      load()
+    },[inp])
   return (
     <div className='bg-gray-950 my-4 min-h-[100vh] px-4'>
         <div className='relative'>
@@ -42,7 +41,7 @@ function Search() {
           Array.isArray(options) ? options?.map((user,i)=>(
             <UserHeader user={user} key={i}/>
           )) : options?.post.map((user,i)=>(
-            <img src={user?.postFile} />
+            <img src={user?.postFile} key={i}/>
           ))
         }
         </div>
