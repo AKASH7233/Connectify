@@ -14,6 +14,9 @@ function Header({post}) {
     const [isFollowing,setIsFollowing] = useState()
     const userId = currentUserId == post?.owner?._id ? 'myprofile' : `user/${post?.owner?._id}`
     
+    
+    const [readMore,setReadMore] = useState(false)
+
     let postAt;
     const postedAt = new Date(post?.createdAt)
     const currentTime = new Date()
@@ -64,7 +67,7 @@ function Header({post}) {
          <div className='h-72 px-2 rounded-xl w-full'>
             <img src={post?.postFile} alt="postImg" className='h-full w-[100vw] rounded-md object-fill'/>
         </div>
-        <h2 className='text-white mt-2 mx-4'>{post?.title}</h2>
+        <h2 className={`text-white mt-2  mx-4 w-[80vw] ${readMore ? 'clip' : 'truncate'} break-words`}>{post?.title}</h2>
     </div>
   )
 }

@@ -29,7 +29,7 @@ function ViewReplies() {
         <div className='py-7 mb-10 bg-black'>
           <ViewComment info={RepliedComment} reply={false}/>
         </div>
-        <div>
+        <div className='pb-[50px] overflow-hidden'>
           {replyComments?.length > 0  && 
           replyComments.map((reply)=>(
             <ViewComment info={reply} reply={false} key={reply?._id}/>

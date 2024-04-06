@@ -68,7 +68,7 @@ function ViewPost() {
               <div className='my-2 relative'>
                 <h2 className='text-white px-4  italic my-3 mb-5'>comments</h2>
                 <h2 className=' mx-4 w-20 h-[2px] rounded-xl bg-gray-400 absolute top-7 '></h2>
-                <div className='mb-10'>
+                <div className='pb-[50px] overflow-hidden'>
                 {allComment?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
                 </div>
               </div>

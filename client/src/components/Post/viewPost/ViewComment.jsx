@@ -11,6 +11,7 @@ function ViewComment({info , reply = true}) {
     const sameUser = currentUserId == info?.commentedBy?._id
     const userUrl = sameUser ? `/myprofile` : `/user/${info?.commentedBy?._id}`
 
+    const [readMore,setReadMore] = useState(false)
     let commentAt;
     const commentedAt = new Date(info?.createdAt)
     const currentTime = new Date()
@@ -55,7 +56,7 @@ function ViewComment({info , reply = true}) {
             <div className='relative'><h2 className='absolute -top-4'>.</h2></div>
             <h2 className='text-[12px]'>{commentAt}</h2>
         </div>
-        <h2 className='my-1 mx-8'>{info.comment}</h2>
+        <h2 className={`my-1 mx-8 w-[55vw] break-words ${readMore ? '' : 'truncate'}`} onClick={()=>{setReadMore(prev => !prev)}}>{info.comment}</h2>
       </div>
       <div className='text-white'>
         heart
