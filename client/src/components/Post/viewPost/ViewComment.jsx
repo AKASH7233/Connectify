@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import profileImg from '../../../assets/profile.png'
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addRepliedComment, showReplyComments } from '@/redux/commentSlice';
 
-function ViewComment({info}) {
+function ViewComment({info , reply = true}) {
+    const dispatch = useDispatch()
     const profileImage = info?.commentedBy?.ProfileImage ? info?.commentedBy?.ProfileImage : profileImg
     const currentUserId = useSelector(state => state.auth?.user)?.user?._id 
     const sameUser = currentUserId == info?.commentedBy?._id
@@ -26,11 +28,22 @@ function ViewComment({info}) {
       commentAt = `${diffMins}m ago`
     }
     else{
-      commentAt `${diffMs * 60}s ago`
+      commentAt = `${Math.floor(diffMs / 1000)}s ago`
     }
 
+    const [replyComments,setReplyComments] = useState()
+
+    useEffect(()=>{
+      ;(async()=>{
+          let response = await dispatch(showReplyComments(info?._id))
+          console.log(response);
+          setReplyComments(response?.payload?.data)
+      })()
+  },[])
+
   return (
-    <div className='flex bg-black items-center justify-between py-3 px-4 border-b border-gray-800'>
+    <div className= {`bg-black  py-3 px-4`} >
+      <div className='flex items-center justify-between '>
       <div className='text-white'>
          <div className=' text-gray-400 flex gap-x-3 items-center'>
             <Link to={`${userUrl}`}>
@@ -47,6 +60,12 @@ function ViewComment({info}) {
       <div className='text-white'>
         heart
       </div>
+    </div>
+      {reply && 
+        <Link to={`/viewreplies/${info?._id}`}>
+          <button onClick={()=>{dispatch(addRepliedComment(info))}} className={`text-blue-500 text-sm mt-2  mx-8 ${replyComments?.length > 0 ?'visible' : 'hidden'}`}>{replyComments?.length} {replyComments?.length > 1 ? 'replies' : 'reply'}</button>
+        </Link>
+      }
     </div>
   )
 }

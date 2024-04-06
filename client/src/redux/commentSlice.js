@@ -4,7 +4,8 @@ import toast from 'react-hot-toast'
 
 const initialState = {
     comments : JSON.parse(localStorage.getItem('Comment')) || [],
-    mycomment : {}
+    mycomment : {},
+    RepliedComment : JSON.parse(localStorage.getItem('comment')) || {} ,
 }
 
 export const addComments = createAsyncThunk('comment/addCommments',async(data)=>{
@@ -66,10 +67,40 @@ export const deleteComment = createAsyncThunk('comment/deletecomment',async(data
     return response.data
 })
 
+export const replyToComment = createAsyncThunk('comment/replyToComment',async(data)=>{
+    const responsePromise = axiosInstance.post(`/comment/replycomment/${data?.url}`, {comment :data?.comment})
+
+    toast.promise(responsePromise,{
+        loading: 'Adding the Comment...',
+        success: (response)=>{
+            return response?.data?.message || `Comment added`
+        },
+        error: (error)=>{
+            return  (error.response?.message) || `Failed to add the Comment`
+        }
+    })
+
+    const response = await responsePromise;
+    return response.data
+})
+
+export const showReplyComments = createAsyncThunk('comment/showReplyComments',async(data)=>{
+    console.log(data);
+    const responsePromise = axiosInstance.get(`/comment/showreplycomment/${data}`)
+    
+    const response = await responsePromise;
+    return response.data
+})
+
 export const commentSlice = createSlice({
     name: 'comment',
     initialState,
-    reducers: {},
+    reducers: {
+        addRepliedComment : (state,action) =>{
+            state.RepliedComment = action.payload
+            localStorage.setItem('comment',JSON.stringify(action.payload))
+        }
+    },
     extraReducers: (builder)=>{
         builder
         .addCase(addComments.fulfilled,(state,action)=>{
@@ -90,5 +121,7 @@ export const commentSlice = createSlice({
         })
     }
 })
+
+export const {addRepliedComment} = commentSlice.actions;
 
 export default commentSlice.reducer;

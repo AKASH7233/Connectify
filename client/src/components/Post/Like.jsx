@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { FaHeart , FaRegHeart , FaRegBookmark, FaBookmark} from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { postlikes,togglelike } from '../../redux/likeSlice';
-import { TbMessage } from "react-icons/tb"
 import { IoIosShareAlt } from "react-icons/io";
 import { Link } from 'react-router-dom';
 
-function Like({post, togglelikes, toggleComments}) {
+function Like({post, togglelikes, render}) {
   const dispatch = useDispatch()
   const [isAlreadyLiked,setIsAlreadyLiked] = useState(false)
   const [likedBy,setlikedBy] = useState()
@@ -24,8 +23,8 @@ function Like({post, togglelikes, toggleComments}) {
 
   const fetch = async() => {
     await dispatch((togglelike(post?._id)))
-    console.log('toggle');
     setSearch(!search)
+    render()
   } 
 
   let random = Math.floor(Math.random() * likedBy?.length)
@@ -39,9 +38,6 @@ function Like({post, togglelikes, toggleComments}) {
       togglelikes()
     }
     
-    const toggleComment = () => {
-      toggleComments()
-    }
   return (
     <>
       <div className='flex gap-x-3 relative items-center mt-2 mb-4 mx-2 border-b border-gray-500 pb-1'>

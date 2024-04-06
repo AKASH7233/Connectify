@@ -14,6 +14,7 @@ import UserProfile from './pages/UserProfile'
 import Follow from './components/Post/FollowerLists/Follow'
 import DataFetch from './utils/DataFetch'
 import ViewPost from './components/Post/viewPost/viewPost'
+import ViewReplies from './components/Post/viewPost/viewReplies'
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
 
           <Route path='/chat' element={<Chat/>}/>
           <Route path='/viewpost/:postId/:type' element={<ViewPost />} />
+          <Route path='viewreplies/:commentId' element={<ViewReplies/>} />
         </Routes>
       </BrowserRouter>
     </div>

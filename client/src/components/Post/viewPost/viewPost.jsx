@@ -17,7 +17,11 @@ function ViewPost() {
 
     const [allComment,setAllComment] = useState()
     const [showSection,setShowSection] = useState(type)
-    
+    const [reRender,setReRender] = useState(true)
+
+    const load = () => {
+      setReRender(prev => !prev)
+    }
     const moveToTop = () =>{
       window.scrollTo(0,0)
     }
@@ -25,10 +29,9 @@ function ViewPost() {
     useEffect(()=>{
       ;(async()=>{
         let response = await dispatch(getVisitedPosts(postId))
-        console.log(response);
         setPostInfo(response?.payload?.data[0])
       })()
-    },[])
+    },[reRender])
     
     useEffect(()=>{
       setShowSection(type)
@@ -40,7 +43,7 @@ function ViewPost() {
         console.log(response);
         setAllComment(response?.payload?.data)
       })()
-    },[])
+    },[reRender])
     console.log();
     return (
     <div className='bg-gray-950 min-h-[100vh]'>
@@ -49,26 +52,29 @@ function ViewPost() {
       <>
         <div className='bg-black py-2'>
           <Header post={postInfo}/>
-          <Like post={postInfo}/>
-          <Comment post = {postInfo} />
+          <Like post={postInfo} render={load}/>
         </div> 
         <div>
           { showSection == "likes" ?
             <div className='my-2 relative'>
-            <h2 className='text-white px-4  italic my-5'>Liked By</h2>
+            <h2 className='text-white px-4  italic my-3 mb-5'>Liked By</h2>
             <h2 className=' mx-4 w-16 h-[2px] rounded-xl bg-gray-400 absolute top-7 '></h2>
             <div>
               <ViewLikes post={postInfo}/>
             </div>
           </div>
           :
-          <div className='my-2 relative'>
-            <h2 className='text-white px-4  italic my-5'>comments</h2>
-            <h2 className=' mx-4 w-20 h-[2px] rounded-xl bg-gray-400 absolute top-7 '></h2>
-            <div>
-            {allComment?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
-            </div>
-          </div>
+            <>
+              <div className='my-2 relative'>
+                <h2 className='text-white px-4  italic my-3 mb-5'>comments</h2>
+                <h2 className=' mx-4 w-20 h-[2px] rounded-xl bg-gray-400 absolute top-7 '></h2>
+                <div className='mb-10'>
+                {allComment?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
+                </div>
+              </div>
+              <div className='fixed bottom-0 bg-gray-950 py-3 w-full'><Comment post = {postInfo}/></div>
+
+            </>
           }
         </div>
       </>
