@@ -13,6 +13,8 @@ const ProfileHeader = ({user, follow, toggle}) => {
       toggle()
     }
     const profile = user?.ProfileImage ? user?.ProfileImage : profileImg
+
+    const [viewProfile,setViewProfile] = useState(false)
     return (
       <div className='p-4'>
         <header className='flex justify-between items-center mb-5 px-2'>

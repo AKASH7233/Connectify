@@ -158,13 +158,14 @@ const editComment = asyncHandler( async(req,res)=>{
                commentId,
                {
                     $set:{
-                         comment: newComment
+                         comment: newComment,
+                         isEdit : true
                     }
                },
                {new:true}
           )
      }
-
+     console.log(editedcomment);
      return res
      .status(200)
      .json(
@@ -248,7 +249,7 @@ const showReplyComments = asyncHandler(async (req,res,next)=>{
           const comment = await Comment.findById(commentId)
 
           if (!comment) {
-               throw next(new ApiError(500, "Failed to find Post"))
+               throw next(new ApiError(500, "Failed to find comment"))
           }
 
           const comments = await Comment.find({ post: commentId })

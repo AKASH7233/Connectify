@@ -6,7 +6,7 @@ import { addComments, replyToComment } from '../../../redux/commentSlice';
 import ViewComment from './ViewComment';
 import profile from '../../../assets/profile.png'
 
-function Comment({post ,reply=false}) {
+function Comment({post ,reply=false, render}) {
     const dispatch = useDispatch()
     const currentUserProfileImg = useSelector(state => state?.auth?.user)?.ProfileImage
     const [addComment,setAddComment] = useState('')
@@ -20,6 +20,7 @@ function Comment({post ,reply=false}) {
         }
         reply ? await dispatch(replyToComment({url:`${post}`,comment:addComment}))  : await dispatch(addComments({url:`${post?._id}`,comment:addComment})) 
         setAddComment('')
+        render ?  console.log(render) : ''
     }
   return (
     <>

@@ -57,7 +57,7 @@ function Register() {
 
 
   return (
-    <div className='flex items-center justify-center h-screen bg-black '>
+    <div className='flex items-center justify-center h-screen bg-black text-white'>
       <div className='flex flex-col items-center justify-center border border-white p-8 w-80'>
         <h2 className='text-4xl mb-8 text-center'>Logo</h2>
         <label htmlFor="image" className="cursor-pointer mb-4">

@@ -225,9 +225,143 @@ const userLiked = asyncHandler( async(req,res)=>{
     )
 })
 
+const toggleCommentsLike = asyncHandler( async(req,res)=>{
+    try {
+        const {CommentId} = req.params
+    
+        if(!isValidObjectId(CommentId)){
+            throw new ApiError(400, "comment Id is not Valid")
+        }
+    
+        const commentLiked = await Like.findOne({
+            comment : CommentId,
+            likedBy : req.user?._id
+        })
+    
+        let like;
+        let unlike;
+    
+        if(commentLiked){
+            unlike = await Like.deleteOne({
+                comment: CommentId,
+                likedBy : req.user?._id
+            })
+            if(!unlike){
+                throw new ApiError(500, "Failed To unlike the comment")
+            }
+        }
+        else{
+            like = await Like.create({
+                comment: CommentId,
+                likedBy: req.user?._id
+            })
+    
+            if(!like){
+                throw new ApiError(
+                    500,
+                    "something went wrong while liking the comment !!"
+                )
+            }
+        }
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                `User ${like ? "like" : "unlike"} Comment successfully !!`
+            )
+         )
+    } catch (error) {
+       return res.json(
+        new ApiErrResponse(error)
+       )   
+    }
+})
+
+const commentLiked = asyncHandler( async(req,res)=>{
+    console.log();
+    const {CommentId} = req.params
+
+    if(!CommentId){
+        throw new ApiError(401,'Invalid commentID')
+    }
+
+    const likedUsers = await Like.aggregate([
+        {
+            $match: {
+                comment: new mongoose.Types.ObjectId(CommentId)
+            },
+        },
+        {
+            $group:{
+                _id:'comment',
+                likedBy: {
+                    $push : "$likedBy"
+                }
+            }
+        },
+        {
+            $lookup:{
+                from: 'users',
+                localField: 'likedBy',
+                foreignField: '_id',
+                as: 'users'
+            }
+        },
+        {
+            $unwind: '$users'
+        },
+        {
+            $project: {
+                isLiked: 1
+            }
+        },
+
+    ])
+
+    const isliked = await Like.aggregate([
+        {
+            $match : {
+                comment: new mongoose.Types.ObjectId(CommentId)
+            }
+        },
+        {
+            $group: {
+                _id: 'likes',
+                likedBy: {
+                    $push: '$likedBy'
+                }
+            }
+        },
+        {
+            $addFields: {
+                isLiked : {
+                    $cond: {
+                        if: {$in: [req.user?._id, "$likedBy"]},
+                        then: true,
+                        else: false
+                    }
+                }
+            }
+        },{
+            $project:{
+                'isLiked' : 1
+            }
+        }
+    ])
+    
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,{likedUsers,isliked},"liked users")
+    )
+})
 
 export {
     toggleLike,
     likedPosts,
-    userLiked
+    userLiked,
+    toggleCommentsLike,
+    commentLiked,
 }

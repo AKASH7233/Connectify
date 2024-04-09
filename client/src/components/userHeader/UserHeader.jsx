@@ -10,7 +10,7 @@ function UserHeader({user}) {
     console.log(user);
     const profileImg =  user?.ProfileImage ? user?.ProfileImage : profileimg
     const dispatch = useDispatch()
-    const currentUserId = useSelector(state => state.auth?.user[0])?._id || useSelector(state => state.auth?.user)?.users?._id
+    const currentUserId = useSelector(state => state.auth?.user[0])?._id || useSelector(state => state.auth?.user)?.user?._id
     console.log(currentUserId);
     const [isFollowed,setIsFollowed] = useState(false)
     const selfAccount = currentUserId == user?._id 

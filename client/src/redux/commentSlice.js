@@ -33,8 +33,8 @@ export const showComments = createAsyncThunk('comment/showComments',async(data)=
     return response.data
 })
 
-export const editComment = createAsyncThunk('comment/editComment',async(data,newcomment)=>{
-    const responsePromise = axiosInstance.post(`/comment/editcomment/${data}`, newcomment)
+export const editComment = createAsyncThunk('comment/editComment',async(data,)=>{
+    const responsePromise = axiosInstance.post(`/comment/editcomment/${data.url}`, {newComment:data?.comment})
 
     toast.promise(responsePromise,{
         loading: 'Editing Comment...',

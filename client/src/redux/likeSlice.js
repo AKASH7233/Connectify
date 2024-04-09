@@ -4,7 +4,8 @@ import toast from "react-hot-toast";
 
 const initialState = {
     LikedBy : {} || JSON.parse(localStorage.getItem('likedBy')),
-    likedPost: {} || JSON.parse(localStorage.getItem('likedPosts'))
+    likedPost: {} || JSON.parse(localStorage.getItem('likedPosts')),
+    commentLiked : {} || JSON.parse(localStorage.getItem('commentLiked'))
 }
 
 export const togglelike = createAsyncThunk('like/togglelike',async(data)=>{
@@ -46,6 +47,31 @@ export const postliked = createAsyncThunk(`like/postliked` , async()=>{
     }
  })
 
+ export const toggleCommentlike = createAsyncThunk('like/toggleCommentlike',async(data)=>{
+    try {
+            const responsePromise = await axiosInstance.post(`/like/toggleComment/${data}`)
+        
+            const response = await responsePromise;
+        
+            return response.data;
+    } catch (error) {
+        toast.error(error.message);
+        throw error
+    }
+})
+
+export const commentlikes = createAsyncThunk(`like/commentlikes` , async(data)=>{
+    try {
+      const responsePromise = await axiosInstance.post(`/like/Commentlikes/${data}`)
+ 
+      const response = await responsePromise;
+      return response.data;
+    } catch (error) {
+         toast.error(error.message)
+         throw error
+    }
+ })
+ 
 export const likeSlice = createSlice({
     name: 'like',
     initialState,
@@ -63,6 +89,9 @@ export const likeSlice = createSlice({
         .addCase(postliked.fulfilled ,(state,action)=>{
             state.likedPost = action?.payload?.data
             localStorage.setItem('likedPosts',JSON.stringify(action?.payload?.data))
+        })
+        .addCase(commentlikes.fulfilled, (state,action)=>{
+            state.commentLiked = action?.payload?.data
         })
     }
 })

@@ -22,6 +22,7 @@ function ViewPost() {
     const load = () => {
       setReRender(prev => !prev)
     }
+    console.log(reRender);
     const moveToTop = () =>{
       window.scrollTo(0,0)
     }
@@ -69,10 +70,10 @@ function ViewPost() {
                 <h2 className='text-white px-4  italic my-3 mb-5'>comments</h2>
                 <h2 className=' mx-4 w-20 h-[2px] rounded-xl bg-gray-400 absolute top-7 '></h2>
                 <div className='pb-[50px] overflow-hidden'>
-                {allComment?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
+                {allComment?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i} render={load}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
                 </div>
               </div>
-              <div className='fixed bottom-0 bg-gray-950 py-3 w-full'><Comment post = {postInfo}/></div>
+              <div className='fixed bottom-0 bg-gray-950 py-3 w-full'><Comment post = {postInfo} render={load}/></div>
 
             </>
           }
