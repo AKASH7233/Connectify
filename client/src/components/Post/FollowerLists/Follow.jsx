@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Followers, Following } from '../../../redux/followSlice'
-import { getUserData } from '../../../redux/authSlice'
-import Header from '../Header'
-import UserHeader from '../../userHeader/UserHeader'
 import { useParams } from 'react-router-dom'
+
+import { getUserData } from '../../../redux/authSlice'
+import { Followers, Following } from '../../../redux/followSlice'
+import UserHeader from '../../userHeader/UserHeader'
+import Header from '../Header'
 
 
 function Follow() {

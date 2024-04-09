@@ -2,6 +2,9 @@ import './App.css'
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
+import Follow from './components/Post/FollowerLists/Follow'
+import ViewPost from './components/Post/viewPost/viewPost'
+import ViewReplies from './components/Post/viewPost/viewReplies'
 import Chat from './pages/Chat'
 import Feed from './pages/Feed'
 import Home from './pages/Home'
@@ -11,10 +14,7 @@ import Register from './pages/Register'
 import Search from './pages/Search'
 import UploadPost from './pages/UploadPost'
 import UserProfile from './pages/UserProfile'
-import Follow from './components/Post/FollowerLists/Follow'
 import DataFetch from './utils/DataFetch'
-import ViewPost from './components/Post/viewPost/viewPost'
-import ViewReplies from './components/Post/viewPost/viewReplies'
 
 function App() {
 

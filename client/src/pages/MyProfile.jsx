@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import ProfileHeader from '../components/Post/Profile/ProfileHeader'
+import { useDispatch, useSelector } from 'react-redux'
+
 import Follow from '../components/Post/FollowerLists/Follow'
 import ProfileFooter from '../components/Post/Profile/ProfileFooter'
-import { useDispatch, useSelector } from 'react-redux'
+import ProfileHeader from '../components/Post/Profile/ProfileHeader'
 import { getUserData } from '../redux/authSlice'
 
 function MyProfile() {
@@ -10,7 +11,7 @@ function MyProfile() {
   const response = useSelector(state => state?.auth?.user)?.user
   const [user,setUser] = useState(response)
   useEffect(()=>{
-    ;(async ()=>{
+    (async ()=>{
       let response = await dispatch(getUserData())
        setUser(response?.payload?.data[0])
       })()
