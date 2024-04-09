@@ -9,6 +9,7 @@ import io from "socket.io-client";
 
 import { SheetSide } from "@/components/Drawer";
 import { fetchChatId, fetchPerson } from "@/redux/chatSlice";
+import { fetchMessages, sendMessageDispatch } from "@/redux/messageSlice";
 
 function ChatApp(){
     
@@ -19,12 +20,19 @@ function ChatApp(){
     const [person, setPerson] = useState(location.state?.person || null);
     const [personData, setPersonData] = useState([]);
     const [chatId, setChatId] = useState(null);
+    const [message, setMessage] = useState('');
+    const [messages, setMessages] = useState([]);
+    const [onlineUsers, setOnlineUsers] = useState([]); // [ { userId, socketId }
 
     useEffect(() => {
         const loadChatId = async () => {
             if (person && user) {
                 const chatId = (await dispatch(fetchChatId({ receiverId: person._id, senderId: user._id }))).payload._id;
                 setChatId(chatId);
+
+                const oldMessage = (await dispatch(fetchMessages(chatId))).payload;
+                setMessages(oldMessage);
+                console.log('message',messages)
 
                 const result = (await dispatch(fetchPerson(user._id))).payload;
                 setPersonData(result);
@@ -34,37 +42,31 @@ function ChatApp(){
         loadChatId();
     }, [person, user, dispatch]);
 
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState(['damodar']);
-    const [onlineUsers, setOnlineUsers] = useState([]); // [ { userId, socketId }
-    // const chatId = useSelector(state => state.chat.chatId);
-
     const chatContainerRef = useRef(null);
 
-
-    // const socket = useRef(null);
-
-    // useEffect(() => {
-    //     socket.current = io('http://localhost:8800');
-    //     socket.current.emit('addUser', user?._id || '123');
-    //     socket.current.on('getUsers', (users) => {
-    //         console.log(users);
-    //         setOnlineUsers(users);
-    //     });
-    // },[user])
-
-    // useEffect(() => {
-    //     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    // }, [messages]);
-
-    const handleImageUpload = (e) => {
+    const handleImageUpload =  (e) => {
         e.preventDefault();
         const uploadImage = e.target.files[0];
         if (uploadImage) {
             const reader = new FileReader();
             reader.readAsDataURL(uploadImage);
-            reader.onloadend = () => {
-                setMessages([...messages,{ type: 'image', content: reader.result }]);
+            reader.onloadend = async () => {
+                const newMessage = {
+                    senderId: user?._id,
+                    chatId: chatId,
+                    text: message,
+                    image: reader.result // Include the image data in the message
+                }
+                try {
+                    await dispatch(sendMessageDispatch(newMessage));
+                    setMessages([...messages, { type: 'image', content: reader.result }.content]);
+                    setMessage('');
+                } catch (error) {
+                    console.error(error.message);
+                }
+            }
+            reader.onerror = () => {
+                console.error('A error occurred while reading the file.');
             }
         }
     }
@@ -73,24 +75,23 @@ function ChatApp(){
         setPerson(personData[index]);
     }
     
-    const sendMessage = (event) => {
+    const sendMessage = async (event) => {
         event.preventDefault();
         if (message) {
-            const message = {
+            const newMessage = {
                 senderId : user?._id ,
-                text : message            }
-
-            // try {
-                
-            // } catch (error) {
-            //     return (error.message)
-            // }
-            setMessages([...messages, message]);
-            setMessage('');
+                chatId : chatId,
+                text : message
+            }
+            try {
+                await dispatch(sendMessageDispatch(newMessage));
+                setMessages([...messages, message]);
+                setMessage('');
+            } catch (error) {
+                return (error.message)
+            }
         }
     }
-    
-
 
     return (
         <div className=" bg-gray-100 h-screen flex">
@@ -147,7 +148,7 @@ function ChatApp(){
                     <main ref={chatContainerRef} className="w-full flex-1 p-6 overflow-y-auto space-y-4">
                         {messages.map((message, i) =>
                             <div key={i} className={`w-fit rounded-xl py-2 px-4 break-words ${i % 2 === 0 ? 'bg-blue-600 text-white ml-auto' : 'bg-gray-300 text-gray-800 mr-auto'}`}>
-                                {message.type === 'image' ? <img src={message.content} alt="Uploaded content" /> : message}
+                                {message?.message}
                             </div>
                         )}
                     </main>
