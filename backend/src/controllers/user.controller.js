@@ -250,6 +250,7 @@ const currentUser = asyncHandler( async(req,res)=>{
                     FollowingCount:1,
                     "posts._id":1,
                     "posts.postFile":1,
+                    Description:1
                 }
             }
         ])
@@ -294,13 +295,24 @@ const currentUser = asyncHandler( async(req,res)=>{
     }
 })
 
-const updateAccountDetails = asyncHandler( async(req,res)=>{
+const updateAccountDetails = asyncHandler( async(req,res,next)=>{
     try {
         const finduser = req?.user
-        const {username,Description,fullName,email} = req.body
-        console.log(username);
+        const {username,Description,fullName} = req.body
+        console.log(username,Description,fullName);
         if(!finduser){
-            throw new ApiError(401,"Unauthorized user")
+            throw next(new ApiError(401,"Unauthorized user"))
+        }
+        const usernameAlreadyExists = await User.findOne({
+            username
+        }) 
+
+        const sameUser = usernameAlreadyExists?._id == req?.user?._id
+        console.log(usernameAlreadyExists?._id);
+        console.log(req?.user?._id);
+        console.log(sameUser);
+        if(usernameAlreadyExists && sameUser){
+            throw next(new ApiError(401,"Username is not available"))
         }
     
         const user = await User.findByIdAndUpdate(
@@ -308,18 +320,14 @@ const updateAccountDetails = asyncHandler( async(req,res)=>{
             {
                 $set: {
                     username,
-                    Description,
+                    Description : Description || '',
                     fullName,
-                    email
                 }
             },
-            {
-                new : true
-            }
         ).select("-password")
     
         if(!user){
-            throw new ApiError(500, "Failed to update Details")
+            throw next( new ApiError(500, "Failed to update Details"))
         }
         res
         .status(200)
@@ -332,7 +340,7 @@ const updateAccountDetails = asyncHandler( async(req,res)=>{
         )
     } catch (error) {
         return res.json(
-            new ApiErrResponse(error)
+            new ApiErrResponse(error.message)
         )
     }
 })
@@ -381,6 +389,7 @@ const updateCoverImage = asyncHandler( async(req,res)=>{
 
 const updateProfileImage = asyncHandler( async (req,res)=>{
     try {
+        console.log(req.file);
         const ProfileImageLocalPath = req.files?.ProfileImage[0].path;
     
         if(!ProfileImageLocalPath){
@@ -621,7 +630,8 @@ const getUserProfile = asyncHandler( async(req,res)=>{
                 ProfileImage:1,
                 FollowersCount:1,
                 FollowingCount:1,
-                isFollowed: 1
+                isFollowed: 1,
+                Description:1
             }
         }
     ])
