@@ -3,6 +3,8 @@ import {ApiError} from '../utils/ApiError.js';
 
 export const addMessage = async (req, res, next) => {
     try {
+        if(!req.body.chatId || !req.body.senderId || !req.body.text) return next(new ApiError('Invalid input', 400));
+        console.log(req.body);
         const { chatId, senderId, text } = req.body;
         const newMessage = new MessageModel({
             chatId,

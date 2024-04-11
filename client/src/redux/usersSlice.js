@@ -1,6 +1,7 @@
-import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../utils/ApiFetch";
+import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
+
+import axiosInstance from "../utils/ApiFetch";
 
 const initialState = {
     // isFollow: false || JSON.parse(localStorage.getItem('isFollow')),

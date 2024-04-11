@@ -1,9 +1,10 @@
-import React,{useState, useEffect} from 'react';
-import profileImg from '../../../assets/profile.png'
+import React,{useEffect,useState} from 'react';
 import toast from 'react-hot-toast'
-import { Link, useNavigate } from 'react-router-dom'
 import { BsThreeDots } from "react-icons/bs";
 import { IoArrowBackOutline } from "react-icons/io5";
+import { Link, useNavigate } from 'react-router-dom'
+
+import profileImg from '../../../assets/profile.png'
 
 const ProfileHeader = ({user, follow, toggle}) => {
     const goback = () =>{
@@ -13,6 +14,14 @@ const ProfileHeader = ({user, follow, toggle}) => {
       toggle()
     }
     const profile = user?.ProfileImage ? user?.ProfileImage : profileImg
+
+    const navigate = useNavigate();
+    const handleMessageClick = () =>{
+      if(!user?.isFollowed){
+        return toast.error('Follow the user to send message')
+      }
+      navigate('/chat' , {state : { person : user}})
+    }
 
     const [viewProfile,setViewProfile] = useState(false)
     return (
@@ -51,7 +60,9 @@ const ProfileHeader = ({user, follow, toggle}) => {
           {
             follow ? <div className='flex mt-7 gap-3 px-2'>
             <button className='px-6 py-2 w-40 rounded-xl bg-blue-500 ' onClick={togglefollow}>{user?.isFollowed ? 'UnFollow' : 'Follow' }</button>
-            <button className='px-6 py-2 w-40 rounded-xl bg-gray-800 '>Message</button>
+            <button onClick={handleMessageClick} className='px-6 py-2 w-40 rounded-xl bg-gray-800 '>
+              Message
+            </button>
         </div> : <button className='mx-3 px-10 my-2 py-3 w-80 rounded-lg text-lg bg-blue-500 '>Edit Your Profile</button>
           }
       </div>

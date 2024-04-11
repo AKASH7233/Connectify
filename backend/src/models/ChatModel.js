@@ -1,10 +1,13 @@
 import mongoose from 'mongoose';
 
-const ChatSchema = new mongoose.Schema({
-    member:{
-        type: Array,
-    }
-},{
+const { Schema } = mongoose;
+
+const ChatSchema = new Schema({
+    member: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }]
+}, {
     timestamps: true
 })
 
