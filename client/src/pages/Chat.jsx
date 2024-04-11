@@ -2,7 +2,6 @@ import { Camera, GroupIcon, PodcastIcon, SendIcon, SettingsIcon, User2Icon } fro
 import { useEffect, useRef, useState } from "react";
 import { IoCall, IoImage, IoVideocam } from "react-icons/io5";
 import { MdOutlineReport } from "react-icons/md";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
@@ -13,7 +12,8 @@ import { fetchMessages, sendMessageDispatch } from "@/redux/messageSlice";
 
 function ChatApp(){
     
-    const user = useSelector(state => state.auth?.user[0]);
+    const data = JSON.parse(localStorage.getItem("data"));
+    const user = data?.data?.user || null;
     const location = useLocation();
     const dispatch = useDispatch();
 
@@ -22,7 +22,6 @@ function ChatApp(){
     const [chatId, setChatId] = useState(null);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    const [onlineUsers, setOnlineUsers] = useState([]); // [ { userId, socketId }
 
     useEffect(() => {
         const loadChatId = async () => {
@@ -32,17 +31,37 @@ function ChatApp(){
 
                 const oldMessage = (await dispatch(fetchMessages(chatId))).payload;
                 setMessages(oldMessage);
-                console.log('message',messages)
-
-                const result = (await dispatch(fetchPerson(user._id))).payload;
-                setPersonData(result);
             }
+            const result = (await dispatch(fetchPerson(user._id))).payload;
+            setPersonData(result);
         };
 
         loadChatId();
-    }, [person, user, dispatch]);
+    }, [person, dispatch]);
 
     const chatContainerRef = useRef(null);
+    
+    const personClickHandler = (index) => {
+        setPerson(personData[index]);
+    }
+
+    const sendMessage = async (event) => {
+        event.preventDefault();
+        if (message) {
+            const newMessage = {
+                senderId : user?._id ,
+                chatId : chatId,
+                text : message
+            }
+            try {
+                const response = await dispatch(sendMessageDispatch(newMessage));
+                setMessages(prevMessages => [...prevMessages, response.payload]);
+                setMessage('');
+            } catch (error) {
+                return (error.message)
+            }
+        }
+    }
 
     const handleImageUpload =  (e) => {
         e.preventDefault();
@@ -58,8 +77,9 @@ function ChatApp(){
                     image: reader.result // Include the image data in the message
                 }
                 try {
-                    await dispatch(sendMessageDispatch(newMessage));
-                    setMessages([...messages, { type: 'image', content: reader.result }.content]);
+                    const response = await dispatch(sendMessageDispatch(newMessage));
+                    setMessages(prevMessages => [...prevMessages, response.payload]);
+                    console.log('message',messages);
                     setMessage('');
                 } catch (error) {
                     console.error(error.message);
@@ -67,28 +87,6 @@ function ChatApp(){
             }
             reader.onerror = () => {
                 console.error('A error occurred while reading the file.');
-            }
-        }
-    }
-
-    const personClickHandler = (index) => {
-        setPerson(personData[index]);
-    }
-    
-    const sendMessage = async (event) => {
-        event.preventDefault();
-        if (message) {
-            const newMessage = {
-                senderId : user?._id ,
-                chatId : chatId,
-                text : message
-            }
-            try {
-                await dispatch(sendMessageDispatch(newMessage));
-                setMessages([...messages, message]);
-                setMessage('');
-            } catch (error) {
-                return (error.message)
             }
         }
     }
@@ -113,7 +111,7 @@ function ChatApp(){
                     <h2 className="text-lg font-bold mb-4">Message</h2>
                     <ul className="space-y-4 overflow-y-auto h-64">
                         {personData.map((member, index) => (
-                            <li key={index} onClick={()=>personClickHandler(index)} className="flex items-center justify-between cursor-pointer hover:bg-gray-300 p-2 rounded">
+                            <li key={index} onClick={() => personClickHandler(index)} className="flex items-center justify-between cursor-pointer hover:bg-gray-300 p-2 rounded">
                                 <span className="flex items-center">
                                     <User2Icon className="mr-2" />
                                     <span>{member.fullName}</span>
@@ -147,7 +145,7 @@ function ChatApp(){
                     {/* Main Chat Area */}
                     <main ref={chatContainerRef} className="w-full flex-1 p-6 overflow-y-auto space-y-4">
                         {messages.map((message, i) =>
-                            <div key={i} className={`w-fit rounded-xl py-2 px-4 break-words ${i % 2 === 0 ? 'bg-blue-600 text-white ml-auto' : 'bg-gray-300 text-gray-800 mr-auto'}`}>
+                            <div key={i} className={`w-fit rounded-xl py-2 px-4 break-words ${user?._id == messages[i].senderId ? 'bg-blue-600 text-white ml-auto' : 'bg-gray-300 text-gray-800 mr-auto'}`}>
                                 {message?.message}
                             </div>
                         )}
@@ -177,7 +175,7 @@ function ChatApp(){
                         </div>
                     </footer>
                 </div>
-            ):(
+            ) : (
                 <div className="w-full h-full flex items-center justify-center">
                     <h2 className="text-2xl">Select a person to chat with</h2>
                 </div>
@@ -186,5 +184,4 @@ function ChatApp(){
         </div>
     );
 }
-
 export default ChatApp;
