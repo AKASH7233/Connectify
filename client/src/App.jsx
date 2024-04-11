@@ -15,6 +15,7 @@ import Search from './pages/Search'
 import UploadPost from './pages/UploadPost'
 import UserProfile from './pages/UserProfile'
 import DataFetch from './utils/DataFetch'
+import UpdateProfile from './components/Post/Profile/UpdateProfile'
 
 function App() {
 
@@ -31,6 +32,8 @@ function App() {
           <Route path='/uploadPost' element ={<UploadPost/>} />
           <Route path='/test' element= {<DataFetch/>}/>
           <Route path='/search' element={<Search/>}/>
+
+          <Route path='/editprofile' element={<UpdateProfile/>}/> 
 
           <Route path='/followlist/:type/:userId' element={<Follow/>} />
 

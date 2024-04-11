@@ -33,6 +33,7 @@ function Follow() {
       <button className='px-4 py-2' onClick={()=>{setListType(otherType)}}>{otherType}</button>
     </div>
     <div className='min-h-[100vh] bg-black'>
+      {user?.length == 0 && <div className='w-full h-[80vh]'><div className='flex justify-center items-center h-full '><h2 className='text-white text-xl italic'>No {listType}</h2></div></div>}
       {user?.map((user)=>( 
         <UserHeader key={user?._id} user={user.followers || user.followings}/>
       ))}

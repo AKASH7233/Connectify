@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { toggleFollow } from '../redux/followSlice'
 import ProfileHeader from '../components/Post/Profile/ProfileHeader'
 import ProfileFooter from '../components/Post/Profile/ProfileFooter'
+import ProfileImage from '@/components/Post/Profile/ProfileImage'
 
 function UserProfile() {
     const dispatch = useDispatch()
@@ -25,10 +26,20 @@ function UserProfile() {
         await dispatch(toggleFollow(user?._id))
         search()
     }
+    const [viewProfile,setViewProfile] = useState(false)
+
+    const toggleViewProfile = () => {
+      setViewProfile(prev => !prev)
+    }
   return (
     <div className='bg-black relative min-h-[100vh] text-white'>
-      <ProfileHeader user={user} follow={true} toggle={toggle}/>
-      <ProfileFooter user={user} />
+      {viewProfile ? 
+          <ProfileImage img={user?.ProfileImage} toggleview={toggleViewProfile}/>
+          : 
+          <div>
+            <ProfileHeader user={user} follow={true} toggle={toggle} toggleview={toggleViewProfile}/>
+            <ProfileFooter user={user}/>
+          </div>}
     </div>
   )
 }
