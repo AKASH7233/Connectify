@@ -93,16 +93,39 @@ export const getUserData = createAsyncThunk('auth/getUserData',async()=>{
     }
 })
 
-export const updateProfile = createAsyncThunk('auth/updateProfile',async(url,data)=>{
-    try {
-            const responsePromise =  axiosInstance.post(url,data);
+export const updateProfile = createAsyncThunk('auth/updateProfile',async(data)=>{
+    // try {
+            const responsePromise =  axiosInstance.post('/user/updateaccount',data);
             toast.promise(responsePromise, {
                 loading: "updating Profile...",
                 success: (response) => {
                     return response.data?.message
                 },
                 error: (error) => {
-                    return error.response?.message || "Profile updation Failed ! in redux part"
+                    return error.response?.message 
+                }
+            })
+
+            const response = await responsePromise;
+            return response.data;
+    // } catch (error) {
+    //     toast.error(`Failed To update`)
+    //     throw error
+    // }
+
+})
+
+
+export const updateProfileImg = createAsyncThunk('auth/updateProfileImg',async(data)=>{
+    try {
+            const responsePromise =  axiosInstance.post('/user/updateProfileImage',data);
+            toast.promise(responsePromise, {
+                loading: "updating ProfileImage...",
+                success: (response) => {
+                    return response.data?.message
+                },
+                error: (error) => {
+                    return error.response?.message 
                 }
             })
 
@@ -114,6 +137,30 @@ export const updateProfile = createAsyncThunk('auth/updateProfile',async(url,dat
     }
 
 })
+
+export const deleteProfileImage = createAsyncThunk('auth/deleteProfileImage',async(data)=>{
+    try {
+            const responsePromise =  axiosInstance.post('/user/deleteProfileImage',data);
+            toast.promise(responsePromise, {
+                loading: "updating ProfileImage...",
+                success: (response) => {
+                    return response.data?.message
+                },
+                error: (error) => {
+                    return error.response?.message 
+                }
+            })
+
+            const response = await responsePromise;
+            return response.data;
+    } catch (error) {
+        toast.error(`Failed To update`)
+        throw error
+    }
+
+})
+
+deleteProfileImage
 
 export const authSlice = createSlice({
     name : 'auth',
@@ -135,12 +182,6 @@ export const authSlice = createSlice({
             state.user = {}
         })
 
-        .addCase(updateProfile.fulfilled,(state,action)=>{
-            localStorage.setItem("data",JSON.stringify(action?.payload));
-            localStorage.setItem("isLoggedIn",true);
-            state.isLoggedIn=true;
-            state.user=action?.payload?.data;
-        })
         .addCase(getUserData.fulfilled,(state,action)=>{
             localStorage.setItem("data",JSON.stringify(action?.payload));
             localStorage.setItem("isLoggedIn",true);

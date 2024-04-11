@@ -3,15 +3,18 @@ import toast from 'react-hot-toast'
 import { BsThreeDots } from "react-icons/bs";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom'
-
+import { MdEdit } from "react-icons/md";
 import profileImg from '../../../assets/profile.png'
 
-const ProfileHeader = ({user, follow, toggle}) => {
+const ProfileHeader = ({user, follow, toggle, toggleview}) => {
     const goback = () =>{
       window.history.go(-1)
     }
     const togglefollow = () =>{
       toggle()
+    }
+    const seeProfile = () => {
+      toggleview()
     }
     const profile = user?.ProfileImage ? user?.ProfileImage : profileImg
 
@@ -31,11 +34,14 @@ const ProfileHeader = ({user, follow, toggle}) => {
           <button className='p-2 rounded-[50%] bg-gray-900 bg-opacity-90 border-2 border-gray-700'><BsThreeDots /></button>
         </header>
         
-          <img src={profile} alt="profileImg" className='w-28 h-28 mx-28 border-gray-400 border-2 p-1 rounded-[50%] object-cover'/>
+          <div className='relative'>
+            <img onClick={seeProfile} src={profile} alt="profileImg" className='w-28 h-28 mx-28 border-gray-400 border-2 p-1 rounded-[50%] object-fit'/>
+            {!follow && <button onClick = {seeProfile}className='absolute bottom-0 right-28 bg-gray-700 p-2 rounded-[50%]'><MdEdit /></button>}
+          </div>
           <div>
               <h2 className='text-center mt-2 text-xl '>{user?.fullName}</h2>
               <h2 className='text-gray-500 text-center'>@{user?.username}</h2>
-              <p className='text-gray-400'>{user?.bio}</p>
+              <p className='text-gray-400 text-center'>{user?.Description}</p>
           </div>
         
           <div className='flex justify-between items-center px-4 my-3'>
@@ -55,7 +61,6 @@ const ProfileHeader = ({user, follow, toggle}) => {
               <p className='text-gray-500'>{user?.FollowingCount > 1 ? 'Followings' : 'Following'  }</p>
             </div>
            </Link>
-            
           </div>
           {
             follow ? <div className='flex mt-7 gap-3 px-2'>
@@ -63,9 +68,10 @@ const ProfileHeader = ({user, follow, toggle}) => {
             <button onClick={handleMessageClick} className='px-6 py-2 w-40 rounded-xl bg-gray-800 '>
               Message
             </button>
-        </div> : <button className='mx-3 px-10 my-2 py-3 w-80 rounded-lg text-lg bg-blue-500 '>Edit Your Profile</button>
+          </div> : <Link to={'/editprofile'}><button className=' px-10 my-2 py-3 w-80 rounded-xl text-lg bg-blue-500  '>Edit Your Profile</button></Link>
           }
       </div>
+      
   );
 };
 

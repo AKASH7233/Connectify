@@ -55,7 +55,7 @@ function Header({post}) {
         <div className=' text-white flex justify-between rounded-t py-2 mb-2 px-4 border-b border-gray-500'>
             <Link to={`/${userId}`}>
                 <div className='flex gap-x-3 items-center'>
-                <img src={profileImg} alt="post_file" className='w-10 h-10 rounded-[50%] object-cover'/>
+                <img src={profileImg} alt="post_file" className='w-10 h-10 rounded-[50%] object-fit '/>
                 <div>
                   <h2>{post?.owner.username}</h2>
                   <h2 className='text-gray-400 text-sm'>{postAt}</h2>
