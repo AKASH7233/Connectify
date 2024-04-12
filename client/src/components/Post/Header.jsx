@@ -7,8 +7,9 @@ import { profile } from '../../redux/usersSlice';
 import { toggleFollow } from '../../redux/followSlice';
 
 function Header({post}) {
-    const currentUser = useSelector(state=> state?.auth?.user)
-    const currentUserId = currentUser?.user?._id
+    const currentUser = useSelector(state=> state?.auth?.user) 
+    
+    const currentUserId = currentUser?.user?._id || currentUser[0]?._id
     const profileImg = post?.owner.ProfileImage ? post?.owner.ProfileImage : profileImage
     const dispatch = useDispatch()
     const [isFollowing,setIsFollowing] = useState()
@@ -62,7 +63,7 @@ function Header({post}) {
                 </div>
                 </div>
             </Link>
-            <button className={` ${isFollowing ? 'invisible' : 'block' } bg-blue-500 rounded  text-white px-5 text-md`} onClick={fetch} >{isFollowing?'Unfollow': 'Follow'}</button>
+            <button className={` ${userId ? 'invisible' : 'block' } bg-blue-500 rounded  text-white px-5 text-md`} onClick={fetch} >{isFollowing?'Unfollow': 'Follow'}</button>
          </div>
          <div className='h-72 px-2 rounded-xl w-full'>
             <img src={post?.postFile} alt="postImg" className='h-full w-[100vw] rounded-md object-fill'/>

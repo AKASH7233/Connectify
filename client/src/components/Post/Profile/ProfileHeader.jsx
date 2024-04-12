@@ -5,8 +5,10 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom'
 import { MdEdit } from "react-icons/md";
 import profileImg from '../../../assets/profile.png'
+import { FaXmark } from "react-icons/fa6";
 
 const ProfileHeader = ({user, follow, toggle, toggleview}) => {
+    const [option,setOptions] = useState(false)
     const goback = () =>{
       window.history.go(-1)
     }
@@ -15,6 +17,10 @@ const ProfileHeader = ({user, follow, toggle, toggleview}) => {
     }
     const seeProfile = () => {
       toggleview()
+    }
+
+    const toggleOptions = ()=> {
+      setOptions(prev => !prev)
     }
     const profile = user?.ProfileImage ? user?.ProfileImage : profileImg
 
@@ -26,12 +32,17 @@ const ProfileHeader = ({user, follow, toggle, toggleview}) => {
       navigate('/chat' , {state : { person : user}})
     }
 
-    const [viewProfile,setViewProfile] = useState(false)
     return (
-      <div className='p-4'>
-        <header className='flex justify-between items-center mb-5 px-2'>
+      <div className='p-4 '>
+        <header className='relative flex justify-between items-center mb-5 px-2'>
           <button className='p-2 rounded-[50%] bg-gray-900 bg-opacity-90 border-2 border-gray-700' onClick={goback}><IoArrowBackOutline  className='text-xl'/></button>
-          <button className='p-2 rounded-[50%] bg-gray-900 bg-opacity-90 border-2 border-gray-700'><BsThreeDots /></button>
+          <button onClick={toggleOptions} className='p-2 rounded-[50%] bg-gray-900 bg-opacity-90 border-2 border-gray-700'>{option ? <FaXmark /> : <BsThreeDots  />}</button>
+         {option && 
+           <div className='absolute right-12 '>
+            {!follow && <h2 className=' bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-sm py-1 px-4 text-red-400 rounded-[10px]'>delete Account</h2>}
+            {follow && <h2 className=' bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-sm py-1 px-4 rounded-[10px]'>report user</h2>}
+           </div>
+         }
         </header>
         
           <div className='relative'>
