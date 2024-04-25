@@ -19,7 +19,7 @@ import { getPosts } from '../redux/postSlice'
   
   return (
     <div>
-      <div className={`bg-gray-900 -my-5 `} id='feed'>
+      <div className={`bg-black -my-5 `} id='feed'>
         {posts?.map((post)=>(
               <Post key={post._id} post={post} />
         ))}
