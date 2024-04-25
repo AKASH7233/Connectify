@@ -8,15 +8,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { postlikes } from '../../redux/likeSlice';
 import { showComments } from '../../redux/commentSlice';
 import ViewComment from './viewPost/ViewComment';
+import Footer from './Footer';
 
 const Post = ({ post, toggleMode}) => {
   const dispatch = useDispatch()
   return (
     <div className='my-4' >
-      <div className={`py-2 bg-black  rounded-md `}>
+      <div className={`pt-2 bg-black  rounded-md `}>
       <Header post={post}/>
-      <Like post={post} />
-      <Comment post={post} />
+      {/* <Like post={post} /> */}
+      <Footer post={post}/>
       </div>
 {/* 
       {showLikes && 
