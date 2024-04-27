@@ -14,6 +14,7 @@ function ProfileFooter({user}) {
   const [likedposts,setlikedPosts] = useState()
   const [bookedPosts,setBookedPosts] = useState()
   const [render,setRender] = useState(false)
+
   useEffect(()=>{
     ;(async()=>{
       let response = await dispatch(AllBookedPost())
@@ -43,11 +44,13 @@ function ProfileFooter({user}) {
           <button onClick={(e)=>{setOptions('bookmark')}} className={`text-gray-400 hover:bg-gray-900 hover:bg-opacity-90 hover:border-2 hover:border-gray-700 hover:text-white px-10 py-2 rounded-[10px] ${options == 'bookmark' ? ' bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-white' : ''}`}  name='bookmark'><FaBookmark /></button>
         </div>
         <div className='flex flex-wrap'>
-          {options == 'post' && user?.posts?.map((post)=>(
-            <Link to={`/viewpost/${post?._id}/comment`}>
-              <img key={post?._id} src={post?.postFile} className='mx-3 my-4 w-40 h-40 border-2 border-gray-800 rounded-lg object-cover'/>
-            </Link>
-          ))}
+          {options == 'post' && user?.posts?.map((post)=>{
+            const post_file = Array.isArray(post?.postFile) ? post?.postFile[0] : post?.postFile
+            
+            return (<Link to={`/viewpost/${post?._id}/comment`}>
+              <img key={post?._id} src={post_file} className='mx-3 my-4 w-40 h-40 border-2 border-gray-800 rounded-lg object-cover'/>
+            </Link>)
+          })}
           {options == 'post' && user?.posts?.length < 1 && < div className='w-full h-48 flex justify-center items-center text-lg'>No Post !</div> }
 
           {options == 'liked' && likedposts?.map((post)=>(
