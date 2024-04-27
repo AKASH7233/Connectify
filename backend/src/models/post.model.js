@@ -2,10 +2,10 @@ import mongoose,{Schema} from "mongoose";
 
 const postSchema = new Schema(
     {
-        postFile:{
+        postFile:[{
             type: String,
             required: true
-        },
+        }],
         title: {
             type: String,
             required : true
