@@ -76,7 +76,7 @@ function Footer({post}) {
                     <button onClick={fetch}  className='mx-2 text-xl'>
                         {isAlreadyLiked ? <FaHeart className='  text-red-400'/> : <FaRegHeart className='text-white'/>}
                     </button>
-                    <Link to={`/viewpost/${post?._id}/likes`}>
+                    <Link to={`/likes/${post?._id}`}>
                     <button className='text-md'>{likedBy?.length}</button>
                     </Link> 
                 </div>
@@ -95,7 +95,7 @@ function Footer({post}) {
                 <Link to = {`/${userId}`}>
                     <h2 className={`${likedBy?.length >= 1  ? 'block': 'invisible'} text-white text-md`}>{LikedBy?.username}</h2>
                 </Link>
-                <Link to={`/viewpost/${post?._id}/likes`}>
+                <Link to={`/likes/${post?._id}`}>
                  {likedBy?.length > 1 && <h2 className='text-gray-300 text-sm'>and {likedBy?.length -1 } others</h2>}
                 </Link>
             </div>
