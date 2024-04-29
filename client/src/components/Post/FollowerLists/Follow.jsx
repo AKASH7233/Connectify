@@ -30,22 +30,20 @@ function Follow() {
     
     const inputHandler = (e) => {
       setSearch(e.target.value)
-      setUserSearchedFor(null)
+      setUserSearchedFor([])
     }
 
     const search = () => {
-      if(Search?.trim() == '' || Search.length == 0){
-        toast.error(`Username is Required !`)
-        console.log(Search.length);
-        setUserSearchedFor(null)
-        return null
+      if(Search?.trim() == ""){
+        toast.error('enter username to search')
+       return null
       }
       console.log(Search.length);
       let searchedUser = [];
       user?.map((user)=>{
         return user?.followers?.username.includes(Search) || user?.followings?.username.includes(Search) ?  searchedUser.push(user) : ''  })
-
-        return setUserSearchedFor(searchedUser) 
+        
+        return searchedUser?.length > 0 ? setUserSearchedFor(searchedUser) : setUserSearchedFor(['No User Found'])
       
     }
     console.log(userSearchedFor);
@@ -72,15 +70,15 @@ function Follow() {
         <button onClick={search} className='text-white bg-gray-900 absolute right-20 bg-opacity-90 border-2 border-gray-700 text-sm py-2 px-3 rounded-[10px]'><IoSearchSharp className = "text-xl"/></button>
       </div>
       }
-      {!Array.isArray(userSearchedFor) && user?.map((user)=>( 
+      {userSearchedFor?.length == 0 && user?.map((user)=>( 
         <UserHeader key={user?._id} user={user.followers || user.followings}/>
       ))}
-      {Search.trim() != '' && userSearchedFor?.map((user)=>( 
+      {Search.trim() != '' && userSearchedFor[0] != 'No User Found' && userSearchedFor?.map((user)=>( 
         <UserHeader key={user?._id} user={user.followers || user.followings}/>
       ))
       }
       {
-         Search.trim() == "" || userSearchedFor?.length == 0 && <div className='text-white min-h-[50vh] w-full flex items-center justify-center text-lg'>
+         Search.trim() == "" || userSearchedFor[0] == 'No User Found' && <div className='text-white min-h-[50vh] w-full flex items-center justify-center text-lg'>
           No User Found !!
         </div>
       }
