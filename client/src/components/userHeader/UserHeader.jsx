@@ -39,7 +39,7 @@ function UserHeader({user}) {
                 <h2>{user?.username}</h2>
                 </div>
             </Link>
-            <button className={`${isFollowed ? 'bg-gray-400' : 'block'} ${selfAccount ? 'invisible' : 'block'} bg-blue-500 text-white w-24 text-sm rounded-sm`}  onClick={toggle}>{isFollowed?'Following': 'Follow'}</button>
+            <button className={`${isFollowed ? 'bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-sm py-1 ' : 'block'} ${selfAccount ? 'invisible' : 'block'} bg-blue-500 text-white w-24 text-sm rounded-xl`}  onClick={toggle}>{isFollowed?'Following': 'Follow'}</button>
          </div>
     </div>
   )

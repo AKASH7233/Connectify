@@ -8,6 +8,8 @@ import { getVisitedPosts } from '@/redux/postSlice';
 import ViewLikes from './viewLike';
 import ViewComment from './ViewComment';
 import { showComments } from '@/redux/commentSlice';
+import Post from '../Post';
+import LikedBy from './LikedBy';
 
 function ViewPost() {
     const {postId} = useParams()
@@ -52,19 +54,12 @@ function ViewPost() {
       postInfo &&
       <>
         <div className='bg-black py-2'>
-          <Header post={postInfo}/>
-          <Like post={postInfo} render={load}/>
+          {/* <Header post={postInfo}/>
+          <Like post={postInfo} render={load}/> */}
+          <Post post={postInfo}/>
         </div> 
         <div>
-          { showSection == "likes" ?
-            <div className='my-2 relative'>
-            <h2 className='text-white px-4  italic my-3 mb-5'>Liked By</h2>
-            <h2 className=' mx-4 w-16 h-[2px] rounded-xl bg-gray-400 absolute top-7 '></h2>
-            <div>
-              <ViewLikes post={postInfo}/>
-            </div>
-          </div>
-          :
+          { 
             <>
               <div className='my-2 relative'>
                 <h2 className='text-white px-4  italic my-3 mb-5'>comments</h2>

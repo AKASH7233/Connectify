@@ -22,7 +22,7 @@ import searchRouter from "./src/routes/search.route.js"
 import followRouter from "./src/routes/follow.route.js"
 import chatRouter from "./src/routes/ChatRoute.js"
 import messageRouter from "./src/routes/MessageRouter.js"
-
+import bookmarkRouter from "./src/routes/Bookmark.route.js"
 
 app.use('/api/v1/user', router)
 app.use('/api/v1/post', postrouter)
@@ -32,6 +32,7 @@ app.use('/api/v1/search', searchRouter)
 app.use('/api/v1/follow', followRouter)
 app.use('/api/v1/chat', chatRouter)
 app.use('/api/v1/message', messageRouter)
+app.use('/api/v1/bookmark', bookmarkRouter)
 //http://localhost:8000/api/v1/user/register
 
 export {app}

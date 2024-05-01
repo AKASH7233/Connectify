@@ -33,9 +33,10 @@ export const postlikes = createAsyncThunk(`like/postlikes` , async(data)=>{
    }
 })
 
-export const postliked = createAsyncThunk(`like/postliked` , async()=>{
+export const postliked = createAsyncThunk(`like/postliked` , async(data)=>{
     try {
-      const responsePromise = await axiosInstance.post(`/like/postliked`)
+        console.log(data);
+      const responsePromise = await axiosInstance.post(`/like/postliked/${data}`)
 
       const response = await responsePromise;
   

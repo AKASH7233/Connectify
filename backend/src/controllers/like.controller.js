@@ -62,11 +62,12 @@ const toggleLike = asyncHandler( async(req,res)=>{
 
 const likedPosts = asyncHandler(async(req,res)=>{
 try {
-        const user_id = req?.user?._id
+        const {userId} = req.params
+        console.log(userId);
         const likedPosts = await Like.aggregate([
             {
                 $match:{
-                    likedBy: new mongoose.Types.ObjectId(user_id)
+                    likedBy: new mongoose.Types.ObjectId(userId)
                 }
             },
             {
@@ -134,7 +135,7 @@ try {
                 }
             }
         ])
-        // console.log(`likedposts`,likedPosts);
+        console.log(`likedposts`,likedPosts);
         return res
         .status(200)
         .json(new ApiResponse(200,likedPosts,"All liked Post"))

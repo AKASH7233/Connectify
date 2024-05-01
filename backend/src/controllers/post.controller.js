@@ -58,34 +58,66 @@ const uploadPost = asyncHandler( async(req,res)=>{
             if(!title){
                 throw new ApiError(401, "Title is Required")
             }
-            
-            if(!req.files.postFile){
+            if(!req.files){
                 throw new ApiError(401, "Please upload a File")
             }
+            console.log(req?.files);
 
-            const postLocalPath = req?.files.postFile[0].path;
-            
-            if(!postLocalPath){
-                throw new ApiError(401, "Post should contain a Image/Video")
+            const fileKeys = Object.keys(req.files);
+            const uploadedFiles = [];
+    
+            for (const key of fileKeys) {
+                const file = req.files[key];
+    
+                if (!Array.isArray(file)) {
+                    throw new ApiError(400, "Invalid file format.");
+                }
+    
+                for (const singleFile of file) {
+                    const filePath = singleFile.path;
+                    const cloudinaryResponse = await uploadToCloudinary(filePath);
+    
+                    if (!cloudinaryResponse || !cloudinaryResponse.url) {
+                        throw new ApiError(500, "Failed to upload file to Cloudinary.");
+                    }
+    
+                    uploadedFiles.push(cloudinaryResponse.url);
+                }
             }
+            console.log(uploadedFiles);
+            // let postLocalPath = []
+            // req?.files?.postFile.map((file)=>(
+            //    postLocalPath.push(file.path)
+            // ));
+            // console.log(postLocalPath);
+            // if(!postLocalPath){
+            //     throw new ApiError(401, "Post should contain a Image/Video")
+            // }
+            
+            // const postFile = []
+            // for (const filePath of postLocalPath) {
+            //     const uploadedFile = await uploadToCloudinary(filePath);
+            //     if (!uploadedFile || !uploadedFile.url) {
+            //         throw new ApiError(500, "Failed To upload post-file");
+            //     }
+            //     postFile.push(uploadedFile.url);
+            // }
         
-            const postFile = await uploadToCloudinary(postLocalPath)
-        
-            if(!postFile){
+            if(!uploadedFiles){
                 throw new ApiError(500, "Failed To upload post-file")
             }
         
-            const isPublished = true
+            // const isPublished = true
         
             const postedBy = await User.findById(req.user._id).select("username ProfileImage")
 
-            console.log(postedBy);
-        
+            // console.log(postedBy);
+            // console.log(postFile.url);
             const post = await Post.create({
                 title,
-                postFile : postFile.url,
+                postFile : uploadedFiles,
                 postedBy,
-                isPublished,
+                isPublished: true,
             })
         
             if(!post){

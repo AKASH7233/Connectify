@@ -108,7 +108,7 @@ const userLogin = asyncHandler( async(req,res,next) => {
         })
     
         if(!user){
-            throw next(new ApiError(401, "User does not exists !"))
+            throw (new ApiError(401, "User does not exists !"))
         }
     
         
@@ -116,7 +116,7 @@ const userLogin = asyncHandler( async(req,res,next) => {
         const isPasswordCorrect = await user.isPasswordCorrect(password)
         
         if(!isPasswordCorrect){
-            throw next(new ApiError(401, "Invalid password"))
+            throw (new ApiError(401, "Invalid password"))
         }
     
         const {accessToken,refreshToken} = await generateRefreshTokenAndAccessToken(user?._id)

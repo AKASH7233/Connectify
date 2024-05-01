@@ -1,52 +1,82 @@
-import React, { useEffect, useState } from 'react'
-import axiosInstance from '../utils/ApiFetch'
-import { CiSearch } from "react-icons/ci";
-import UserHeader from '@/components/userHeader/UserHeader';
-import toast from 'react-hot-toast';
+
+import React,{useState} from 'react'
+import { useDispatch } from 'react-redux'
+import { Link, useParams, } from 'react-router-dom'
+import UserHeader from '@/components/userHeader/UserHeader'
+import { IoSearchSharp } from "react-icons/io5";
+import { toast } from 'react-toastify'
+import axiosInstance from '@/utils/ApiFetch';
 
 function Search() {
-    const [inp,setInput] = useState('')
-    const [options,setOptions] = useState()
-    // useEffect(()=>{
-        
-    // },[inp])
-
-    const load = async() => {
-      if (!inp) {
-        return;
-      }
-      if (inp.length < 3) {
-        return;
-      }
-        let response = await axiosInstance.get(`/search/search/${inp}`)
-        setOptions(response?.data?.data)
+    const [user,setUser] = useState()
+    const [Search,setSearch] = useState('')
+    const [err,SetErr] = useState('')
+  
+    const inputHandler = (e) => {
+        setSearch(e.target.value)
+        setUser(['No Req'])
+        SetErr(null)
     }
-    useEffect(()=>{
-      load()
-    },[inp])
-  return (
-    <div className='bg-gray-950 my-4 min-h-[100vh] px-4'>
-        <div className='relative'>
-          <input 
-          type="text" 
-          value={inp}
-          onChange={(e)=>{setInput(e.target.value)}}
-          className='bg-gray-900 text-slate-400 px-7 my-2 text-md w-full py-4 outline-none rounded-xl'
-          placeholder='Search username or FullName'
-          />
-          <button onClick={load} className='text-slate-400 text-lg absolute top-5 right-4 border border-slate-600 p-2 rounded-xl'><CiSearch className=''/></button>
-        </div>
-        <div className='20px my-4'>
-          {
-          Array.isArray(options) ? options?.map((user,i)=>(
-            <UserHeader user={user} key={i}/>
-          )) : options?.post.map((user,i)=>(
-            <img src={user?.postFile} key={i}/>
-          ))
+  
+    const search = async() => {
+      if(Search?.trim() == ""){
+          toast.error('enter username to search')
+          return null
+      }
+      console.log(Search);
+      let response = await axiosInstance.get(`/search/search/${Search}`)
+        if(response?.data?.data){
+          setUser(response?.data?.data)
+          SetErr(null)
         }
+        if(response?.data?.error){
+          SetErr(response?.data?.error)
+          setUser(['No Req'])
+        }
+      }
+ 
+      return (
+       
+        <div className='bg-black py-4'>
+          <div className='min-h-[100vh] bg-black'>
+            
+            <div className='bg-black px-10 py-5 relative'>
+              <input 
+              type="text" 
+              value={Search}
+              onChange={inputHandler}
+              placeholder='search username or FullName'
+              className='bg-transparent bg-opacity-90 border-2 border-gray-700 text-md py-2 px-4 w-[75vw]  rounded-[10px] outline-none text-white placeholder:text-sm'
+              />
+              <button onClick={search} className='text-white bg-gray-900 absolute right-10 top-5 bg-opacity-90 border-2 border-gray-700  py-2 px-3 rounded-[10px]'><IoSearchSharp className = "text-2xl"/></button>
+            </div>
+            
+            <div className='20px my-4'>
+              {
+                Array.isArray(user) && user[0] != "No Req" && user?.map((user,i)=>(
+                  <UserHeader user={user} key={i}/>
+                )) 
+              }
+              {
+              !Array.isArray(user) && user?.post.map((user,i)=>(
+                  <div className='flex mx-4'>
+                    <Link to={`/viewpost/${user?._id}/comment`}>
+                      <img src={user?.postFile} className={'w-52 '} key={i}/>
+                    </Link>
+                  </div>
+                ))
+              }
+
+              {
+              err && <div className=' h-[50vh]  flex justify-center items-center text-white'>
+                  <h2 className='text-center'>{err}</h2>
+              </div>
+              }
+            </div>
+            
         </div>
-    </div>
-  )
+      </div>
+      )
 }
 
 export default Search

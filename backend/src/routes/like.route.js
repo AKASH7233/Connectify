@@ -7,7 +7,7 @@ router.use(verifyJWT)
 
 router.route('/togglelike/:postId').post(toggleLike)
 router.route('/postlikes/:postId').post(userLiked)
-router.route('/postliked').post(likedPosts)
+router.route('/postliked/:userId').post(likedPosts)
 
 router.route('/toggleComment/:CommentId').post(toggleCommentsLike)
 router.route('/Commentlikes/:CommentId').post(commentLiked)

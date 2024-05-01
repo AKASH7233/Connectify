@@ -16,6 +16,7 @@ import UploadPost from './pages/UploadPost'
 import UserProfile from './pages/UserProfile'
 import DataFetch from './utils/DataFetch'
 import UpdateProfile from './components/Post/Profile/UpdateProfile'
+import LikedBy from './components/Post/viewPost/LikedBy'
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
           <Route path='/chat' element={<Chat/>}/>
           <Route path='/viewpost/:postId/:type' element={<ViewPost />} />
           <Route path='viewreplies/:commentId' element={<ViewReplies/>} />
+          <Route path='/likes/:postId' element={<LikedBy />} />
         </Routes>
       </BrowserRouter>
     </div>
