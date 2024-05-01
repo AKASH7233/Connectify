@@ -2,7 +2,7 @@
 
 const io = require('socket.io')(8800,{
     cors :{
-        origin: 'http://localhost:5173'
+        origin:'http://localhost:5173'
     }
 })
 
@@ -15,9 +15,11 @@ io.on('connection', socket => {
         if(!activeUsers.some(user => user.userId === userId)){
             activeUsers.push({userId, socketId: socket.id})
         }
-
+        console.log('User connected',activeUsers)
         io.emit('getUsers', activeUsers)
     })
+
+    socket.on('')
 
     socket.on('disconnect', ()=>{
         activeUsers = activeUsers.filter(user => user.socketId !== socket.id)
