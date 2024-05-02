@@ -548,17 +548,20 @@ const deletecoverImage = asyncHandler( async (req,res)=>{
 })
 
 const deleteUser = asyncHandler( async (req,res)=> {
-    await User.findByIdAndDelete(
-        req.user?._id,
-    )
-
-    return res
-    .status(200)
-    .clearCookie("accessToken")
-    .clearCookie("refreshToken")
-    .json(
-        new ApiResponse(200,{},"User deleted")
-    )
+    try {
+        let user = await User.deleteOne({_id :req?.user?._id})
+        console.log(user);
+        return res
+        .status(200)
+        .clearCookie("accessToken")
+        .clearCookie("refreshToken")
+        .json(
+            new ApiResponse(200,{},"User deleted")
+        )
+    } catch (error) {
+        return res
+        .json( new ApiErrResponse(400,error))
+    }
     
 })
 
