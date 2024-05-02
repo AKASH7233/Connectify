@@ -5,8 +5,8 @@ import profileImage from '../../assets/profile.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { profile } from '../../redux/usersSlice';
 import { toggleFollow } from '../../redux/followSlice';
-import { IoArrowBackOutline, IoArrowForward } from "react-icons/io5";
-import { BsThreeDots } from "react-icons/bs";
+import { BsChevronCompactLeft, BsChevronCompactRight,BsThreeDotsVertical } from "react-icons/bs";
+import { RxDot, RxDotFilled } from "react-icons/rx";
 
 function Header({post}) {
     const currentUser = useSelector(state=> state?.auth?.user) 
@@ -17,9 +17,12 @@ function Header({post}) {
     const selfID = currentUserId == post?.owner?._id
     const userId = selfID ? 'myprofile' : `user/${post?.owner?._id}`
     
-    
+    console.log(post?.postFile);
     const [readMore,setReadMore] = useState(false)
+    const [showOptions,setShowOptions] = useState(false)
 
+    console.log(showOptions);
+    console.log(selfID);
     let postAt;
     const postedAt = new Date(post?.createdAt)
     const currentTime = new Date()
@@ -53,6 +56,25 @@ function Header({post}) {
       await dispatch(toggleFollow(post?.owner?._id))
       load()
     }
+
+    const [currentIndex,setCurrentIndex] = useState(0)
+
+    const prevSlide = () => {
+      const isFirstSlide = currentIndex == 0
+      const newIndex = isFirstSlide ? post?.postFile?.length - 1 : currentIndex - 1 
+      setCurrentIndex(newIndex)
+    }
+
+    const nextSlide = () => {
+      const isLastSlide = currentIndex == post?.postFile?.length - 1
+      const newIndex = isLastSlide ? 0 : currentIndex + 1
+      setCurrentIndex(newIndex)
+    }
+
+    const goToSlide = (index) => {
+      console.log(index);
+      setCurrentIndex(index)
+    }
   return (
     <div>
         <div className=' text-white flex justify-between items-center rounded-t py-2 mb-2 px-4 '>
@@ -65,27 +87,35 @@ function Header({post}) {
                 </div>
                 </div>
             </Link>
-            <div>
-            <button className={`${!selfID ? 'bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-sm py-2 text-white w-24  rounded-xl' : 'invisible'}` } onClick={fetch} >{isFollowing?'Following': 'Follow'}</button>
+            <div className='flex gap-x-3'>
+              <button className={`${!selfID ? 'bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-sm py-2 text-white w-24  rounded-xl' : 'invisible'}` } onClick={fetch} >{isFollowing?'Following': 'Follow'}</button>
+              <button className='text-md' onClick={()=>{setShowOptions(prev => !prev)}}><BsThreeDotsVertical/></button>
             </div>
          </div>
-         <div className='h-64 px-4'>
+         <div className='h-64  w-[100vw] px-4 relative'>
             {Array.isArray(post?.postFile) && 
-              <div className='relative h-64  flex whitespace-nowrap scroll overflow-y-auto '>
-                { post?.postFile?.map((img,i)=>(
-                 <img src={img} key={i} alt="postImg" className='h-64 w-[100vw] rounded-xl border-2 border-black  object-fill'/>         
-                  ))
-                }
-                <div>
-                  <button className='p-2 fixed top-[45%] left-0 rounded-3xl border ' ><IoArrowBackOutline  className='text-xl text-black hover:text-white'/></button>
-                  <button className='p-2 fixed top-[46%] right-1 rounded-3xl border ' ><IoArrowForward  className='text-xl text-gray-400 hover:text-white'/></button>
-                  <button><BsThreeDots className='text-white'/></button>
+              
+              <div style={{backgroundImage : `url(${post?.postFile[currentIndex]})`}} className='w-[92vw] rounded-xl bg-center bg-cover bg-no-repeat h-64 duration-400 text-white group'>
+                <div className='hidden group-hover:block p-2 absolute top-[45%] left-5 rounded-3xl cursor-pointer bg-gray-900 bg-opacity-90 border-2 border-gray-700  '><BsChevronCompactLeft onClick={prevSlide} size={20}/></div>
+                <div className='hidden group-hover:block p-2 absolute top-[45%] right-5 rounded-3xl cursor-pointer bg-gray-900 bg-opacity-90 border-2 border-gray-700 '><BsChevronCompactRight onClick = {nextSlide} size={20}/></div>
+                <div className='right-[40%] -bottom-[70px] flex absolute py-2'>
+                  {post?.postFile?.map((slide,i)=>(
+                    <div key={i}  onClick={()=>goToSlide(i)} className='cursor-pointer text-xl'>{i == currentIndex ? <RxDotFilled />: <RxDot />} </div>
+                  ))}
                 </div>
               </div>
             }
             {!Array.isArray(post?.postFile) && <img src={post?.postFile} alt="postImg" className='h-full w-[100vw]  rounded-xl object-fill'/>}
         </div>
         <h2 onClick={()=>{setReadMore(prev => !prev)}} className={`text-gray-400 mt-2 ml-5 w-[80vw] ${readMore ? 'clip' : 'truncate'} break-words`}>{post?.title}</h2>
+        {showOptions &&
+          <div className='absolute bg-black bottom-0 w-full text-white text-center'>
+            {!selfID && <h2 className='py-2'>Do not recommend</h2>}
+            {selfID && <div>
+              <h2 className='bg-black bg-opacity-90 border-2 border-gray-700 text-sm py-3 text-white '>Hide Post</h2>
+              <h2 className='bg-black bg-opacity-90  text-sm py-3 text-white '>Delete Post</h2></div> }
+          </div>
+        }
     </div>
   )
 }
