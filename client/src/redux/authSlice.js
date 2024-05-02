@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 
 import axiosInstance from "../utils/ApiFetch";
 
+
 const initialState = {
     isLoggedIn : localStorage.getItem("isLoggedIn") || false,
     user :JSON.parse(localStorage.getItem("data"))?.data || {}
@@ -16,8 +17,8 @@ export const createAccount = createAsyncThunk('auth/register', async(data)=>{
             success : (response)=>{
                 return response.data?.message
             },
-            error : (error)=>{
-                return error.response?.message || "Register Failed ! in redux part"
+            error : (response)=>{
+                return response?.data?.error || "Register Failed ! in redux part"
             }
         })
 
@@ -82,16 +83,7 @@ export const logout = createAsyncThunk('auth/logout',async()=>{
 export const getUserData = createAsyncThunk('auth/getUserData',async()=>{
    try{
         const responsePromise = axiosInstance.post('/user/profile');
-        toast.promise(responsePromise, {
-            loading: "Fetching Data...",
-            success: (response) => {
-                return response.data?.message
-            },
-            error: (error) => {
-                return error.response?.message || " Fetching Failed ! in redux part"
-            }
-        })
-
+       
         const response = await responsePromise;
         return response.data;
     } catch (error) {
@@ -167,7 +159,30 @@ export const deleteProfileImage = createAsyncThunk('auth/deleteProfileImage',asy
 
 })
 
-deleteProfileImage
+export const deleteUser = createAsyncThunk('auth/deleteUser',async()=>{
+    try {
+            const responsePromise =  axiosInstance.post('/user/deleteUser');
+            toast.promise(responsePromise, {
+                loading: "Deleting Account...",
+                success: (response) => {
+                    return response
+                },
+                error: (error) => {
+                    return response?.error 
+                }
+            })
+            
+            const response = await responsePromise;
+            console.log(response);
+            return response;
+    } catch (error) {
+        toast.error(`Failed To update`)
+        throw error
+    }
+
+})
+
+
 
 export const authSlice = createSlice({
     name : 'auth',
@@ -184,6 +199,12 @@ export const authSlice = createSlice({
         })
 
         .addCase(logout.fulfilled,(state)=>{
+            localStorage.clear();
+            state.isLoggedIn = false;
+            state.user = {}
+        })
+
+        .addCase(deleteUser.fulfilled,(state)=>{
             localStorage.clear();
             state.isLoggedIn = false;
             state.user = {}
