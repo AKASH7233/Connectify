@@ -53,7 +53,7 @@ function Like({post, togglelikes, render}) {
           </button>
       </div>
       <div className='text-gray-400 text-sm flex justify-evenly -my-3 pb-1 border-b mb-3 border-gray-400'>
-        <Link to={`/viewpost/${post?._id}/likes`}>
+        <Link to={`/likes/${post?._id}`}>
         <button onClick={fetchNewLikes}>{likedBy?.length} {likedBy?.length > 1 ? 'Likes': 'like'}</button>
         </Link> 
         <Link to={`/viewpost/${post?._id}/comment`}>
