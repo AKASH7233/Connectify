@@ -21,7 +21,7 @@ export function DialogDemo({open,res}) {
     console.log(show);
 
     const dispatch = useDispatch()
-    const user = useSelector(state=> state?.auth?.user)?.user
+    const user = useSelector(state=> state?.auth?.user)?.user || useSelector(state => state?.auth?.user[0])
     const [info,setInfo] = useState({
         username: user?.username,
         Description : user?.Description || '',
