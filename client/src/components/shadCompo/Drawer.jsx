@@ -4,13 +4,11 @@ import {
     DrawerClose,
     DrawerContent,
     DrawerDescription,
-    DrawerFooter,
     DrawerHeader,
-    DrawerTitle,
     DrawerTrigger,
   } from "@/components/ui/drawer"
   
-  import { 
+import { 
     Bookmark,
     Forward,
     Flag,
@@ -20,29 +18,21 @@ import {
 } from 'lucide-react';
 
 import { Switch } from "@/components/ui/switch"
+import { FaXmark } from 'react-icons/fa6';
 
-
-import { Button } from '../ui/button'
-function DrawerPost() {
+function DrawerPost({show,selfID,userId,toggle}) {
+  console.log(selfID,userId);
   return (
-    <Drawer>
-        <DrawerTrigger className='text-white'>Open</DrawerTrigger>
+    <Drawer open={show}>
         <DrawerContent className='bg-[#09090B] text-white'>
+        <DrawerClose onClick={()=>{toggle(false)}} className='absolute right-4 top-2 text-lg' ><FaXmark/></DrawerClose>
             <DrawerHeader >
-            {/* <DrawerClose className='absolute right-0 top-0'>
-                <Button variant="outline">X</Button>
-            </DrawerClose> */}
-            
-            <DrawerDescription className='text-md flex gap-x-4 my-2'><span><Bookmark/></span>Add To BookMark</DrawerDescription>
-            <DrawerDescription className='text-md flex gap-x-4 my-2'><span><Forward/></span>Share</DrawerDescription>
-            <DrawerDescription className='text-md flex gap-x-4 my-2'><span><OctagonX/></span>Do not Recommend</DrawerDescription>
-            <DrawerDescription className='text-md flex gap-x-4 my-2'><span><Flag/></span>Report</DrawerDescription>
-            <DrawerDescription className='text-md flex gap-x-4 my-2'><span><EyeOff/></span>Hide Post <Switch className='bg-white'/></DrawerDescription>
-            <DrawerDescription className='text-md flex gap-x-4 my-2 text-red-400'><span><Trash2/></span>Delete</DrawerDescription>
-            </DrawerHeader>
-            
-            {/* <Button>Submit</Button> */}
-            
+              <DrawerDescription className='text-md flex gap-x-4 my-2'><span><Bookmark/></span>Add To BookMark</DrawerDescription>
+              <DrawerDescription className='text-md flex gap-x-4 my-2'><span><Forward/></span>Share</DrawerDescription>
+              {!selfID && <DrawerDescription className='text-md flex gap-x-4 my-2'><span><OctagonX/></span>Do not Recommend</DrawerDescription>}
+              {!selfID && <DrawerDescription className='text-md flex gap-x-4 my-2'><span><Flag/></span>Report</DrawerDescription>}
+              {selfID && <DrawerDescription className='text-md flex justify-between my-2'><span className='flex gap-x-4'><EyeOff/> <label htmlFor="hide">Hide Post</label></span> <Switch id='hide' className="data-[state=checked]:bg-white"/></DrawerDescription>}
+              {selfID && <DrawerDescription className='text-md flex gap-x-4 my-2 text-red-400'><span><Trash2/></span>Delete</DrawerDescription>}            </DrawerHeader>
         </DrawerContent>
     </Drawer>
 
