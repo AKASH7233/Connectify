@@ -7,6 +7,7 @@ import { profile } from '../../redux/usersSlice';
 import { toggleFollow } from '../../redux/followSlice';
 import { BsChevronCompactLeft, BsChevronCompactRight,BsThreeDotsVertical } from "react-icons/bs";
 import { RxDot, RxDotFilled } from "react-icons/rx";
+import DrawerPost from '../shadCompo/Drawer';
 
 function Header({post}) {
     const currentUser = useSelector(state=> state?.auth?.user) 
@@ -75,6 +76,10 @@ function Header({post}) {
       console.log(index);
       setCurrentIndex(index)
     }
+
+    const toggleDrawer = (res) =>{
+      setShowOptions(res)
+    }
   return (
     <div>
         <div className=' text-white flex justify-between items-center rounded-t py-2 mb-2 px-4 '>
@@ -116,6 +121,7 @@ function Header({post}) {
               <h2 className='bg-black bg-opacity-90  text-sm py-3 text-white '>Delete Post</h2></div> }
           </div>
         }
+        {showOptions && <DrawerPost show={true} selfID={selfID} userId={currentUserId} toggle={toggleDrawer}/>}
     </div>
   )
 }
