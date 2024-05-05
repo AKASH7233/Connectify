@@ -3,15 +3,16 @@ import {
     deletePost, 
     updatePostTitle, 
     uploadPost, 
-    showPosts, 
-    hidePost, 
+    showPosts,  
     showPostLikes,
     postComments,
-    visitedPost
+    visitedPost,
+    togglehidePost,
+    myPosts,
+    hiddenPost
 } from "../controllers/post.controller.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 import { verifyJWT } from "../middlewares/auth.js";
-import { postComment } from "../controllers/comment.controller.js";
 
 const router = Router();
 router.use(verifyJWT)
@@ -34,13 +35,21 @@ router.route('/updatepost/:postId').post(
     updatePostTitle
 )
 
+router.route('/myposts/:userId').post(
+    myPosts
+)
+
+router.route('/hiddenpost').post(
+    hiddenPost
+)
 router.route('/deletepost/:postId').post(
     deletePost
 )
 
-router.route('/hidepost/:postId').post(
-    hidePost
+router.route('/togglehidepost/:postId').post(
+    togglehidePost
 )
+
 router.route('/showlikes/:postId').post(
     showPostLikes
 )
