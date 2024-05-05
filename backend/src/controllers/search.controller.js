@@ -21,7 +21,7 @@ const search = asyncHandler( async(req,res)=>{
         }
     
         if(response.length === 0){
-            responsePost = await Post.find({title: {$regex : search}})
+            responsePost = await Post.find({title: {$regex : search}},{isPublished : true})
             console.log(responsePost);
         }
     
