@@ -121,7 +121,7 @@ function Header({post}) {
               <h2 className='bg-black bg-opacity-90  text-sm py-3 text-white '>Delete Post</h2></div> }
           </div>
         }
-        {showOptions && <DrawerPost show={true} selfID={selfID} userId={currentUserId} toggle={toggleDrawer}/>}
+        {showOptions && <DrawerPost show={true} selfID={selfID} userId={currentUserId} toggle={toggleDrawer} post={post}/>}
     </div>
   )
 }
