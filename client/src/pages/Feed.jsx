@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 
 import Post from '../components/Post/Post'
 import { getPosts } from '../redux/postSlice'
+import { updateRefreshToken } from '@/redux/authSlice'
 
  function Feed () {
   const navigate = useNavigate()
@@ -14,8 +15,14 @@ import { getPosts } from '../redux/postSlice'
     (async()=>{
       let data = await (dispatch(getPosts()))
       setPosts(data?.payload.data)
-   })()
+    })()
   },[])
+
+  ;(async()=>{
+    let resp = await dispatch(updateRefreshToken())
+    console.log(resp);
+  })()
+
   
   return (
     <div>
