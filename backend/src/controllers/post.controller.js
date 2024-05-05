@@ -4,7 +4,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { ApiErrResponse } from "../utils/ApiErrResponse.js";
 
 const showPosts = asyncHandler( async(_,res,next)=>{
@@ -49,7 +49,6 @@ const showPosts = asyncHandler( async(_,res,next)=>{
         )
     )
     
-    next()
 })
 
 const uploadPost = asyncHandler( async(req,res)=>{
@@ -124,11 +123,10 @@ const uploadPost = asyncHandler( async(req,res)=>{
                 throw new ApiError(500,"Failed to Upload Post")
             }
             
+            // const user = await User.findById(req.user._id)
         
-            const user = await User.findById(req.user._id)
-            
-            user.posts.push(post)
-            user.save({validateBeforeSave : false})
+            // user.posts.push(await post.populate())
+            // user.save({validateBeforeSave : false})
         
             return res
             .status(200)
@@ -204,28 +202,62 @@ const deletePost = asyncHandler( async(req,res)=>{
     )
 })
 
-const hidePost = asyncHandler( async(req,res)=>{
-    const {postId} = req.params || req.body
-    
-    await Post.findByIdAndUpdate(
-        postId,
-        {
-            $set: {
-                isPublished : false
-            }
-        },
-        {new : true}
-    )
+const togglehidePost = asyncHandler( async(req,res)=>{
+    const {postId} = req.params 
 
-    return res
-    .status(200)
-    .json(
-        new ApiResponse(
-            200,
-            {},
-            "Post Hide Successfully"
+    if(!isValidObjectId(postId)){
+        throw new ApiError(401,'Invalid Post Id !!')
+    }
+
+    let AlreadyHidden = await Post.findOne({
+        _id: postId,
+        isPublished : false
+    })
+
+    let hidden;
+    let unhidden;
+
+    if(!AlreadyHidden){
+        hidden = await Post.findByIdAndUpdate(
+            postId,
+            {
+                $set: {
+                    isPublished : false
+                }
+            },
+            {new : true}
         )
-    )
+        if(!hidden){
+            throw new ApiError(501,"Failed to hide the post")
+        }
+    }else{
+        unhidden =  await Post.findByIdAndUpdate(
+            postId,
+            {
+                $set: {
+                    isPublished : true
+                }
+            },
+            {new :true}
+        )
+        if(!unhidden){
+            throw new ApiError(501,"Failed to unhide the post")
+        }
+    }
+
+    console.log('hide',hidden);
+    console.log('unhide',unhidden);
+    
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                `post ${hidden ? "hidden" : "unhiden"} successfully !!`
+            )
+         )
+
 })
 
 const showPostLikes = asyncHandler( async(req,res)=>{
@@ -374,13 +406,40 @@ const visitedPost = asyncHandler(async (req,res)=>{
     )
 })
 
+const myPosts = asyncHandler(async (req,res)=>{
+    const {userId} = req.params
+    let posts = await Post.find({
+        postedBy : userId,
+        isPublished: true
+    })
+
+    return res
+    .json(
+        new ApiResponse(200,posts,'post Fetch SuccessFully !')
+    )
+})
+
+const hiddenPost = asyncHandler(async (req,res)=>{
+    const posts = await Post.find({
+        postedBy: req?.user?._id,
+        isPublished: false
+    })
+
+    return res
+    .json(
+        new ApiResponse (200, posts, 'Fetched Hidden Posts') 
+    )
+})
+
 export {
     uploadPost,
     updatePostTitle,
     deletePost,
     showPosts,
-    hidePost,
+    togglehidePost,
     showPostLikes,
     postComments,
-    visitedPost
+    visitedPost,
+    myPosts,
+    hiddenPost
 }
