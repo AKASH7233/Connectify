@@ -182,7 +182,7 @@ export const deleteUser = createAsyncThunk('auth/deleteUser',async()=>{
 
 })
 
-export const updateAccessToken = createAsyncThunk('auth/updateAccessToken',async()=>{
+export const updateRefreshToken = createAsyncThunk('auth/updateRefreshToken',async()=>{
     let response =  axiosInstance.post('/user/refreshToken')
 
     let resp =  await response
