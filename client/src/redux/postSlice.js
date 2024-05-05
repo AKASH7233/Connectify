@@ -6,7 +6,8 @@ const initialState = {
     posts: [] || JSON.parse(localStorage.getItem('posts')),
     postFile: null || JSON.parse(localStorage.getItem('postFile')),
     title : '' || JSON.parse(localStorage.getItem('title')),
-    visitedPost : {} || JSON.parse(localStorage.getItem('visitedPost'))
+    visitedPost : {} || JSON.parse(localStorage.getItem('visitedPost')),
+    myPosts : [] || JSON.parse(localStorage.getItem('myposts'))
 }
 
 export const getPosts = createAsyncThunk('post/getpost',async()=>{
@@ -108,6 +109,24 @@ export const deletePost = createAsyncThunk('post/delete', async()=>{
     }
 })
 
+export const togglehidePost = createAsyncThunk('post/togglehidepost',async(data)=>{
+    const response = await axiosInstance.post(`/post/togglehidepost/${data}`)
+    if(response?.data?.message){
+        toast.success(response?.data?.message)
+    }
+    if(response?.data?.error){
+        toast.error(response?.data?.error)
+    }
+    return response.data
+})
+
+export const myPosts = createAsyncThunk('post/myposts',async(data)=>{
+    console.log(data);
+    let response = await axiosInstance.post(`/post/myposts/${data}`)
+    
+    return response.data
+})
+
 export const postSlice = createSlice({
     name: 'post',
     initialState,
@@ -130,7 +149,10 @@ export const postSlice = createSlice({
             state.visitedPost = action.payload
             localStorage.setItem('visitedPost',JSON.stringify(action?.payload))
         })
-
+        .addCase(myPosts.fulfilled,(state,action)=>{
+            localStorage.setItem('myposts',JSON.stringify(action?.payload?.data))
+            state.myPosts.push(action.payload.data);
+        })
     }
 })
 
