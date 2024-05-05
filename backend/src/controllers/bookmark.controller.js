@@ -112,6 +112,11 @@ const AllBookedPost = asyncHandler(async(req,res)=>{
             }
         },
         {
+            $match: {
+                'BookedPost.isPublished' : true
+            }
+        },
+        {
             $project : {
                 '_id':0,
                 'BookedPost._id' : 1,
