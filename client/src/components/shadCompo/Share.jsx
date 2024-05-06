@@ -14,25 +14,26 @@ import {
 import {  Forward } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useCallback } from "react";
 
-export function DialogCloseButton({link}) {
+export function DialogCloseButton({link,drawer = false}) {
 
     const shareLink = `localhost:5173/viewpost/${link}/comment`
-
+    const [title,setTitle] = useState(false)
     const shareRef = useRef(null)
 
     const copy = useCallback(() => {
         shareRef.current?.select()
         shareRef.current?.setSelectionRange(0, 999);
         window.navigator.clipboard.writeText(shareLink)
+        setTitle(true)
     })
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline"><Forward/></Button>
+        <Button variant="outline">{drawer ? <span className="flex text-lg items-center gap-x-4"><Forward/> share</span>:<Forward/>}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md w-[90vw] rounded-xl bg-[#09090B] text-gray-400">
         <DialogHeader>
@@ -55,10 +56,10 @@ export function DialogCloseButton({link}) {
             />
           </div>
           <button onClick={copy} size="sm" className="p-3 bg-white rounded-[10px] text-black">
-            <span className="sr-only">Copy</span>
             <MdContentCopy className="h-4 w-4 " />
           </button>
-        </div>
+          {title && <p className="absolute right-3 top-[61%] text-sm bg-white px-2 text-black rounded-xl">copied</p>}
+      </div>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
             <Button type="button" className='bg-white text-black mt-5 rounded-xl' variant="secondary">
