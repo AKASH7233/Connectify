@@ -1,4 +1,4 @@
-import { CopyIcon } from "@radix-ui/react-icons"
+import { MdContentCopy } from "react-icons/md";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -11,19 +11,33 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import {  Forward } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useRef } from "react";
+import { useCallback } from "react";
 
-export function DialogCloseButton() {
+export function DialogCloseButton({link}) {
+
+    const shareLink = `localhost:5173/viewpost/${link}/comment`
+
+    const shareRef = useRef(null)
+
+    const copy = useCallback(() => {
+        shareRef.current?.select()
+        shareRef.current?.setSelectionRange(0, 999);
+        window.navigator.clipboard.writeText(shareLink)
+    })
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Share</Button>
+        <Button variant="outline"><Forward/></Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md w-[90vw] rounded-xl bg-[#09090B] text-gray-400">
         <DialogHeader>
-          <DialogTitle>Share link</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className='text-white'>Share link</DialogTitle>
+          <DialogDescription className='text-gray-400'>
             Anyone who has this link will be able to view this.
           </DialogDescription>
         </DialogHeader>
@@ -33,19 +47,21 @@ export function DialogCloseButton() {
               Link
             </Label>
             <Input
+              ref={shareRef}
               id="link"
-              defaultValue="https://ui.shadcn.com/docs/installation"
+              defaultValue = {shareLink}
               readOnly
+              className='border-white  text-white rounded-[10px]'
             />
           </div>
-          <Button type="submit" size="sm" className="px-3">
+          <button onClick={copy} size="sm" className="p-3 bg-white rounded-[10px] text-black">
             <span className="sr-only">Copy</span>
-            <CopyIcon className="h-4 w-4" />
-          </Button>
+            <MdContentCopy className="h-4 w-4 " />
+          </button>
         </div>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" className='bg-white text-black mt-5 rounded-xl' variant="secondary">
               Close
             </Button>
           </DialogClose>
