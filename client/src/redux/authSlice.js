@@ -186,7 +186,7 @@ export const updateRefreshToken = createAsyncThunk('auth/updateRefreshToken',asy
     let response =  axiosInstance.post('/user/refreshToken')
 
     let resp =  await response
-    return resp
+    return resp.data
 })
 
 
