@@ -8,6 +8,7 @@ import { FaComment } from "react-icons/fa6";
 import { TiArrowForwardOutline } from "react-icons/ti";
 import { showComments } from '@/redux/commentSlice';
 import { isBooked, toogleBookmark } from '@/redux/bookMark';
+import { DialogCloseButton } from '../shadCompo/Share';
 
 function Footer({post}) {
     const dispatch = useDispatch()
@@ -83,7 +84,9 @@ function Footer({post}) {
                 <Link to={`/viewpost/${post?._id}/comment`}>
                     <span className='flex gap-x-1'><FaRegComment className='text-[20px]'/>{commentCount > 1 ? commentCount : ''}</span> 
                 </Link>
-                <h2 className='flex items-center gap-1 '><TiArrowForwardOutline  className='text-2xl'/></h2>
+                <div className='-mx-4'>
+                  <DialogCloseButton link={post?._id} className/>
+                </div>
             </div>
             <button onClick={addBookMark} className='text-lg absolute right-3 text-white'>
               {addToBookMark ? <FaBookmark/> : <FaRegBookmark />}
