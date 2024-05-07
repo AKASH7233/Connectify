@@ -127,6 +127,12 @@ export const myPosts = createAsyncThunk('post/myposts',async(data)=>{
     return response.data
 })
 
+export const showHiddenPost = createAsyncThunk('post/showHiddenPost',async()=>{
+    const response = await axiosInstance.post(`/post/hiddenpost`)
+
+    return response.data
+})
+
 export const postSlice = createSlice({
     name: 'post',
     initialState,
