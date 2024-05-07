@@ -33,7 +33,7 @@ import {
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DialogDemo } from "./Dialog";
 import { useState } from "react";
   
@@ -74,11 +74,13 @@ import { useState } from "react";
                 <span>Settings</span>
                 <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                <Keyboard className="mr-2 h-4 w-4" />
-                <span>Hidden Posts</span>
-                <DropdownMenuShortcut>⌘H</DropdownMenuShortcut>
-                </DropdownMenuItem>
+                <Link to={`/hiddenpost`}>
+                    <DropdownMenuItem >
+                    <Keyboard className="mr-2 h-4 w-4" />
+                    <span>Hidden Posts</span>
+                    <DropdownMenuShortcut>⌘H</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
