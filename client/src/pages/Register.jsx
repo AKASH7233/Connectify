@@ -5,7 +5,8 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
 
 import { createAccount } from '../redux/authSlice';
-import axiosInstance from '../utils/ApiFetch'
+import { FaEyeSlash } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 
 function Register() {
   const navigate = useNavigate()
@@ -47,7 +48,7 @@ function Register() {
     try {
       const response = await dispatch(createAccount(userInfo))
       if (response?.payload?.message) {
-        navigate('/myProfile')
+        navigate('/login')
       }
       console.log(response)
     } catch (error) {
@@ -55,10 +56,13 @@ function Register() {
     }
   }
 
+  const [showPass,setShowPass] = useState(false)
+
+
 
   return (
     <div className='flex items-center justify-center h-screen bg-black text-white'>
-      <div className='flex flex-col items-center justify-center border border-white p-8 w-80'>
+      <div className='flex flex-col items-center justify-center border bg-[#09090B] border-[#27272A] p-8 w-80'>
         <h2 className='text-4xl mb-8 text-center'>Logo</h2>
         <label htmlFor="image" className="cursor-pointer mb-4">
           {
@@ -71,12 +75,12 @@ function Register() {
         </label>
         <input type="file" id='image' onChange={handleAvatar} className="hidden" name="ProfileImage" placeholder='upload Profile Image' accept='.jpg, .png, .jpeg , .png, .svg ' />
 
-        <input type="text" className='px-3 py-2 rounded border-none mb-4 w-full' name='fullName' value={userInfo.fullName} onChange={eventHandler} placeholder='Enter your FullName' />
-        <input type="text" className='px-3 py-2 rounded border-none mb-4 w-full' name='username' value={userInfo.username} onChange={eventHandler} placeholder='Enter your UserName' />
-        <input type="email" className='px-3 py-2 rounded border-none mb-4 w-full' name='email' value={userInfo.email} onChange={eventHandler} placeholder='Enter Your Email' />
-        <input type="password" className='px-3 py-2 rounded border-none mb-4 w-full' name='password' value={userInfo.password} onChange={eventHandler} placeholder='Set a Password' />
+        <input type="text" className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 placeholder:text-sm w-full' name='fullName' value={userInfo.fullName} onChange={eventHandler} placeholder='Enter your Fullname' />
+        <input type="text" className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='username' value={userInfo.username} onChange={eventHandler} placeholder='Enter your Username' />
+        <input type="email" className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='email' value={userInfo.email} onChange={eventHandler} placeholder='Enter Your Email' />
+        <div className='w-full relative'><input type={showPass ? 'text' : 'password'} className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='password' value={userInfo.password} onChange={eventHandler} placeholder='Set a Password' /><span onClick ={()=>{setShowPass(!showPass)}} className = 'absolute right-3 top-2'>{ showPass ? <FaEye /> : <FaEyeSlash/>}</span></div>
 
-        <button className='bg-purple-600 px-10 py-2 mt-8 rounded text-lg w-full' onClick={search}>Register</button>
+        <button className='bg-white text-black px-10 py-2 mt-4 text-md rounded-[5px]  w-full' onClick={search}>Register</button>
         <p className="text-sm my-4 text-center">
           Already have an account?
           <Link to={`/login`} className="underline ml-2">Login</Link>
