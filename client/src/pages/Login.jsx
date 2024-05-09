@@ -5,6 +5,9 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { login } from '../redux/authSlice'
 
+import { FaEyeSlash } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
+
 function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -29,22 +32,25 @@ function Login() {
       const response = await dispatch(login(userInfo))
       if(response?.payload.message){
         if(screen.width > 400) return navigate('/')
-        navigate('/feed')
+        else{navigate('/feed')}
       }
     }
 
+    
+  const [showPass,setShowPass] = useState(false)
+
   return (
-    <div className='flex items-center justify-center h-screen bg-gray-900'>
-      <div className='p-10 bg-white rounded-lg shadow-2xl w-1/3'>
-        <h2 className='text-3xl font-bold mb-5 text-gray-900 text-center'>Login</h2>
-        <input type="text" className='border p-2 w-full mb-3 rounded-md outline-none' name='username' value={userInfo.username} onChange={eventHandler} placeholder='Enter your UserName'/>
-        <input type="email" className='border p-2 w-full mb-3 rounded-md outline-none' name='email' value={userInfo.email} onChange={eventHandler} placeholder='Enter Your Email'/>
-        <input type="password" className='border p-2 w-full mb-3 rounded-md outline-none' name='password' value={userInfo.password} onChange={eventHandler} placeholder='Enter Password' />
-        <button className = 'bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded font-medium w-full'  onClick={search}>Login</button>
-        <p className="text-center text-sm my-4 ">
-          Does not Have an account?
-          <br />Create an account
-          <Link to={`/register`} className="underline mx-2 text-blue-500">Register</Link>
+    <div className='flex items-center justify-center h-screen bg-black text-white'>
+      <div className='flex flex-col items-center justify-center border bg-[#09090B] border-[#27272A] p-8 w-80'>
+      <h2 className='text-4xl mb-8 text-center'>Logo</h2>
+        <input type="text" className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='username' value={userInfo.username} onChange={eventHandler} placeholder='Enter your Username' />
+        <input type="email" className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='email' value={userInfo.email} onChange={eventHandler} placeholder='Enter Your Email' />
+        <div className='w-full relative'><input type={showPass ? 'text' : 'password'} className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='password' value={userInfo.password} onChange={eventHandler} placeholder='Set a Password' /><span onClick ={()=>{setShowPass(!showPass)}} className = 'absolute right-3 top-2'>{ showPass ? <FaEye /> : <FaEyeSlash/>}</span></div>
+
+        <button className='bg-white text-black px-10 py-2 mt-4 text-md rounded-[5px]  w-full' onClick={search}>Login</button>
+        <p className="text-sm my-4 text-center">
+          Don't have an account?
+          <Link to={`/Register`} className="underline ml-2">Register</Link>
         </p>
       </div>
     </div>
