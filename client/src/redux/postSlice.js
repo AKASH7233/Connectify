@@ -90,9 +90,9 @@ export const EditPost = createAsyncThunk('post/edit', async(data)=>{
     }
 })
 
-export const deletePost = createAsyncThunk('post/delete', async()=>{
+export const deletePost = createAsyncThunk('post/delete', async(data)=>{
     try {
-        const responsePromise = await axiosInstance.post('/post/deletepost');
+        const responsePromise = await axiosInstance.post(`/post/deletepost/${data}`);
     
         if(responsePromise?.data.message){
             toast.success(responsePromise?.data.message)
