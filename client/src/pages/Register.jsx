@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { createAccount } from '../redux/authSlice';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
+import icon from "../assets/icon.jpg" 
 
 function Register() {
   const navigate = useNavigate()
@@ -62,8 +63,11 @@ function Register() {
 
   return (
     <div className='flex items-center justify-center h-screen bg-black text-white'>
-      <div className='flex flex-col items-center justify-center border bg-[#09090B] border-[#27272A] p-8 w-80'>
-        <h2 className='text-4xl mb-8 text-center'>Logo</h2>
+      <div className='flex flex-col items-center justify-center border bg-[#09090B] border-[#27272A] px-8  w-80'>
+       <div className='flex items-center'>
+        <div style={{backgroundImage : `url(${icon})`}} className='w-[12vw] rounded-xl bg-center bg-contain bg-no-repeat h-20 duration-400 text-white mix-blend-hard-light'></div>
+        <h2 className='logo text-2xl'>ConnectiFy</h2>
+       </div>
         <label htmlFor="image" className="cursor-pointer mb-4">
           {
             profileImageImage ? (
