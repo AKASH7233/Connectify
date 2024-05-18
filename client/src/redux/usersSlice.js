@@ -4,8 +4,7 @@ import toast from "react-hot-toast";
 import axiosInstance from "../utils/ApiFetch";
 
 const initialState = {
-    // isFollow: false || JSON.parse(localStorage.getItem('isFollow')),
-    users:{}
+   searchedUser: {}
 }
 
 export const profile = createAsyncThunk('auth/profile',async(data)=>{
