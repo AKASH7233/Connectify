@@ -1,17 +1,12 @@
 import {
     Cloud,
     CreditCard,
-    Github,
     Keyboard,
     LifeBuoy,
     LogOut,
-    Mail,
-    MessageSquare,
     Plus,
-    PlusCircle,
     Settings,
     User,
-    UserPlus,
     Users,
   } from "lucide-react"
   
@@ -136,6 +131,10 @@ import { useState } from "react";
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick = {logoutUser}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span></span>
             </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
