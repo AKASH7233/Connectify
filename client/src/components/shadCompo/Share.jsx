@@ -18,10 +18,9 @@ import { useRef, useState } from "react";
 import { useCallback } from "react";
 import ShareBtn from "../ShareBtn/ShareBtn";
 
-export function DialogCloseButton({post,drawer = false}) {
+export function DialogCloseButton({shareLink,title,drawer = false,className = ''}) {
 
-    const shareLink = `localhost:5173/viewpost/${post?._id}/comment`
-    const title = post?.title
+    
     const shareRef = useRef(null)
     const [isCopied,setIsCopied] = useState(false)
 
@@ -40,7 +39,7 @@ export function DialogCloseButton({post,drawer = false}) {
         !navigator.share &&  */}
         <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">{drawer ? <span className="flex text-lg items-center gap-x-4"><Forward/> share</span>:<Forward/>}</Button>
+          <Button variant="outline">{drawer ? <span className={`flex text-lg items-center gap-x-4 ${className}`}><Forward/> share</span>:<Forward/>}</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md w-[90vw] rounded-xl bg-[#09090B] text-gray-400">
           <DialogHeader>
@@ -70,13 +69,13 @@ export function DialogCloseButton({post,drawer = false}) {
         <div className="lg:px-6">
           <ShareBtn title={title} url={shareLink}/>
         </div>
-          <DialogFooter className="sm:justify-start">
+          {/* <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
-              <Button type="button" className='bg-white text-black mt-5 rounded-xl' variant="secondary">
+              <button type="button" className='bg-white text-black mt-5 py-2 px-5 rounded-xl' variant="secondary">
                 Close
-              </Button>
+              </button>
             </DialogClose>
-          </DialogFooter>
+          </DialogFooter> */}
         </DialogContent>
       </Dialog>
      {/* } */}
