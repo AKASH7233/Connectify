@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Header from '../Header'
-import Like from '../Like';
+import Header from '../post/Header'
+import Like from '../post/Like';
 import Comment from './Comment';
 import { useParams } from 'react-router-dom';
 import { getVisitedPosts } from '@/redux/postSlice';
 import ViewLikes from './viewLike';
 import ViewComment from './ViewComment';
 import { showComments } from '@/redux/commentSlice';
-import Post from '../Post';
+import Post from '../post/Post';
 import LikedBy from './LikedBy';
 
 function ViewPost() {
@@ -68,7 +68,7 @@ function ViewPost() {
                 {allComment?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i} render={load}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
                 </div>
               </div>
-              <div className='fixed bottom-0 bg-gray-950 py-3 w-full'><Comment post = {postInfo} render={load}/></div>
+              <div className='fixed bottom-0 bg-gray-950 lg:w-[30%] py-3 w-full'><Comment post = {postInfo} render={load}/></div>
 
             </>
           }

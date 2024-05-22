@@ -7,21 +7,17 @@ import { toggleFollow } from '../../redux/followSlice'
 
 
 function UserHeader({user}) {
-    console.log(user);
     const profileImg =  user?.ProfileImage ? user?.ProfileImage : profileimg
     const dispatch = useDispatch()
     const currentUserId = useSelector(state => state.auth?.user[0])?._id || useSelector(state => state.auth?.user)?.user?._id
-    console.log(currentUserId);
     const [isFollowed,setIsFollowed] = useState(false)
     const selfAccount = currentUserId == user?._id 
     const userID = selfAccount ? 'myprofile' : `user/${user?._id}`
   
     const search = async() =>{
         let response = await dispatch(profile(user?._id))
-        console.log(response);
         setIsFollowed(response?.payload?.data[0]?.isFollowed);
-        console.log(response?.payload?.data[0]?.username ,response?.payload?.data[0]?.isFollowed);
-      }
+        }
     useEffect(()=>{
         search()
     },[])
@@ -39,7 +35,7 @@ function UserHeader({user}) {
                 <h2>{user?.username}</h2>
                 </div>
             </Link>
-            <button className={`${isFollowed ? 'bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-sm py-1 ' : 'block'} ${selfAccount ? 'invisible' : 'block'} bg-blue-500 text-white w-24 text-sm rounded-xl`}  onClick={toggle}>{isFollowed?'Following': 'Follow'}</button>
+            <button className={`${isFollowed ? 'bg-gray-900 bg-opacity-90 border-2 text-white border-gray-700 text-sm py-1 ' : 'block bg-white text-black'} ${selfAccount ? 'invisible' : 'block'}   w-24 text-sm rounded-xl`}  onClick={toggle}>{isFollowed?'Following': 'Follow'}</button>
          </div>
     </div>
   )

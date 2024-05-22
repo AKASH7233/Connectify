@@ -35,7 +35,7 @@ function ViewReplies() {
             <ViewComment info={reply} reply={false} key={reply?._id}/>
           ))}
         </div>
-        <div className='bg-black py-3 fixed w-full bottom-0'>
+        <div className='bg-black z-50 py-3 fixed w-full lg:w-[30%] bottom-0'>
           <Comment post={commentId} reply={true}/>
         </div>
     </div>

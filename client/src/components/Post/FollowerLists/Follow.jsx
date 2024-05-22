@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { getUserData } from '../../../redux/authSlice'
 import { Followers, Following } from '../../../redux/followSlice'
 import UserHeader from '../../userHeader/UserHeader'
-import Header from '../Header'
+import Header from '../post/Header'
 import { IoSearchSharp } from "react-icons/io5";
 import { toast } from 'react-toastify'
 

@@ -47,9 +47,9 @@ function LikedBy() {
         //   ))}
         // </div>
         <div className='bg-black py-4'>
-            <div className='flex px-4 gap-x-20 items-center py-4'>
+            <div className='flex px-4 gap-x-20 items-center py-4 lg:gap-x-36'>
                 <BackBtn />
-                <h2 className='text-center text-white'>Liked By</h2>
+                <h2 className='text-center  text-white'>Liked By</h2>
             </div>
       <div className='min-h-[100vh] bg-black'>
         {likedBy?.length == 0 && <div className='w-full h-[80vh]'><div className='flex justify-center items-center h-full '><h2 className='text-white text-xl '>0 Likes</h2></div></div>}
@@ -60,7 +60,7 @@ function LikedBy() {
           value={Search}
           onChange={inputHandler}
           placeholder='search username'
-          className='bg-transparent bg-opacity-90 border-2 border-gray-700 text-sm py-2 px-8 rounded-[10px] outline-none text-white'
+          className='bg-transparent bg-opacity-90 border-2 border-gray-700 text-sm py-2 px-8 rounded-[10px] outline-none text-white lg:pr-24'
           />
           <button onClick={search} className='text-white bg-gray-900 absolute right-16 bg-opacity-90 border-2 border-gray-700 text-sm py-2 px-3 rounded-[10px]'><IoSearchSharp className = "text-xl"/></button>
         </div>
