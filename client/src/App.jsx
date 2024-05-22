@@ -2,22 +2,22 @@ import './App.css'
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import Follow from './components/Post/FollowerLists/Follow'
-import ViewPost from './components/Post/viewPost/viewPost'
-import ViewReplies from './components/Post/viewPost/viewReplies'
 import Chat from './pages/Chat'
-import Feed from './pages/Feed'
+import Feed from './components/Feed/Feed'
 import Home from './pages/Home'
 import Login from './pages/Login'
-import MyProfile from './pages/MyProfile'
 import Register from './pages/Register'
-import Search from './pages/Search'
-import UploadPost from './pages/UploadPost'
-import UserProfile from './pages/UserProfile'
+import UserAccount from './pages/UserAccount'
 import DataFetch from './utils/DataFetch'
-import UpdateProfile from './components/Post/Profile/UpdateProfile'
-import LikedBy from './components/Post/viewPost/LikedBy'
-import HiddenPost from './pages/HiddenPost'
+import UpdateProfile from './components/Profile/UpdateProfile'
+import MyAccount from './pages/MyAccount'
+import UploadPage from './pages/UploadPage'
+import SearchPage from './pages/SearchPage'
+import FollowPage from './pages/FollowPage'
+import VisitedPostPage from './pages/VistiedPost'
+import LikedByPage from './pages/LikesPage'
+import HiddenPostPage from './pages/HiddenPostPage'
+import CommentRepliesPage from './pages/CommentRepliesPage'
 
 function App() {
 
@@ -28,22 +28,22 @@ function App() {
           <Route path='/' element={<Home />}/>
           <Route path='/register' element = {<Register/>} />
           <Route path='/login' element = {<Login/>} />
-          <Route path='/user/:userId' element={<UserProfile/>}/>
-          <Route path='/myProfile' element={<MyProfile />}/>
+          <Route path='/user/:userId' element={<UserAccount/>}/>
+          <Route path='/myProfile' element={<MyAccount />}/>
           <Route path='/feed' element={<Feed />} />
-          <Route path='/uploadPost' element ={<UploadPost/>} />
+          <Route path='/uploadPost' element ={<UploadPage/>} />
           <Route path='/test' element= {<DataFetch/>}/>
-          <Route path='/search' element={<Search/>}/>
+          <Route path='/search' element={<SearchPage/>}/>
 
           <Route path='/editprofile' element={<UpdateProfile/>}/> 
 
-          <Route path='/followlist/:type/:userId' element={<Follow/>} />
+          <Route path='/followlist/:type/:userId' element={<FollowPage/>} />
 
           <Route path='/chat' element={<Chat/>}/>
-          <Route path='/viewpost/:postId/:type' element={<ViewPost />} />
-          <Route path='viewreplies/:commentId' element={<ViewReplies/>} />
-          <Route path='/likes/:postId' element={<LikedBy />} />
-          <Route path='/hiddenpost' element={<HiddenPost />} />
+          <Route path='/viewpost/:postId/:type' element={<VisitedPostPage />} />
+          <Route path='viewreplies/:commentId' element={<CommentRepliesPage/>} />
+          <Route path='/likes/:postId' element={<LikedByPage />} />
+          <Route path='/hiddenpost' element={<HiddenPostPage />} />
         </Routes>
       </BrowserRouter>
     </div>
