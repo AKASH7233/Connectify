@@ -73,7 +73,7 @@ export const uploadPost = createAsyncThunk('post/uploadPost', async(data)=>{
 
 export const EditPost = createAsyncThunk('post/edit', async(data)=>{
     try {
-        const responsePromise = await axiosInstance.post('/post/updatepost',data);
+        const responsePromise = await axiosInstance.post(`/post/updatepost/${data.id}`,{title:data.title});
     
         if(responsePromise?.data.message){
             toast.success(responsePromise?.data.message)
