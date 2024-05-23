@@ -162,13 +162,14 @@ const updatePostTitle = asyncHandler( async(req,res)=>{
         postId,
         {
             $set: {
-                title
+                title:title,
+                isEdit : true
             }
         },
         {new: true}
     )
 
-    console.log(post);
+    console.log(`post`,post);
     if(!post){
         throw new ApiError(500,"Failed to update the Title")
     }

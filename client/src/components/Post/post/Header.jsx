@@ -21,6 +21,7 @@ function Header({post}) {
     const [readMore,setReadMore] = useState(false)
     const [showOptions,setShowOptions] = useState(false)
 
+    console.log(post);
     let postAt;
     const postedAt = new Date(post?.createdAt)
     const currentTime = new Date()
@@ -80,12 +81,12 @@ function Header({post}) {
     }
   return (
     <div>
-        <div className=' text-white flex justify-between items-center rounded-t py-2 mb-2 px-4 '>
+        <div className=' text-white  flex justify-between items-center rounded-t py-2 mb-2 px-4 '>
             <Link to={`/${userId}`}>
                 <div className='flex gap-x-3 items-center'>
                 <img src={profileImg} alt="post_file" className='w-10 h-10  rounded-[50%] object-fit '/>
                 <div>
-                  <h2>{post?.owner.username}</h2>
+                  <h2 className='flex items-center gap-x-4'>{post?.owner.username} {post?.isEdit && <span className='text-sm text-gray-400'>&#40;edited&#41;</span>}</h2>
                   <h2 className='text-gray-400 text-sm'>{postAt}</h2>
                 </div>
                 </div>
