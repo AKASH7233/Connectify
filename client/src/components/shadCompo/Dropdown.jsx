@@ -1,11 +1,13 @@
 import {
     Cloud,
     CreditCard,
+    Forward,
     Keyboard,
     LifeBuoy,
     LogOut,
     Plus,
     Settings,
+    Trash2,
     User,
     Users,
   } from "lucide-react"
@@ -26,13 +28,15 @@ import {
   } from "@/components/ui/dropdown-menu"
 
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/redux/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { DialogDemo } from "./Dialog";
 import { useState } from "react";
+import { DialogCloseButton } from "./Share";
+import AlertBox from "./AlertBox";
   
-  export function DropdownMenuDemo() {
+  export function DropdownMenuDemo({user}) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [edit,setEdit] = useState(false)
@@ -44,6 +48,51 @@ import { useState } from "react";
         await dispatch(logout())
         navigate('/')
     }
+
+    const shareLink = `localhost:5173/user/${user?._id}`
+    const title = user?.username
+
+    // console.log(shareLink,title);
+
+    const [view,setView] = useState(false)
+    const res = (e) => {
+        setView(e)
+    }
+    
+    document.addEventListener('keydown', function(event) {
+        console.log(event.keyCode);
+        if (event.altKey) {
+            switch (event.keyCode) {
+                case 78: // Alt + P
+                    // console.log('Alt + P was pressed!')
+                    setEdit(true)
+                    break;
+                case 83: // Alt + S
+                    console.log('Alt + S was pressed!')
+                    break;
+                case 72: // Alt + H
+                    console.log('Alt + H was pressed!')
+                    navigate('/hiddenpost')
+                    break;
+                case 84: // Alt + T
+                    console.log('Alt + T was pressed!')
+                    break;
+                case 81: // Alt + Q
+                    console.log('Alt + Q was pressed!')
+                    logoutUser()
+                    break;
+                case 68: // Alt + D
+                    console.log('Alt + D was pressed!')
+                    setView(true)
+                    break;
+                default:
+                    break;
+            }
+        }
+    });
+    
+    
+
     return (
       <>
         <DropdownMenu>
@@ -57,29 +106,29 @@ import { useState } from "react";
                 <DropdownMenuItem id='edit' onClick = {()=>{setEdit(true)}}>
                 <User className="mr-2 h-4 w-4" />
                 <span>Edit Profile</span>
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                <DropdownMenuShortcut>ALT+P</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem id='billing' onClick = {sentResponse}>
+                <DropdownMenuItem disabled  id='billing' >
                 <CreditCard className="mr-2 h-4 w-4" />
                 <span>Billing</span>
-                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                <DropdownMenuShortcut>ALT+ B</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                {/* <Forward className="mr-2 h-4 w-4" /> */}
+                <span><DialogCloseButton  className = 'text-sm gap-x-0 -ml-4' shareLink={shareLink} title={title} drawer={true}/></span>
+                <DropdownMenuShortcut>ALT+ S</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <Link to={`/hiddenpost`}>
                     <DropdownMenuItem >
                     <Keyboard className="mr-2 h-4 w-4" />
                     <span>Hidden Posts</span>
-                    <DropdownMenuShortcut>⌘H</DropdownMenuShortcut>
+                    <DropdownMenuShortcut>ALT+ H</DropdownMenuShortcut>
                     </DropdownMenuItem>
                 </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem disabled>
                 <Users className="mr-2 h-4 w-4" />
                 <span>Communities</span>
                 </DropdownMenuItem>
@@ -106,17 +155,17 @@ import { useState } from "react";
                     </DropdownMenuSubContent>
                 </DropdownMenuPortal>
                 </DropdownMenuSub> */}
-                <DropdownMenuItem>
+                <DropdownMenuItem disabled>
                 <Plus className="mr-2 h-4 w-4" />
                 <span>New Community</span>
-                <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+                <DropdownMenuShortcut>ALT+ T</DropdownMenuShortcut>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                <DropdownMenuShortcut>ALT+ J</DropdownMenuShortcut>
                 </DropdownMenuItem>
             <DropdownMenuItem>
                 <LifeBuoy className="mr-2 h-4 w-4" />
@@ -130,14 +179,16 @@ import { useState } from "react";
             <DropdownMenuItem onClick = {logoutUser}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
-                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                <DropdownMenuShortcut>ALT+ Q</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick = {logoutUser}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span></span>
+            <DropdownMenuSeparator/>
+            <DropdownMenuItem className='text-red-400 font-bold ' onClick={()=>{setView(true)}}>
+                <Trash2 className='h-5 w-5 mr-2'/>
+                <span>Delete Account</span>
             </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
+        {view && <AlertBox open={true} warning={'account '} resFunc={res}/> }
         {edit && <DialogDemo open={true} res = {sentResponse}/>}
       </>
     )
