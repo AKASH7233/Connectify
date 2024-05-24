@@ -15,13 +15,13 @@ import { deletePost } from '@/redux/postSlice'
 import { deleteUser } from '@/redux/authSlice'
 import { useNavigate } from 'react-router-dom'
   
-function AlertBox({warning,open,resFunc,id}) {
+function AlertBox({warning,open,resFunc,id = ''}) {
   
     const [show,setShow] = useState(open)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-
+    
     const deleteAPost = async() =>{
       await dispatch(deletePost(id))
       window.history.go(-1)
@@ -44,7 +44,7 @@ function AlertBox({warning,open,resFunc,id}) {
                 </AlertDialogDescription>
                 </AlertDialogHeader> 
                 <AlertDialogFooter>
-                <AlertDialogCancel className='bg-slate-800  text-gray-400' id='cancel'>Cancel</AlertDialogCancel>
+                <AlertDialogCancel className='bg-slate-800  text-gray-400' id='cancel' onClick={()=>{resFunc(false)}}>Cancel</AlertDialogCancel>
                 <AlertDialogAction className='bg-slate-800 text-red-400 border border-red-400' id='delete' onClick={warning == 'post ' ? deleteAPost : deleteCurrentuser}>Delete</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 function HiddenPost() {
     const dispatch = useDispatch()
     const [post,setPost] = useState('')
-
     useEffect(()=>{
         ;(async()=>{
             let response = await dispatch(showHiddenPost())
@@ -23,7 +22,9 @@ function HiddenPost() {
                 })}
             </div> 
         }
-          {!post && post?.length < 1 && < div className='w-full h-48 flex justify-center items-center text-lg'>No Post !</div> }
+        {
+          post?.length == 0 && <div className='text-white w-full h-[70vh] flex items-center justify-center'>0 hidden Post !</div>
+        }
     </div>
   )
 }

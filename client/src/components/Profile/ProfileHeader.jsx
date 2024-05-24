@@ -49,7 +49,7 @@ const ProfileHeader = ({user, follow, toggle, toggleview}) => {
             //   <h2 onClick={logoutUser} className=' bg-gray-900  bg-opacity-90 border-2 border-gray-700 text-sm py-1 px-4 text-gray-400 rounded-[10px] text-center'>logout</h2>
             //   <h2 onClick={()=>{setSure(true)}} className=' bg-gray-900  bg-opacity-90 border-2 border-gray-700 text-sm py-1 px-4 text-red-400 rounded-[10px]'>delete Account</h2>
             // </div>
-             <DropdownMenuDemo/>
+             <DropdownMenuDemo user={user}/>
             }
 
             {option && follow && <h2 className='absolute right-12 bg-gray-900 bg-opacity-90 py-2 border-2 border-gray-700 text-sm  px-4 rounded-[10px]' onClick= {()=>{toast.success(`user reported Successfully`)} }>report user</h2>}

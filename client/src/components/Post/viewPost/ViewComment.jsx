@@ -113,7 +113,7 @@ function ViewComment({info , reply = true ,render}) {
               <div className='absolute right-4 text-sm z-50'><BsThreeDotsVertical onClick={showOptions}/></div>
           </div>
           {
-            !editable && <h2 className={`my-1 mx-8 w-[55vw] break-words bg-transparent outline-none ${readMore ? '' : 'truncate'} ${editable ? 'hidden' : 'block'}`} onClick={()=>{setReadMore(prev => !prev)}} >{comment}</h2>
+            !editable && <h2 className={`my-1 mx-8 w-[55vw] lg:w-[20vw] break-words bg-transparent outline-none ${readMore ? '' : 'truncate'} ${editable ? 'hidden' : 'block'}`} onClick={()=>{setReadMore(prev => !prev)}} >{comment}</h2>
           }
           {
             editable && 
