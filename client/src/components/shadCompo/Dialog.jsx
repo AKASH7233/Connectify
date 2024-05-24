@@ -6,8 +6,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
+import { X } from "lucide-react"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
@@ -45,6 +46,7 @@ export function DialogDemo({open,res}) {
   return (
     <Dialog open={show} >
       <DialogContent className="sm:max-w-[425px] bg-[#09090B] text-white w-[90vw] rounded-xl">
+        <button onClick={()=>{res(false)}} className="w-4 h-4 absolute right-4 top-4 bg-[#09090B] z-40">X</button>
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
           {/* <p className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">X</p> */}
