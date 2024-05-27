@@ -50,8 +50,95 @@ const createBlink = asyncHandler(async(req,res)=>{
     
 })
 
+const deleteBlink = asyncHandler(async(req,res)=>{
+    try {
+        const {blinkId} = req.params
+    
+        if(!blinkId){
+            throw new ApiError(401,'Invalid blinkId !!')
+        }
+    
+        const blink = await Blink.deleteOne({
+            _id : blinkId,
+            user: req.user?._id
+        })
+    
+        if(!blink){
+            throw new ApiError(500,'Failed to Delete Blink!!')
+        }
+    
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                'Blink deleted SuccessFully'
+            )
+        )
+    } catch (error) {
+        return res.json(
+            new ApiErrResponse(error)
+        )
+    }
 
+})
+
+const deleteAllBlink = asyncHandler(async(req,res)=>{
+   try {
+     const blink = await Blink.deleteMany({
+         user: req.user?._id
+     })
+ 
+     if(!blink){
+         throw new ApiError(500, `Failed to delete all blinks !!`)
+     }
+ 
+     return res
+     .status(200)
+     .json(
+         new ApiResponse(
+             200,
+             {},
+             'All Blinks deleted SuccessFully !!'
+         )
+     )
+   } catch (error) {
+        return res.json(
+            new ApiErrResponse(error)
+        )
+   }
+})
+
+const myBlink = asyncHandler(async(req,res)=>{
+    try {
+        const blink = await Blink.find({
+            user: req.user._id
+        })
+        console.log(blink);
+        if(!blink){
+            throw new ApiError(500,`Failed to Fetch Blinks !!`)
+        }
+    
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                blink,
+                'Blinks Fetched SuccessFully'
+            )
+        )
+    } catch (error) {
+        return res.json(
+            new ApiErrResponse(error)
+        )
+    }
+})
 
 export {
-    createBlink
+    createBlink,
+    deleteBlink,
+    deleteAllBlink,
+    myBlink
 }
