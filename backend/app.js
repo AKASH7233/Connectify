@@ -23,6 +23,7 @@ import followRouter from "./src/routes/follow.route.js"
 import chatRouter from "./src/routes/ChatRoute.js"
 import messageRouter from "./src/routes/MessageRouter.js"
 import bookmarkRouter from "./src/routes/Bookmark.route.js"
+import blinkRouter from "./src/routes/blink.route.js"
 
 app.use('/api/v1/user', router)
 app.use('/api/v1/post', postrouter)
@@ -33,6 +34,7 @@ app.use('/api/v1/follow', followRouter)
 app.use('/api/v1/chat', chatRouter)
 app.use('/api/v1/message', messageRouter)
 app.use('/api/v1/bookmark', bookmarkRouter)
+app.use('/api/v1/blink', blinkRouter)
 //http://localhost:8000/api/v1/user/register
 
 export {app}
