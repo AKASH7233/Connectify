@@ -1,6 +1,6 @@
 import mongoose,{Schema} from 'mongoose'
 
-const StoriesSchema = new Schema(
+const BlinkSchema = new Schema(
     {
         user:{
             type : Schema.Types.ObjectId,
@@ -24,4 +24,4 @@ const StoriesSchema = new Schema(
     {timestamps: true}
 )
 
-export const Stories = new mongoose.model('Stories',StoriesSchema)
+export const Blink = new mongoose.model('Blink',BlinkSchema)
