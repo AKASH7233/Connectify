@@ -113,11 +113,11 @@ import AlertBox from "./AlertBox";
                 <span>Billing</span>
                 <DropdownMenuShortcut>ALT+ B</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <h1 className="flex items-center justify-between px-2 ">
                 {/* <Forward className="mr-2 h-4 w-4" /> */}
-                <span><DialogCloseButton  className = 'text-sm gap-x-0 -ml-4' shareLink={shareLink} title={title} drawer={true}/></span>
-                <DropdownMenuShortcut>ALT+ S</DropdownMenuShortcut>
-                </DropdownMenuItem>
+                <span><DialogCloseButton  className = 'text-sm gap-x-0 -ml-5 ' shareLink={shareLink} title={title} drawer={true}/></span>
+                <span className="text-gray-400 text-sm">ALT+ S</span>
+                </h1>
                 <Link to={`/hiddenpost`}>
                     <DropdownMenuItem >
                     <Keyboard className="mr-2 h-4 w-4" />
@@ -185,6 +185,7 @@ import AlertBox from "./AlertBox";
             <DropdownMenuItem className='text-red-400 font-bold ' onClick={()=>{setView(true)}}>
                 <Trash2 className='h-5 w-5 mr-2'/>
                 <span>Delete Account</span>
+                <DropdownMenuShortcut>ALT+ D</DropdownMenuShortcut>
             </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
