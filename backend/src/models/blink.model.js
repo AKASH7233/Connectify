@@ -6,20 +6,16 @@ const BlinkSchema = new Schema(
             type : Schema.Types.ObjectId,
             from : 'User'
         },
-        story: [
-            {
-                file :[ {
-                    type : String
-                }],
-                title : [{
-                    type : String
-                }],
-                link : [{
-                    heading: String,
-                    link : String
-                }]
-            },
-        ]
+        file :{
+            type : String
+        },
+        title : {
+            type : String
+        },
+        link : [{
+            heading: String,
+            value : String
+        }]
     },
     {timestamps: true}
 )
