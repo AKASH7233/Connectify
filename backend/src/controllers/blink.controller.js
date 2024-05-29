@@ -4,6 +4,8 @@ import {ApiResponse} from '../utils/apiResponse.js'
 import { Blink } from '../models/blink.model.js'
 import { ApiErrResponse } from '../utils/ApiErrResponse.js'
 import { uploadToCloudinary } from '../utils/cloudinary.js'
+import { Follow } from '../models/follow.model.js'
+import mongoose from 'mongoose'
 
 const createBlink = asyncHandler(async(req,res)=>{
    
@@ -136,9 +138,92 @@ const myBlink = asyncHandler(async(req,res)=>{
     }
 })
 
+const getBlink = asyncHandler(async(req,res)=>{
+   
+    try {
+        const followings = await Follow.aggregate([
+            {
+                $match: {
+                    followedBy : req.user._id
+                }
+            },
+            {
+                $lookup:{
+                    from: "users",
+                    localField: "followedTo",
+                    foreignField: "_id",
+                    as: "followings",
+                }
+            },
+            {
+                $unwind: '$followings'
+            },
+            {
+                $project:{
+                    'followings._id':1,
+                    _id:0
+                }
+            },
+        ])
+        
+        const followingsIds = followings.map(followings => followings.followings._id)
+        
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+       
+        const blink = await Blink.aggregate([
+            { $match: { user: { $in: followingsIds }, createdAt: { $gte: twentyFourHoursAgo } } },
+            { $sort: { user: 1, createdAt: -1 } },
+            {
+                $lookup: {
+                  from: 'users',
+                  localField: 'user',
+                  foreignField: '_id',
+                  as: 'creatorDetails'
+                }
+              },
+              { $unwind: '$creatorDetails' },
+              {
+                $group: {
+                  _id: '$user',
+                  username: { $first: '$creatorDetails.username' },
+                  profileImage: { $first: '$creatorDetails.profileImage' },
+                  stories: {
+                    $push: {
+                      title: '$title',
+                      file: '$file',
+                      link : '$link',
+                      createdAt: '$createdAt'
+                    }
+                  }
+                }
+              },
+              {
+                $project: {
+                  _id: 1,
+                  username: 1,
+                  profileImage: 1,
+                  stories: 1
+                }
+            },
+          ]);
+      
+       return res.status(200).json(
+            new ApiResponse(
+                200,
+                blink,
+                'Blinks Fetched SuccessFully'
+            )
+        )
+    } catch (error) {
+        new ApiErrResponse(error)
+    }
+})
+
+
 export {
     createBlink,
     deleteBlink,
     deleteAllBlink,
-    myBlink
+    myBlink,
+    getBlink
 }
