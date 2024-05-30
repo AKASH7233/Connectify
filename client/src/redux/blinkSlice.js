@@ -56,7 +56,7 @@ export const getBlink = createAsyncThunk('blink/getBlink',async()=>{
         })
         const response = await responsePromise;
         console.log(response);
-        return response;
+        return response.data;
     } catch (error) {
         return error
     }
@@ -76,7 +76,7 @@ export const deleteAllBlink = createAsyncThunk('blink/deleteAllBlink',async()=>{
         })
         const response = await responsePromise;
         console.log(response);
-        return response;
+        return response.data;
     } catch (error) {
         return error
     }

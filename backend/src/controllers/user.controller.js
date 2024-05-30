@@ -10,9 +10,7 @@ import mongoose from "mongoose"
 
 const generateRefreshTokenAndAccessToken = async(userid) => {
     const user = await User.findById(userid)
-    console.log('roken',user);
     const accessToken =  user.generateAccessToken()
-    console.log(accessToken);
     const refreshToken =  user.generateRefreshToken()
 
     user.refreshToken = refreshToken
@@ -49,7 +47,6 @@ const UserRegister = asyncHandler( async (req,res) => {
          throw new ApiError(408,'email is invalid')
      }
  
-     console.log(req.files);
      
      let ProfileImageLocalPath;
      if(req.files && Array.isArray(req.files.ProfileImage) && req.files.ProfileImage.length >0 ){
@@ -299,7 +296,6 @@ const updateAccountDetails = asyncHandler( async(req,res,next)=>{
     try {
         const finduser = req?.user
         const {username,Description,fullName} = req.body
-        console.log(username,Description,fullName);
         if(!finduser){
             throw next(new ApiError(401,"Unauthorized user"))
         }
@@ -308,9 +304,7 @@ const updateAccountDetails = asyncHandler( async(req,res,next)=>{
         }) 
 
         const sameUser = usernameAlreadyExists?._id == req?.user?._id
-        console.log(usernameAlreadyExists?._id);
-        console.log(req?.user?._id);
-        console.log(sameUser);
+      
         if(usernameAlreadyExists && sameUser){
             throw next(new ApiError(401,"Username is not available"))
         }
@@ -350,7 +344,6 @@ const updateCoverImage = asyncHandler( async(req,res)=>{
     try {
         const coverImageLocalPath = req.files?.coverImage[0].path
         
-        console.log(coverImageLocalPath);
         if(!coverImageLocalPath){
             throw new ApiError(401, "CoverImage is Required")
         }
@@ -389,7 +382,6 @@ const updateCoverImage = asyncHandler( async(req,res)=>{
 
 const updateProfileImage = asyncHandler( async (req,res)=>{
     try {
-        console.log(req.file);
         const ProfileImageLocalPath = req.files?.ProfileImage[0].path;
     
         if(!ProfileImageLocalPath){
@@ -431,7 +423,7 @@ const updateProfileImage = asyncHandler( async (req,res)=>{
 const refreshAccessToken = asyncHandler( async(req, res)=>{
 
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
-    console.log('token',incomingRefreshToken);
+
     if(!incomingRefreshToken){
         throw new ApiError(401, "unauthorized request")
     }
@@ -441,7 +433,6 @@ const refreshAccessToken = asyncHandler( async(req, res)=>{
 
         const user = await User.findById(decodedToken?._id)
     
-        console.log( user.refreshToken);
         if(!user){
             throw new ApiError(401, "Invalid refresh Token")
         }
@@ -550,7 +541,7 @@ const deletecoverImage = asyncHandler( async (req,res)=>{
 const deleteUser = asyncHandler( async (req,res)=> {
     try {
         let user = await User.deleteOne({_id :req?.user?._id})
-        console.log(user);
+        
         return res
         .status(200)
         .clearCookie("accessToken")

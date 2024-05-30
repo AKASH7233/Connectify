@@ -21,7 +21,6 @@ function Header({post}) {
     const [readMore,setReadMore] = useState(false)
     const [showOptions,setShowOptions] = useState(false)
 
-    console.log(post);
     let postAt;
     const postedAt = new Date(post?.createdAt)
     const currentTime = new Date()

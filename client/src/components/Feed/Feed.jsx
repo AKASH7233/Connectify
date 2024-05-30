@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom'
 import Post from '../Post/post/Post'
 import { getPosts } from '../../redux/postSlice'
 import { updateRefreshToken } from '@/redux/authSlice'
+import Blink from '../Blinks/Blink'
 
  function Feed () {
   const navigate = useNavigate()
@@ -20,12 +21,12 @@ import { updateRefreshToken } from '@/redux/authSlice'
 
   ;(async()=>{
     let resp = await dispatch(updateRefreshToken())
-    console.log(resp);
   })()
 
   
   return (
     <div>
+      <div><Blink/></div>
       <div className={`bg-black -my-5 `} id='feed'>
         {posts?.map((post)=>(
               <Post key={post._id} post={post} />
