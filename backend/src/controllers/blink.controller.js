@@ -13,6 +13,11 @@ const createBlink = asyncHandler(async(req,res)=>{
         const {title,heading,value} = req.body;
         
         const BlinkLocalPath = req.file?.path
+
+        if(!BlinkLocalPath){
+            throw new ApiError(400,'Img/video is required !!')
+        }
+
         let publishedBlink;
 
         if(!title && !BlinkLocalPath){
@@ -206,6 +211,8 @@ const getBlink = asyncHandler(async(req,res)=>{
                 }
             },
           ]);
+
+        console.log(`blink`,blink);
       
        return res.status(200).json(
             new ApiResponse(
