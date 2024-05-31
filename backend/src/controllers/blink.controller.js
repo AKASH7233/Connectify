@@ -226,11 +226,32 @@ const getBlink = asyncHandler(async(req,res)=>{
     }
 })
 
+const viewBlink = asyncHandler(async (req, res) => {
+    try {
+      const blink = await Blink.findById(req.params.id).populate('user','username').populate('viewers','username');
+      console.log(blink);
+  
+      if (!blink) {
+        throw new ApiErrResponse({ status: 404, message: 'blink not found!' });
+      }
+  
+      const user = await User.findById(req.user._id);
+        if (!blink.viewers.some(viewer => viewer._id.equals(user._id))) {
+            blink.viewers.push(user);
+            await blink.save();
+        }
+      return res.status(200).json(new ApiResponse(200, blink, 'Blink viewed successfully'));
+    } catch (error) {
+      return res.json(new ApiErrResponse(error));
+    }
+  });
+
 
 export {
     createBlink,
     deleteBlink,
     deleteAllBlink,
     myBlink,
-    getBlink
+    getBlink,
+    viewBlink
 }
