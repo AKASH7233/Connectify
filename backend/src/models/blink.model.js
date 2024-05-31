@@ -15,7 +15,8 @@ const BlinkSchema = new Schema(
         link : [{
             heading: String,
             value : String
-        }]
+        }],
+        viewers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
     },
     {timestamps: true}
 )
