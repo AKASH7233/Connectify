@@ -85,15 +85,34 @@ export const deleteAllBlink = createAsyncThunk('blink/deleteAllBlink',async()=>{
 export const myBlink = createAsyncThunk('blink/myBlink',async()=>{
     try {
         const responsePromise = axiosInstance.post(`/blink/myBlinks`)
-        toast.promise(responsePromise,{
-            loading: 'loading',
-            success : (responsePromise)=>{
-                return responsePromise?.data?.message
-            },
-            error: (error)=>{
-                return error.response?.message
-            }
-        })
+        // toast.promise(responsePromise,{
+        //     loading: 'loading',
+        //     success : (responsePromise)=>{
+        //         return responsePromise?.data?.message
+        //     },
+        //     error: (error)=>{
+        //         return error.response?.message
+        //     }
+        // })
+        const response = await responsePromise;
+        return response.data;
+    } catch (error) {
+        return error
+    }
+})
+
+export const currentBlink = createAsyncThunk('blink/currentBlink',async()=>{
+    try {
+        const responsePromise = axiosInstance.get(`/blink/currentBlinks`)
+        // toast.promise(responsePromise,{
+        //     loading: 'loading',
+        //     success : (responsePromise)=>{
+        //         return responsePromise?.data?.message
+        //     },
+        //     error: (error)=>{
+        //         return error.response?.message
+        //     }
+        // })
         const response = await responsePromise;
         return response.data;
     } catch (error) {
