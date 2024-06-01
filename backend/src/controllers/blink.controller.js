@@ -229,7 +229,6 @@ const getBlink = asyncHandler(async(req,res)=>{
 const viewBlink = asyncHandler(async (req, res) => {
     try {
       const blink = await Blink.findById(req.params.id).populate('user','username').populate('viewers','username');
-      console.log(blink);
   
       if (!blink) {
         throw new ApiErrResponse({ status: 404, message: 'blink not found!' });
@@ -240,12 +239,73 @@ const viewBlink = asyncHandler(async (req, res) => {
             blink.viewers.push(user);
             await blink.save();
         }
+        // console.log(user);
+        // console.log(blink);
       return res.status(200).json(new ApiResponse(200, blink, 'Blink viewed successfully'));
     } catch (error) {
       return res.json(new ApiErrResponse(error));
     }
   });
 
+const currentBlinks = asyncHandler(async (req,res)=>{
+    try {
+        const currentDate = new Date();
+        const twentyFourHoursAgo = new Date(currentDate.getTime() - (24 * 60 * 60 * 1000));
+    
+        const blink = await Blink.aggregate([
+            { $match: { user: req.user?._id , createdAt: { $gte: twentyFourHoursAgo } } },
+            { $sort: { user: 1, createdAt: -1 } },
+            {
+                $lookup: {
+                  from: 'users',
+                  localField: 'user',
+                  foreignField: '_id',
+                  as: 'creatorDetails'
+                }
+              },
+              { $unwind: '$creatorDetails' },
+              {
+                $group: {
+                  _id: '$user',
+                  username: { $first: '$creatorDetails.username' },
+                  profileImage: { $first: '$creatorDetails.profileImage' },
+                  stories: {
+                    $push: {
+                      title: '$title',
+                      file: '$file',
+                      link : '$link',
+                      createdAt: '$createdAt'
+                    }
+                  }
+                }
+              },
+              {
+                $project: {
+                  _id: 1,
+                  username: 1,
+                  profileImage: 1,
+                  stories: 1
+                }
+            },
+          ]);
+        console.log(`currentBlink`, blink);
+    
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                blink,
+                'currentBlink Fetched !!'
+            )
+        )
+    } catch (error) {
+        return res
+        .json(
+            new ApiErrResponse(error)
+        )
+    }
+})
 
 export {
     createBlink,
@@ -253,5 +313,6 @@ export {
     deleteAllBlink,
     myBlink,
     getBlink,
-    viewBlink
+    viewBlink,
+    currentBlinks
 }
