@@ -4,26 +4,55 @@ import { getBlink } from '@/redux/blinkSlice';
 import { Zuck } from 'zuck.js';
 import 'zuck.js/css';
 import 'zuck.js/skins/snapgram';
+import '../../Custom.css';
+import profileImg  from '../../assets/profile.png'
+
+
+const replaceFileExtension = (url, newExtension) => {
+  const resp =  url.replace(/\.mp4$/, newExtension);
+  console.log(resp);
+  return resp
+};
 
 const transformStoriesData = (storiesData) => {
-    return storiesData.map(user => ({
-      id: user._id,
-      photo: user.profileImage || 'https://via.placeholder.com/150',
-      name: user.username,
-      link:  'https://via.placeholder.com/300' ,
-      lastUpdated: new Date(user.stories[user.stories.length - 1]?.createdAt).getTime(),
-      items: user.stories.map(story => ({
-          id: `${user._id}-${story.title.replace(/\s+/g, '-')}`,
-          type: story.file.endsWith('.mp4') ? 'video' : 'photo',
-          length: story.file.endsWith('.mp4') ? 5 : 3,
-          src: story.file || 'https://via.placeholder.com/300',
-          preview: story.file || 'https://via.placeholder.com/150',
-          link: story.link[0]?.value || '',
-          linkText: story.link[0]?.heading || '',
-          muted: false
-        }))
-      }));
-  };
+  return storiesData.map(user => {
+      const transformedStories = user.stories.map(story => {
+        console.log(story.file);
+          const isVideo = story.file.endsWith('.mp4');
+          const transformedFile = isVideo ? replaceFileExtension(story.file, '.jpg') : story.file;
+          console.log(transformedFile);
+          const dateStr = story.createdAt;
+          const date = new Date(dateStr);
+          const day = String(date.getUTCDate()).padStart(2, '0');
+          const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+          const year = date.getUTCFullYear();
+          const formattedDate = `${day}-${month}-${year}`;
+          console.log(formattedDate)
+
+
+          return {
+              "id": `${user._id}-${story.title.replace(/\s+/g, '-')}`,
+              "type": isVideo ? 'video' : 'photo',
+              "length": isVideo ? 5 : 3,
+              "src": story.file || profileImg,
+              "preview": transformedFile ,
+              "link": story.link[0]?.value || '',
+              "linkText": story.link[0]?.heading || '',
+              "time": formattedDate
+          };
+      }).filter(Boolean); // Filter out null items
+
+      return {
+          id: user._id,
+          photo: user.profileImage || profileImg,
+          name: user.username,
+          link: `/user/${user?._id}`,
+          lastUpdated: new Date(user.stories[user.stories.length - 1]?.createdAt).getTime(),
+          items: transformedStories
+      };
+  });
+};
+
 
 const Stories = () => {
   const [storiesData, setStoriesData] = useState([]);
@@ -56,19 +85,23 @@ const Stories = () => {
           backNative: true,
           localStorage: true,
           stories: transformedStories,
+          language : {
+            unmute : transformStoriesData.postAt,
+          }
         });
+      
       }
     }
   }, [storiesData]);
 
-  useEffect(() => {
-    return () => {
-      if (zuckInstance.current) {
-        zuckInstance.current.destroy();
-        zuckInstance.current = null;
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     if (zuckInstance.current) {
+  //       zuckInstance.current.destroy();
+  //       zuckInstance.current = null;
+  //     }
+  //   };
+  // }, []);
 
   const toggleMute = (event) => {
     const storyId = event.target.dataset.storyId;
@@ -84,10 +117,8 @@ const Stories = () => {
     }
 };
 
-  return <div id="stories" className="storiesWrapper"></div>;
+  return <div id="stories" className="storiesWrapper relative"></div>;
 };
 
 export default Stories;
-
-
 
