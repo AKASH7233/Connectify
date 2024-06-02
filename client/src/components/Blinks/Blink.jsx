@@ -1,11 +1,13 @@
 import React from 'react'
-import Stories from './Zucks'
+import Story from '../test/Story'
+import StoriesComponent from './Zucks'
 function Blink() {
   
   return (
-    <div className='bg-black px-3 py-2'>
-      <Stories />
-    </div>
+    <div className='flex items-center bg-black'>
+    <div className='text-white'><Story/></div>
+    <StoriesComponent />
+  </div>
   )
 }
 

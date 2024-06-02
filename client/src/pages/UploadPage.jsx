@@ -1,7 +1,7 @@
 import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
-import UploadPost from "@/components/UploadPost/UploadPost";
+import UploadPost from "@/components/Post/post/UploadPost/UploadPost";
 
 const UploadPage = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 400px)' })

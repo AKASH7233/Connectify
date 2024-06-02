@@ -36,7 +36,6 @@ export default function StoryList({ onSelectStory }) {
           <p className="text-center text-sm mt-3">{`my Blink`}</p>
         </div>)
       })}
-      {/* TODO: Add a navigator to upload Blink Page */}
     </div> : <div className='cursor-pointer' onClick={()=>{navigate('/uploadBlink')}}> 
           <div className='relative'>
             <img

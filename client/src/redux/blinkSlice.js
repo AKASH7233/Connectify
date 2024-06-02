@@ -6,7 +6,7 @@ const initialState = {}
 
 export const createBlink = createAsyncThunk('blink/createBlink',async(data)=>{
     try {
-        const responsePromise = axiosInstance.post(`/blink/createBlink/`,data)
+        const responsePromise = axiosInstance.post(`/blink/createBlink`,data)
         toast.promise(responsePromise,{
             loading: 'loading',
             success : (responsePromise)=>{
