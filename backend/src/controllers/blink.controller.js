@@ -271,6 +271,7 @@ const currentBlinks = asyncHandler(async (req,res)=>{
                   profileImage: { $first: '$creatorDetails.profileImage' },
                   stories: {
                     $push: {
+                      id : '$_id',
                       title: '$title',
                       file: '$file',
                       link : '$link',

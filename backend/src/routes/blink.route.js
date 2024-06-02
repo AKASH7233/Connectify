@@ -7,7 +7,7 @@ const router = express.Router()
 router.use(verifyJWT)
 
 router.route('/createBlink').post(
-    upload.single('postFile'),
+    upload.single('BlinkFile'),
     createBlink
 )
 
