@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-import axiosInstance from '../../utils/ApiFetch';
+import axiosInstance from '../../../../utils/ApiFetch';
 
 
 
@@ -35,15 +35,6 @@ function UploadPost() {
             const updatedPostFiles = post.postFile.filter(file => file.name !== fileId);
             setPost({ ...post, postFile: updatedPostFiles });
         }
-        
-        // console.log(names);
-        // post?.postFile?.map((post)=>{
-
-        //     return name.push(post.name);
-        // })
-        // console.log(name);
-        // setFileName(name)
-        // setPost({...post,[e.target.name]: e.target.files})        
     }
 
     console.log(post.postFile);
