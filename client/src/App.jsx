@@ -18,6 +18,7 @@ import VisitedPostPage from './pages/VistiedPost'
 import LikedByPage from './pages/LikesPage'
 import HiddenPostPage from './pages/HiddenPostPage'
 import CommentRepliesPage from './pages/CommentRepliesPage'
+import UploadBlinkPage from './pages/UploadBlink'
 
 function App() {
 
@@ -44,6 +45,7 @@ function App() {
           <Route path='viewreplies/:commentId' element={<CommentRepliesPage/>} />
           <Route path='/likes/:postId' element={<LikedByPage />} />
           <Route path='/hiddenpost' element={<HiddenPostPage />} />
+          <Route path='/uploadBlink' element={<UploadBlinkPage/>}/>
         </Routes>
       </BrowserRouter>
     </div>
