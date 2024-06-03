@@ -96,6 +96,18 @@ export default function StoryViewer({ story, onClose }) {
       <button className="hidden md:block lg:block xl:block absolute top-4 right-4 text-white" onClick={onClose}>
         X
       </button>
+      <div className='hidden  xl:block 2xl:block'>
+        <div className='absolute bottom-6 left-[30%] flex justify-between w-[45%] px-2 text-sm'>
+          <div>
+            <p>Viewers</p>
+            <ViewerList id={currentStoryId} />
+          </div>
+          <div className='flex gap-x-5 py-4'>
+            <button onClick={()=>{navigate('/uploadBlink')}}>+ Add Blink</button>
+            <button onClick={()=>{setView(true)}} className='text-red-400'><Trash2 className='text-sm'/></button>
+          </div>
+        </div>
+      </div>
       <div className='h-screen '>
         <Stories
           stories={stories}
@@ -113,7 +125,7 @@ export default function StoryViewer({ story, onClose }) {
           <p>Viewers</p>
           <ViewerList id={currentStoryId} />
         </div>
-        <div className='flex gap-x-5 py-4'>
+        <div className='flex gap-x-5 py-4 lg:hidden xl:hidden'>
         <button onClick={()=>{navigate('/uploadBlink')}}>+ Add Blink</button>
         <button onClick={()=>{setView(true)}} className='text-red-400'><Trash2 className='text-sm'/></button>
         </div>
