@@ -1,6 +1,6 @@
 import express from 'express'
 import { verifyJWT } from '../middlewares/auth.js'
-import { createBlink, currentBlinks, deleteAllBlink, deleteBlink, getBlink, myBlink, viewBlink } from '../controllers/blink.controller.js'
+import { BlinkViewed, createBlink, currentBlinks, deleteAllBlink, deleteBlink, getBlink, myBlink, viewersOfBlink } from '../controllers/blink.controller.js'
 import { upload } from '../middlewares/multer.middlewares.js'
 
 const router = express.Router()
@@ -26,8 +26,13 @@ router.route('/myBlinks').get(
 router.route('/getBlinks').get(
     getBlink
 )
-router.route('/viewBlinks').get(
-    viewBlink
+
+router.route('/blinkviewed/:blinkId').post(
+    BlinkViewed
+)
+
+router.route('/viewBlinks/:id').get(
+    viewersOfBlink
 )
 
 router.route('/currentBlinks').get(
