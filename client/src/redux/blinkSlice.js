@@ -120,6 +120,45 @@ export const currentBlink = createAsyncThunk('blink/currentBlink',async()=>{
     }
 })
 
+export const BlinkViewed = createAsyncThunk('blink/BlinkViewed',async(data)=>{
+    try {
+        const responsePromise = axiosInstance.post(`/blink/blinkviewed/${data}`)
+        // toast.promise(responsePromise,{
+        //     loading: 'loading',
+        //     success : (responsePromise)=>{
+        //         return responsePromise?.data?.message
+        //     },
+        //     error: (error)=>{
+        //         return error.response?.message
+        //     }
+        // })
+        const response = await responsePromise;
+        return response.data;
+    } catch (error) {
+        return error
+    }
+})
+
+export const viewBlink = createAsyncThunk('blink/viewBlink',async(data)=>{
+    try {
+        console.log(data);
+        const responsePromise =  axiosInstance.get(`/blink/viewBlinks/${data}`)
+        // toast.promise(responsePromise,{
+        //     loading: 'loading',
+        //     success : (responsePromise)=>{
+        //         return responsePromise?.data?.message
+        //     },
+        //     error: (error)=>{
+        //         return error.response?.message
+        //     }
+        // })
+        const response = await responsePromise;
+        return response.data;
+    } catch (error) {
+        return error
+    }
+})
+
 export const blinkSlice = createSlice({
     name : 'blink',
     initialState,
