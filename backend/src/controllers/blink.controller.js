@@ -5,7 +5,7 @@ import { Blink } from '../models/blink.model.js'
 import { ApiErrResponse } from '../utils/ApiErrResponse.js'
 import { uploadToCloudinary } from '../utils/cloudinary.js'
 import { Follow } from '../models/follow.model.js'
-import mongoose from 'mongoose'
+import mongoose, { mongo } from 'mongoose'
 import { User } from '../models/user.model.js'
 
 const createBlink = asyncHandler(async(req,res)=>{
@@ -230,28 +230,42 @@ const getBlink = asyncHandler(async(req,res)=>{
 
 const viewersOfBlink = asyncHandler(async (req, res) => {
     try {
-        const {id} = req.params
-        console.log(id);
-        if(!id){
+        const {blinkId} = req.params
+        console.log(`blinkId`,blinkId);
+        if(!blinkId){
             throw new ApiError(400,'Invalid Blink Id!!')
         }
 
         const Viewers = await Blink.aggregate([
             {
                 $match :{
-                    _id : new mongoose.Types.ObjectId(id)
+                    _id : new mongoose.Types.ObjectId(blinkId)
                 }
             },
             {
                 $lookup : {
                     from: "users",
-                    localField: "viewer",
+                    localField: "viewers",
                     foreignField: "_id",
-                    as: "viewers",
+                    as: "Allviewers",
+                }
+            },
+            {
+                $project:{
+                    _id: "$Allviewers._id",
+                    username: "$Allviewers.username",
+                    ProfileImage: "$Allviewers.ProfileImage"
                 }
             }
         ])
-        console.log(Viewers);
+        console.log(`Viewers`, Viewers);
+        return res.status(200).json(
+            new ApiResponse(
+                200,
+                Viewers,
+                'Viewers Fetched SuccessFully'
+            )
+        )
     } catch (error) {
       return res.json(new ApiErrResponse(error));
     }
@@ -266,7 +280,7 @@ const BlinkViewed = asyncHandler(async (req, res) => {
             throw new ApiError(400, 'Invalid Blink Id !!');
         }
 
-        const user = await User.findById(req.user._id).select('username profileImage _id');
+        const user = await User.findById(req.user._id).select('username _id ProfileImage');
         console.log(user);
         if (!user) {
             throw new ApiError(404, 'User not found !!');
@@ -280,9 +294,11 @@ const BlinkViewed = asyncHandler(async (req, res) => {
         }
 
         // Check if the user is already in the viewers array
-        const userAlreadyViewed = blink.viewer.some(viewer => viewer._id == req.user._id);
-
-        console.log(userAlreadyViewed);
+        const userAlreadyViewed = blink.viewers.some(viewer => {
+            const isViewed = viewer?._id.equals(new mongoose.Types.ObjectId(req?.user?._id));
+            return isViewed;
+        });
+        
         if (!userAlreadyViewed) {
             blink.viewers.push(user);
             blink.save();
