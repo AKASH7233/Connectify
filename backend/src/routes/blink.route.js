@@ -31,7 +31,7 @@ router.route('/blinkviewed/:blinkId').post(
     BlinkViewed
 )
 
-router.route('/viewBlinks/:id').get(
+router.route('/viewblinks/:blinkId').post(
     viewersOfBlink
 )
 
