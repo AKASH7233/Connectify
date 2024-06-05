@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { getBlink } from '@/redux/blinkSlice';
+import { BlinkViewed, getBlink } from '@/redux/blinkSlice';
 import { Zuck } from 'zuck.js';
 import 'zuck.js/css';
 import 'zuck.js/skins/snapgram';
 import '../../Custom.css';
 import profileImg  from '../../assets/profile.png'
+import axiosInstance from '@/utils/ApiFetch';
 
 
 const replaceFileExtension = (url, newExtension) => {
@@ -28,22 +29,22 @@ const transformStoriesData = (storiesData) => {
           const year = date.getUTCFullYear();
           const formattedDate = `${day}-${month}-${year}`;
           console.log(formattedDate)
-
+          console.log(`story`,story?._id);
 
           return {
-              "id": `${user._id}-${story.title.replace(/\s+/g, '-')}`,
-              "type": isVideo ? 'video' : 'photo',
-              "length": isVideo ? 5 : 3,
-              "src": story.file || profileImg,
-              "preview": transformedFile ,
-              "link": story.link[0]?.value || '',
-              "linkText": story.link[0]?.heading || '',
-              "time": formattedDate
+              id: story?._id,
+              type: isVideo ? 'video' : 'photo',
+              length: isVideo ? 5 : 3,
+              src: story.file || profileImg,
+              preview: transformedFile ,
+              link: story.link[0]?.value || '',
+              linkText: story.link[0]?.heading || '',
+              time: formattedDate
           };
       }).filter(Boolean); // Filter out null items
 
       return {
-          id: user._id,
+          id: user.stories[0]?._id,
           photo: user.profileImage || profileImg,
           name: user.username,
           link: `/user/${user?._id}`,
@@ -85,8 +86,13 @@ const Stories = () => {
           backNative: true,
           localStorage: true,
           stories: transformedStories,
-          language : {
-            unmute : transformStoriesData.postAt,
+          callbacks: {
+            onOpen: async (id, callback) => {
+              console.log("Story opened:", id);
+              const response = await dispatch(BlinkViewed(id));
+              console.log(response.payload?.data);
+              callback()
+            }
           }
         });
       
