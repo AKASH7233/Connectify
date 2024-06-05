@@ -142,7 +142,7 @@ export const BlinkViewed = createAsyncThunk('blink/BlinkViewed',async(data)=>{
 export const viewBlink = createAsyncThunk('blink/viewBlink',async(data)=>{
     try {
         console.log(data);
-        const responsePromise =  axiosInstance.get(`/blink/viewBlinks/${data}`)
+        const responsePromise =  axiosInstance.post(`/blink/viewblinks/${data}`)
         // toast.promise(responsePromise,{
         //     loading: 'loading',
         //     success : (responsePromise)=>{
@@ -153,6 +153,7 @@ export const viewBlink = createAsyncThunk('blink/viewBlink',async(data)=>{
         //     }
         // })
         const response = await responsePromise;
+        console.log(response);
         return response.data;
     } catch (error) {
         return error

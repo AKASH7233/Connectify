@@ -252,9 +252,10 @@ const viewersOfBlink = asyncHandler(async (req, res) => {
             },
             {
                 $project:{
-                    _id: "$Allviewers._id",
-                    username: "$Allviewers.username",
-                    ProfileImage: "$Allviewers.ProfileImage"
+                    '_id' : 0,
+                    "Allviewers._id" : 1,
+                    "Allviewers.username" : 1,
+                    "Allviewers.ProfileImage" : 1
                 }
             }
         ])
