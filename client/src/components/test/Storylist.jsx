@@ -20,7 +20,7 @@ export default function StoryList({ onSelectStory }) {
     })()
   },[])
   return (
-   <>
+   <div className='p-1 lg:p-3 md:p-3  xl:p-3 2xl:p-3'>
     {stories?.length != 0 ?  <div className="flex space-x-4 overflow-x-auto p-4">
       {stories?.map(story => {
         const getThumbnail = story.stories[0]?.file.replace(/\.mp4/g, '.jpg')
@@ -39,7 +39,7 @@ export default function StoryList({ onSelectStory }) {
     </div> : <div className='cursor-pointer' onClick={()=>{navigate('/uploadBlink')}}> 
           <div className='relative'>
             <img
-              className="w-16 h-16 rounded-full border-2  p-1 object-cover"
+              className="w-16 h-16 rounded-full border-2  p-1 object-fill"
               src = {userProfileImg}
               alt={currentUser?.username}
             />
@@ -47,6 +47,6 @@ export default function StoryList({ onSelectStory }) {
           </div>
           <p className="text-center text-sm mt-3">{`Add a Blink`}</p>
         </div>}
-   </>
+   </div>
   );
 }

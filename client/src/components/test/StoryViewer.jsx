@@ -9,7 +9,7 @@ import { ViewerList } from '../shadCompo/Viewer';
 
 export default function StoryViewer({ story, onClose }) {
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
-  const [currentStoryId, setCurrentStoryId] = useState(null);
+  const [currentOpenedStory, setCurrentOpenedStory] = useState(null);
   const [view,setView] = useState(false)
   const [isPaused,setIsPaused] = useState(false)
   const navigate = useNavigate()
@@ -71,25 +71,12 @@ export default function StoryViewer({ story, onClose }) {
   };
 
   const onStoryStart = (index, story) => {
-    setCurrentStoryId(stories[index].id);
+    setCurrentOpenedStory(stories[index]);
   };
 
   const res = (resp) => {
     setView(resp)
   }
-
-  console.log(`ispaused`,isPaused);
-  console.log(currentStoryId);
-
-  const profiles = [
-    { id: 1, name: 'Person 1', img: 'https://randomuser.me/api/portraits/men/1.jpg' },
-    { id: 2, name: 'Person 2', img: 'https://randomuser.me/api/portraits/men/2.jpg' },
-    { id: 3, name: 'Person 3', img: 'https://randomuser.me/api/portraits/women/3.jpg' },
-    { id: 4, name: 'Person 4', img: 'https://randomuser.me/api/portraits/women/4.jpg' },
-    { id: 5, name: 'Person 5', img: 'https://randomuser.me/api/portraits/men/5.jpg' },
-    { id: 6, name: 'Person 6', img: 'https://randomuser.me/api/portraits/women/6.jpg' },
-  ];
-  
 
   return (
     <div className={`fixed inset-0 flex items-center justify-center ${window.screen.availWidth >= 500 ? 'bg-black' : 'bg-[#111]' } z-50`}>
@@ -100,7 +87,7 @@ export default function StoryViewer({ story, onClose }) {
         <div className='absolute bottom-6 left-[30%] flex justify-between w-[45%] px-2 text-sm'>
           <div>
             <p>Viewers</p>
-            <ViewerList id={currentStoryId} />
+            <ViewerList currentOpenedStory={currentOpenedStory} />
           </div>
           <div className='flex gap-x-5 py-4'>
             <button onClick={()=>{navigate('/uploadBlink')}}>+ Add Blink</button>
@@ -123,7 +110,7 @@ export default function StoryViewer({ story, onClose }) {
         <div className='flex justify-between items-end px-2 text-sm'>
         <div>
           <p>Viewers</p>
-          <ViewerList id={currentStoryId} />
+          <ViewerList currentOpenedStory={currentOpenedStory}/>
         </div>
         <div className='flex gap-x-5 py-4 lg:hidden xl:hidden'>
         <button onClick={()=>{navigate('/uploadBlink')}}>+ Add Blink</button>
@@ -131,7 +118,7 @@ export default function StoryViewer({ story, onClose }) {
         </div>
         </div>
       </div>
-      {view && <AlertBox open={true} id={currentStoryId} warning={'blink '} resFunc={res}/> }
+      {view && <AlertBox open={true} id={currentOpenedStory?.id} warning={'blink '} resFunc={res}/> }
     </div>
   );
 }
