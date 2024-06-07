@@ -49,7 +49,7 @@ export function ViewerList({currentOpenedStory}) {
     <Drawer>
       <DrawerTrigger asChild>
         <Button variant="outline">
-          <div className="flex">
+          <div className="flex items-center gap-2">
             {
               viewers?.slice(0,3)?.map((viewer)=>{
                 const imgSrc = viewer?.ProfileImage ?  viewer?.ProfileImage : profileImg 
@@ -59,6 +59,8 @@ export function ViewerList({currentOpenedStory}) {
                 )
               })
             }
+            {viewers?.length > 3 && <h2 className="bg-transparent bg-opacity-90 border-2 border-gray-400 w-10 py-2 rounded-[50%]  outline-none text-white"> {viewers?.length - 3} </h2>}
+            {viewers?.length == 0  && <h2 className="bg-transparent bg-opacity-90 border-2 border-gray-400 w-10 py-2 rounded-[50%]  outline-none text-white"> 0 </h2>}
           </div>
         </Button>
       </DrawerTrigger>

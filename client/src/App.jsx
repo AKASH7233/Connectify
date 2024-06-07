@@ -3,7 +3,6 @@ import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import Chat from './pages/Chat'
-import Feed from './components/Feed/Feed'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -31,7 +30,6 @@ function App() {
           <Route path='/login' element = {<Login/>} />
           <Route path='/user/:userId' element={<UserAccount/>}/>
           <Route path='/myProfile' element={<MyAccount />}/>
-          <Route path='/feed' element={<Feed />} />
           <Route path='/uploadPost' element ={<UploadPage/>} />
           <Route path='/test' element= {<DataFetch/>}/>
           <Route path='/search' element={<SearchPage/>}/>
