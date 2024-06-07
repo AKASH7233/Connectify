@@ -1,15 +1,20 @@
-import React, { useState } from 'react'
-import toast from 'react-hot-toast'
-import { BsPersonCircle } from "react-icons/bs";
+import React,{useState} from "react";
+import { Label } from "../components/ui/LabelAccer";
+import { Input } from "../components/ui/InputAcc";
+import { cn } from "@/utils/cn";
+import {
+  IconBrandGithub,
+  IconBrandGoogle,
+} from "@tabler/icons-react";
+
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
-
 import { createAccount } from '../redux/authSlice';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-import icon from "../assets/icon.jpg" 
+import {toast} from "react-hot-toast";
 
-function Register() {
+export default function Register() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [userInfo, setUserInfo] = useState({
@@ -20,23 +25,9 @@ function Register() {
     ProfileImage: ''
   });
 
-  const [profileImageImage, setProfileImageImage] = useState(null)
-
-  const handleAvatar = (e) => {
-    e.preventDefault();
-    const file = e.target.files[0];
-    if (file) {
-      setUserInfo({ ...userInfo, ProfileImage: file })
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.addEventListener("load", async () => {
-        setProfileImageImage(fileReader.result);
-      })
-    }
-  }
 
   const eventHandler = (e) => {
-    setUserInfo({ ...userInfo, [e.target.name]: e.target.value })
+    setUserInfo({ ...userInfo, [e.target.id]: e.target.value })
   }
 
   const search = async (e) => {
@@ -50,6 +41,8 @@ function Register() {
       const response = await dispatch(createAccount(userInfo))
       if (response?.payload?.message) {
         navigate('/login')
+      }else{
+        toast.error(response?.payload?.error)
       }
       console.log(response)
     } catch (error) {
@@ -59,39 +52,115 @@ function Register() {
 
   const [showPass,setShowPass] = useState(false)
 
-
-
+  
   return (
-    <div className='flex items-center justify-center h-screen bg-black text-white'>
-      <div className='flex flex-col items-center justify-center border bg-[#09090B] border-[#27272A] px-8  w-80'>
-       <div className='flex items-center'>
-        <div style={{backgroundImage : `url(${icon})`}} className='w-[12vw] rounded-xl bg-center bg-contain bg-no-repeat h-20 duration-400 text-white mix-blend-hard-light'></div>
-        <h2 className='logo text-2xl'>ConnectiFy</h2>
-       </div>
-        <label htmlFor="image" className="cursor-pointer mb-4">
-          {
-            profileImageImage ? (
-              <img className="w-16 h-16 rounded-full m-auto" src={profileImageImage} alt="user Image" />
-            ) : (
-              <BsPersonCircle className="w-16 h-16 text-white" />
-            )
-          }
-        </label>
-        <input type="file" id='image' onChange={handleAvatar} className="hidden" name="ProfileImage" placeholder='upload Profile Image' accept='.jpg, .png, .jpeg , .png, .svg ' />
+   <div className="bg-black h-screen pt-3 lg:pt-10 ">
+    <div className="max-w-md md:border-2 lg:border-2 xl:border-2 2xl:border-2 border-neutral-600  w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black">
+      <h2 className="font-bold text-xl text-neutral-200">
+        Welcome to ConnectiFy !!
+      </h2>
+      <form className="mt-8" onSubmit={search}>
+      <LabelInputContainer className="mb-4">
+          <Label htmlFor="">Your Fullname</Label>
+          <Input
+            id="fullName"
+            placeholder="john Doe"
+            type="fullName"
+            value={userInfo?.fullName}
+            onChange={eventHandler}
+          />
+        </LabelInputContainer>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="usrname">Enter Username</Label>
+          <Input
+            id="username"
+            placeholder="ConnectiFy"
+            type="twitterpassword"
+            value={userInfo?.username}
+            onChange={eventHandler}
+          />
+        </LabelInputContainer>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="email">Email Address</Label>
+          <Input 
+          id="email" 
+          placeholder="connectify@mail.com" 
+          type="email"
+          value = {userInfo?.email}
+          onChange={eventHandler}
+          />
+        </LabelInputContainer>
+        <LabelInputContainer className="mb-8 relative">
+          <Label htmlFor="password">Password</Label>
+          <Input 
+          id="password" 
+          placeholder="••••••••" 
+          type={showPass ? 'text' : 'password'}
+          value = {userInfo?.password}
+          onChange={eventHandler}
+          />
+          <span onClick ={()=>{setShowPass(!showPass)}} className = 'absolute right-3 top-7 cursor-pointer'>{ showPass ? <FaEye color="white"/> : <FaEyeSlash color="white"/>}</span>
+        </LabelInputContainer>
+       
+        <button
+          className="bg-gradient-to-br relative group/btn from-zinc-900to-zinc-900 to-neutral-600 block bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+          type="submit"
+        >
+          Sign up &rarr;
+          <BottomGradient />
+        </button>
 
-        <input type="text" className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 placeholder:text-sm w-full' name='fullName' value={userInfo.fullName} onChange={eventHandler} placeholder='Enter your Fullname' />
-        <input type="text" className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='username' value={userInfo.username} onChange={eventHandler} placeholder='Enter your Username' />
-        <input type="email" className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='email' value={userInfo.email} onChange={eventHandler} placeholder='Enter Your Email' />
-        <div className='w-full relative'><input type={showPass ? 'text' : 'password'} className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='password' value={userInfo.password} onChange={eventHandler} placeholder='Set a Password' /><span onClick ={()=>{setShowPass(!showPass)}} className = 'absolute right-3 top-2'>{ showPass ? <FaEye /> : <FaEyeSlash/>}</span></div>
+        <p className="text-sm max-w-sm mt-4 text-center text-neutral-300">
+        Already have an account? 
+        <Link to={`/Login`} className="underline ml-2">Login</Link>
+      </p>
 
-        <button className='bg-white text-black px-10 py-2 mt-4 text-md rounded-[5px]  w-full' onClick={search}>Register</button>
-        <p className="text-sm my-4 text-center">
-          Already have an account?
-          <Link to={`/login`} className="underline ml-2">Login</Link>
-        </p>
-      </div>
+        <div className="bg-gradient-to-r from-transparentvia-neutral-700 to-transparent mb-4 h-[1px] w-full" />
+
+        <div className="flex flex-col space-y-4">
+          <button
+            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input  bg-zinc-900 shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+            type="submit"
+          >
+            <IconBrandGithub className="h-4 w-4 text-z-300 text-neutral-300" />
+            <span className="text-neutral-300 text-sm">
+              GitHub
+            </span>
+            <BottomGradient />
+          </button>
+          <button
+            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-zinc-900 shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+            type="submit"
+          >
+            <IconBrandGoogle className="h-4 w-4 text-neutral-300" />
+            <span className="text-neutral-300 text-sm">
+              Google
+            </span>
+            <BottomGradient />
+          </button>
+        </div>
+      </form>
     </div>
-  )
+   </div>
+  );
 }
 
-export default Register
+const BottomGradient = () => {
+  return (
+    <>
+      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+    </>
+  );
+};
+
+const LabelInputContainer = ({
+  children,
+  className,
+}) => {
+  return (
+    <div className={cn("flex flex-col space-y-2 w-full", className)}>
+      {children}
+    </div>
+  );
+};
