@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
-import { useDispatch, useSelector } from 'react-redux'
+import React,{useState} from "react";
+import { Label } from "../components/ui/LabelAccer";
+import { Input } from "../components/ui/InputAcc";
+import { cn } from "@/utils/cn";
+import {
+  IconBrandGithub,
+  IconBrandGoogle,
+} from "@tabler/icons-react";
+
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
-
-import { login } from '../redux/authSlice'
-
+import { login } from '../redux/authSlice';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-import icon from "../assets/icon.jpg" 
+import {toast} from "react-hot-toast";
 
 function Login() {
     const navigate = useNavigate()
@@ -19,7 +24,7 @@ function Login() {
     })
 
     const eventHandler = (e) =>{
-      setUserInfo({...userInfo, [e.target.name]: e.target.value})
+      setUserInfo({...userInfo, [e.target.id]: e.target.value})
     }
     
     const search = async (e)=> {
@@ -32,33 +37,113 @@ function Login() {
       
       const response = await dispatch(login(userInfo))
       if(response?.payload.message){
-        if(screen.width > 400) return navigate('/')
-        else{navigate('/feed')}
+        return navigate('/')
       }
     }
 
-    
   const [showPass,setShowPass] = useState(false)
 
   return (
-    <div className='flex items-center justify-center h-screen bg-black text-white'>
-      <div className='flex flex-col items-center justify-center border bg-[#09090B] border-[#27272A] px-8 pb-4 w-80'>
-      <div className='flex items-center justify-center  w-full'>
-        <div style={{backgroundImage : `url(${icon})`}} className='w-[5vw] rounded-xl bg-center md:bg-contain bg-cover  bg-no-repeat h-12 my-4 duration-400 text-white mix-blend-hard-light'></div>
-        <h2 className='logo text-2xl'>ConnectiFy</h2>
-       </div>
-        <input type="text" className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='username' value={userInfo.username} onChange={eventHandler} placeholder='Enter your Username' />
-        <input type="email" className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='email' value={userInfo.email} onChange={eventHandler} placeholder='Enter Your Email' />
-        <div className='w-full relative'><input type={showPass ? 'text' : 'password'} className='px-3 py-1 text-md focus:border-white bg-transparent border-[1px] border-[#27272A] rounded mb-3 w-full placeholder:text-sm' name='password' value={userInfo.password} onChange={eventHandler} placeholder='Set a Password' /><span onClick ={()=>{setShowPass(!showPass)}} className = 'absolute right-3 top-2'>{ showPass ? <FaEye /> : <FaEyeSlash/>}</span></div>
+    
+  <div className="bg-black h-screen pt-3 lg:pt-10 ">
+    <div className="max-w-md md:border-2 lg:border-2 xl:border-2 2xl:border-2 border-neutral-600  w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black">
+      <h2 className="font-bold text-xl text-neutral-200">
+        Welcome to ConnectiFy !!
+      </h2>
+      <form className="mt-8" onSubmit={search}>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="usrname">Your Username</Label>
+          <Input
+            id="username"
+            placeholder="ConnectiFy"
+            type="twitterpassword"
+            value={userInfo?.username}
+            onChange={eventHandler}
+          />
+        </LabelInputContainer>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="email">Email Address</Label>
+          <Input 
+          id="email" 
+          placeholder="connectify@mail.com" 
+          type="email"
+          value = {userInfo?.email}
+          onChange={eventHandler}
+          />
+        </LabelInputContainer>
+        <LabelInputContainer className="mb-8 relative">
+          <Label htmlFor="password">Password</Label>
+          <Input 
+          id="password" 
+          placeholder="••••••••" 
+          type={showPass ? 'text' : 'password'}
+          value = {userInfo?.password}
+          onChange={eventHandler}
+          />
+          <span onClick ={()=>{setShowPass(!showPass)}} className = 'absolute right-3 top-7 cursor-pointer'>{ showPass ? <FaEye color="white"/> : <FaEyeSlash color="white"/>}</span>
+        </LabelInputContainer>
+       
+        <button
+          className="bg-gradient-to-br relative group/btn from-zinc-900to-zinc-900 to-neutral-600 block bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+          type="submit"
+        >
+          Sign up &rarr;
+          <BottomGradient />
+        </button>
 
-        <button className='bg-white text-black px-10 py-2 mt-4 text-md rounded-[5px]  w-full' onClick={search}>Login</button>
-        <p className="text-sm my-4 text-center">
+        <p className="text-sm my-4 text-center text-white">
           Don't have an account?
           <Link to={`/Register`} className="underline ml-2">Register</Link>
         </p>
-      </div>
+
+        <div className="bg-gradient-to-r from-transparentvia-neutral-700 to-transparent mb-4 h-[1px] w-full" />
+
+        <div className="flex flex-col space-y-4">
+          <button
+            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input  bg-zinc-900 shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+            type="submit"
+          >
+            <IconBrandGithub className="h-4 w-4 text-z-300 text-neutral-300" />
+            <span className="text-neutral-300 text-sm">
+              GitHub
+            </span>
+            <BottomGradient />
+          </button>
+          <button
+            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-zinc-900 shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+            type="submit"
+          >
+            <IconBrandGoogle className="h-4 w-4 text-neutral-300" />
+            <span className="text-neutral-300 text-sm">
+              Google
+            </span>
+            <BottomGradient />
+          </button>
+        </div>
+      </form>
     </div>
+   </div>
   )
 }
+
+const BottomGradient = () => {
+  return (
+  <>
+    <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+    <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+  </>
+  );
+};
+
+const LabelInputContainer = ({
+  children,
+  className,
+  }) => {
+  return (
+    <div className={cn("flex flex-col space-y-2 w-full", className)}>
+      {children}
+    </div>
+  );
+};
 
 export default Login
