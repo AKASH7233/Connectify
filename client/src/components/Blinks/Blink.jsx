@@ -1,5 +1,5 @@
 import React from 'react'
-import Story from '../test/Story'
+import Story from '../MyBlink/Story'
 import StoriesComponent from './Zucks'
 function Blink() {
   

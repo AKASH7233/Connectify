@@ -7,6 +7,7 @@ import 'zuck.js/skins/snapgram';
 import '../../Custom.css';
 import profileImg  from '../../assets/profile.png'
 import axiosInstance from '@/utils/ApiFetch';
+import { useNavigate } from 'react-router-dom';
 
 
 const replaceFileExtension = (url, newExtension) => {
@@ -59,11 +60,14 @@ const Stories = () => {
   const [storiesData, setStoriesData] = useState([]);
   const dispatch = useDispatch();
   const zuckInstance = useRef(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await dispatch(getBlink());
-      console.log(response?.payload?.data);
+      if(response?.payload?.error){
+        navigate('/login')
+      };
       setStoriesData(response?.payload?.data || []);
     };
     fetchData();

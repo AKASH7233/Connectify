@@ -7,7 +7,7 @@ const initialState = {
     postFile: null || JSON.parse(localStorage.getItem('postFile')),
     title : '' || JSON.parse(localStorage.getItem('title')),
     visitedPost : {} || JSON.parse(localStorage.getItem('visitedPost')),
-    myPosts : [] || JSON.parse(localStorage.getItem('myposts'))
+    // /myPosts : [] || JSON.parse(localStorage.getItem('myposts'))
 }
 
 export const getPosts = createAsyncThunk('post/getpost',async()=>{
@@ -26,7 +26,6 @@ export const getPosts = createAsyncThunk('post/getpost',async()=>{
     
         return response.data
     } catch (error) {
-        toast.error('Failed To Fetch Posts')
         throw error   
     }
 })

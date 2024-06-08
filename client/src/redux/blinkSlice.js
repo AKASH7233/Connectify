@@ -55,7 +55,6 @@ export const getBlink = createAsyncThunk('blink/getBlink',async()=>{
             }
         })
         const response = await responsePromise;
-        console.log(response);
         return response.data;
     } catch (error) {
         return error
