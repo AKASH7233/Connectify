@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { FaBookmark } from "react-icons/fa";
 import { FaRegImages } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa6";
-import { FaBookmark } from "react-icons/fa";
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { postliked } from '@/redux/likeSlice';
+
 import { AllBookedPost } from '@/redux/bookMark';
+import { postliked } from '@/redux/likeSlice';
 
 
 function ProfileFooter({user}) {
@@ -16,9 +17,9 @@ function ProfileFooter({user}) {
   const [render,setRender] = useState(false)
   // const [userpost,setUserpost] = useState()
   useEffect(()=>{
-    ;(async()=>{
+    (async()=>{
       let response = await dispatch(AllBookedPost())
-      console.log(response);
+      // console.log(response);
       setBookedPosts(response?.payload?.data)
     })()
   },[])
@@ -26,21 +27,21 @@ function ProfileFooter({user}) {
   // useEffect(()=>{
   //   ;(async()=>{
   //     let response = await dispatch(myPosts(user?._id))
-  //     console.log(response);
+  //     // console.log(response);
   //     setUserpost(response?.payload?.data)
   //   })()
   // },[])
 
   useEffect(()=>{
-    ;(async()=>{
+    (async()=>{
      let response = await dispatch(postliked(user?._id))
-     console.log(response);
+     // console.log(response);
      setlikedPosts(response?.payload?.data)
    })()
    },[render])
  
-  // console.log(options);
-  // console.log(bookedPosts);
+  // // console.log(options);
+  // // console.log(bookedPosts);
 
   return (
     <div className='bg-black mt-2'>
@@ -60,19 +61,19 @@ function ProfileFooter({user}) {
 
           {options == 'post' && user?.posts?.map((post)=>{
             const post_file = Array.isArray(post?.postFile) ? post?.postFile[0] : post?.postFile
-               return <Link to={`/viewpost/${post?._id}/comment`}><img key={post?._id} src={post_file} className='mx-3 my-4 w-40 md:w-36 lg:w-40 md:object-fill h-40 border-2 border-gray-800 rounded-lg object-cover'/></Link>
+               return <Link key={post?._id} to={`/viewpost/${post?._id}/comment`}><img key={post?._id} src={post_file} className='mx-3 my-4 w-40 md:w-36 lg:w-40 md:object-fill h-40 border-2 border-gray-800 rounded-lg object-cover'/></Link>
           })}
           {options == 'post' && user?.posts?.length < 1 && < div className='w-full  flex justify-center items-center text-lg'>No Post !</div> }
 
           {options == 'liked' && likedposts?.map((post)=>(
-            <Link to={`/viewpost/${post?.likedposts?._id}/comment`}>
+            <Link key={post?.likedposts?._id} to={`/viewpost/${post?.likedposts?._id}/comment`}>
               <img key={post?.likedposts?._id} src={post?.likedposts?.post} className='mx-3 my-4 w-40 md:w-36 lg:w-40 md:object-fill h-40 border-2 border-gray-800 rounded-lg object-cover'/>
             </Link>
           ))}
           {options == 'liked' && likedposts?.length < 1 && < div className='w-full   flex justify-center items-center text-lg'> 0 Post Liked !</div> }
 
           {options == 'bookmark' && bookedPosts?.map((post)=>(
-            <Link to={`/viewpost/${post?.BookedPost[0]?._id}/comment`}>
+            <Link key={post?.likedposts?._id} to={`/viewpost/${post?.BookedPost[0]?._id}/comment`}>
               <img key={post?.likedposts?._id} src={post?.BookedPost[0]?.postFile} className='mx-3 my-4 w-40 md:w-36 lg:w-40 md:object-fill h-40 border-2 border-gray-800 rounded-lg object-cover'/>
             </Link>
           ))}

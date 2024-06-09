@@ -8,9 +8,11 @@ import BackBtn from '@/components/BackBtn';
 import { useDispatch } from 'react-redux';
 import { DropdownMenuDemo } from '@/components/shadCompo/Dropdown';
 import { DialogCloseButton } from '../shadCompo/Share';
+import { useNavigate } from 'react-router-dom'; 
 
 
 const ProfileHeader = ({user, follow, toggle, toggleview}) => {
+    const navigate = useNavigate()
     const [option,setOptions] = useState(false)
     const [respond,setrespond] = useState('')
     const dispatch = useDispatch()
@@ -34,7 +36,7 @@ const ProfileHeader = ({user, follow, toggle, toggleview}) => {
       navigate('/chat' , {state : { person : user}})
     }
 
-    console.log(user);
+    // console.log(user);
     const sharelink = `localhost:5173/user/${user?._id}`
     const title = user?.username 
     
