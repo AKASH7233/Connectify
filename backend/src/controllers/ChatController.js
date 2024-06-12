@@ -2,6 +2,7 @@ import ChatModel from "../models/ChatModel.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js"
 export const createChat = async (req, res,next) => {
+    // console.log('request for chat', req.body)
     if(!req.body.senderId  || !req.body.receiverId) return next(new ApiError('Sender and receiver id is required', 400));
     try {
     
@@ -27,28 +28,34 @@ export const createChat = async (req, res,next) => {
     //  "_id": "6606cf15d66ec4bbbc422e38"
 }
 
-export const userChats = async (req, res,next) => {
+export const userChats = async (req, res, next) => {
     try {
-        const simpleChats = await ChatModel.find({
-            user: req.params.userId
-        })
-        console.log('simple chat',simpleChats)
-        const chats = await ChatModel.aggregate([
-            {
-                $match: {
-                    member: { $in: [req.params.userId]}
-                }
-            },{
-                $addFields :{
-                    personId : { $arrayElemAt : ["$member", 1]}
-                },
-            },
-        ]) 
+        
+        const FindReceiver = (await ChatModel.find({
+            member: { $in: [req.params.userId] }
+        })).map(chat => chat.member)
+        // console.log('find chat patner length',FindReceiver)
+
+        const selectReciverId = (findChatPatner) => findChatPatner.map(chat => chat[1].toString())
+
+        // const chats = await ChatModel.aggregate([
+        //     {
+        //         $match: {
+        //             member: { $in: [userId] }
+        //         }
+        //     }, {
+        //         $addFields: {
+        //             personId: { $arrayElemAt: ["$member", 1] }
+        //         }
+        //     }
+        // ])
+
         let users = [];
-        for(let chat of chats) {
-            const user = await User.findById({_id: chat.personId}).select('username fullName _id profileImage email')
-            users.push(user)
+        for (let id of selectReciverId(FindReceiver)) {
+            const user = await User.findById({ _id: id }).select('username fullName _id profileImage email')
+            if(user) users.push(user)
         }
+        // console.log('final answer for partner', users)
 
         res.status(200).json(users)
     } catch (error) {
@@ -58,6 +65,7 @@ export const userChats = async (req, res,next) => {
 
 export const findChat = async (req, res,next) => {
     try {
+        // console.log('request for chat', req.params)
         const chat = await ChatModel.findOne({
             member: { $all:[req.params.firstUserId, req.params.secondUserId]}
         })

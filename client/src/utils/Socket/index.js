@@ -19,7 +19,6 @@ io.on('connection', socket => {
         io.emit('getUsers', activeUsers)
     })
 
-    socket.on('')
 
     socket.on('disconnect', ()=>{
         activeUsers = activeUsers.filter(user => user.socketId !== socket.id)

@@ -48,8 +48,6 @@ function ChatApp() {
 
 
     useEffect(() => {
-        console.log('Rendering ChatApp');
-        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         const loadChatId = async () => {
             setLoading(true);
             if (person && user) {

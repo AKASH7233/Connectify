@@ -282,7 +282,7 @@ const BlinkViewed = asyncHandler(async (req, res) => {
         }
 
         const user = await User.findById(req.user._id).select('username _id ProfileImage');
-        console.log(user);
+        console.log('blink user',user);
         if (!user) {
             throw new ApiError(404, 'User not found !!');
         }
