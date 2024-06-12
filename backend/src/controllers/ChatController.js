@@ -4,7 +4,12 @@ import { User } from "../models/user.model.js"
 export const createChat = async (req, res,next) => {
     if(!req.body.senderId  || !req.body.receiverId) return next(new ApiError('Sender and receiver id is required', 400));
     try {
-    console.log('hitted')
+    
+    if(req.body.senderId === req.body.receiverId) return next(new ApiError('You cannot chat with yourself', 400))
+    
+    const findIdsValid = await User.find({_id: { $in: [req.body.senderId, req.body.receiverId]}})
+    if(findIdsValid.length !== 2) return next(new ApiError('Sender and receiver id is not valid', 400))
+
     const previousChat = await ChatModel.findOne({
         member: { $all:[req.body.senderId, req.body.receiverId]}
     })
@@ -24,6 +29,10 @@ export const createChat = async (req, res,next) => {
 
 export const userChats = async (req, res,next) => {
     try {
+        const simpleChats = await ChatModel.find({
+            user: req.params.userId
+        })
+        console.log('simple chat',simpleChats)
         const chats = await ChatModel.aggregate([
             {
                 $match: {
