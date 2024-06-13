@@ -17,7 +17,7 @@ import { fetchMessages, sendMessageDispatch } from "@/redux/messageSlice";
 
 function ChatApp() {
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
-    // const login_user = useSelector((state) => state?.auth?.user?.user);
+    const login_user = useSelector((state) => state?.auth?.user?.user);
     // console.log('login_user',login_user);
     const data = JSON.parse(localStorage.getItem('data'))?.data[0]
     const user = data;
@@ -35,11 +35,11 @@ function ChatApp() {
 
     // socket connection
     const socket = useRef();
-    console.log('person', person);
+    // console.log('person', person);
 
     useEffect(() => {
         socket.current = io('http://localhost:8800');
-        socket.current.emit('addUser', user._id);
+        socket.current.emit('addUser', user?._id);
         socket.current.on('getUsers', (users) => {
             setOnlineUsers(users);
         })
@@ -57,7 +57,7 @@ function ChatApp() {
                 const oldMessage = (await dispatch(fetchMessages(chatId))).payload;
                 setMessages(oldMessage);
             }
-            const result = (await dispatch(fetchPerson(user._id))).payload;
+            const result = (await dispatch(fetchPerson(user?._id))).payload;
             console.log('result', result);
             setPersonData(result);
         };
@@ -137,11 +137,11 @@ function ChatApp() {
                     <aside className="w-full bg-gray-300 p-6">
                         <h2 className="text-xl font-bold mb-4">Message</h2>
                         <ul className="space-y-4 overflow-y-auto ">
-                            {personData.map((member, index) => (
+                            {personData?.map((member, index) => (
                                 <li key={index} onClick={() => personClickHandler(index)} className="flex items-center justify-between cursor-pointer hover:bg-gray-400 p-3 rounded">
                                     <span className="flex items-center">
                                         <User2Icon className="mr-2 w-8 text-blue-700" />
-                                        <span>{member.fullName}</span>
+                                        <span>{member.username}</span>
                                     </span>
                                 </li>
                             ))}

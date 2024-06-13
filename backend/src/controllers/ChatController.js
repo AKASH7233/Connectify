@@ -6,7 +6,7 @@ export const createChat = async (req, res,next) => {
     if(!req.body.senderId  || !req.body.receiverId) return next(new ApiError('Sender and receiver id is required', 400));
     try {
     
-    if(req.body.senderId === req.body.receiverId) return next(new ApiError('You cannot chat with yourself', 400))
+    if(req.body.senderId == req.body.receiverId) return next(new ApiError('You cannot chat with yourself', 400))
     
     const findIdsValid = await User.find({_id: { $in: [req.body.senderId, req.body.receiverId]}})
     if(findIdsValid.length !== 2) return next(new ApiError('Sender and receiver id is not valid', 400))
@@ -30,7 +30,7 @@ export const createChat = async (req, res,next) => {
 
 export const userChats = async (req, res, next) => {
     try {
-        
+        console.log('userId from chatcontroller',req.params.userId);
         const FindReceiver = (await ChatModel.find({
             member: { $in: [req.params.userId] }
         })).map(chat => chat.member)
@@ -53,9 +53,12 @@ export const userChats = async (req, res, next) => {
         let users = [];
         for (let id of selectReciverId(FindReceiver)) {
             const user = await User.findById({ _id: id }).select('username fullName _id profileImage email')
-            if(user) users.push(user)
+            console.log('id from ',id)
+        if(id!=req.params.userId && user){
+            users.push(user)
         }
-        // console.log('final answer for partner', users)
+        }
+        console.log('final answer for partner', users)
 
         res.status(200).json(users)
     } catch (error) {
