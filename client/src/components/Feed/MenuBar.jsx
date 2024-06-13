@@ -13,7 +13,8 @@ import { logout } from '@/redux/authSlice';
 
 function MenuBar({ActiveMenuItem}) {
   const currentUser = useSelector(state=> state?.auth?.user) 
-  const currentUserId = currentUser?.user?._id || currentUser[0]?._id
+  const currentUserId = currentUser?.user?._id
+  
   const dispatch = useDispatch()
   const navigate = useNavigate()
   ActiveMenuItem != undefined ? localStorage.setItem('item',JSON.stringify(ActiveMenuItem)) : ''

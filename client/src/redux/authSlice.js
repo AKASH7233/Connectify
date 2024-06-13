@@ -217,12 +217,12 @@ export const authSlice = createSlice({
             state.user = {}
         })
 
-        .addCase(getUserData.fulfilled,(state,action)=>{
-            localStorage.setItem("data",JSON.stringify(action?.payload));
-            localStorage.setItem("isLoggedIn",true);
-            state.isLoggedIn=true;
-            state.user=action?.payload?.data;
-        })
+        // .addCase(getUserData.fulfilled,(state,action)=>{
+        //     // localStorage.setItem("data",JSON.stringify(action?.payload));
+        //     // localStorage.setItem("isLoggedIn",true);
+        //     // state.isLoggedIn=true;
+        //     // state.user=action?.payload?.data;
+        // })
     }
 })
 

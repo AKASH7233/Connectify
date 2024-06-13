@@ -11,7 +11,7 @@ import DrawerPost from '../../shadCompo/Drawer';
 
 function Header({post}) {
     const currentUser = useSelector(state=> state?.auth?.user) 
-    const currentUserId = currentUser?.user?._id || currentUser[0]?._id
+    const currentUserId = currentUser?.user?._id 
     const profileImg = post?.owner.ProfileImage ? post?.owner.ProfileImage : profileImage
     const dispatch = useDispatch()
     const [isFollowing,setIsFollowing] = useState()

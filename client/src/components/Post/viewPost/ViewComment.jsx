@@ -11,7 +11,7 @@ import { commentlikes, toggleCommentlike } from '@/redux/likeSlice';
 function ViewComment({info , reply = true ,render}) {
     const dispatch = useDispatch()
     const profileImage = info?.commentedBy?.ProfileImage ? info?.commentedBy?.ProfileImage : profileImg
-    const currentUserId = useSelector(state => state.auth?.user[0])?._id || useSelector(state => state.auth?.user)?.user?._id
+    const currentUserId = useSelector(state => state.auth?.user)?.user?._id
     const sameUser = currentUserId == info?.commentedBy?._id
     const userUrl = sameUser ? `/myprofile` : `/user/${info?.commentedBy?._id}`
 
