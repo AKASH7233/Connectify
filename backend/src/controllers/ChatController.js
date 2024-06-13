@@ -52,7 +52,7 @@ export const userChats = async (req, res, next) => {
 
         let users = [];
         for (let id of selectReciverId(FindReceiver)) {
-            const user = await User.findById({ _id: id }).select('username fullName _id profileImage email')
+            const user = await User.findById({ _id: id }).select('username fullName _id ProfileImage email')
             console.log('id from ',id)
         if(id!=req.params.userId && user){
             users.push(user)

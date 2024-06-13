@@ -17,10 +17,11 @@ import { fetchMessages, sendMessageDispatch } from "@/redux/messageSlice";
 
 function ChatApp() {
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
-    const login_user = useSelector((state) => state?.auth?.user?.user);
-    // console.log('login_user',login_user);
+    const login_user = useSelector((state) => state?.auth?.user?.user) 
+    console.log('login_user',login_user);
     const data = JSON.parse(localStorage.getItem('data'))?.data[0]
-    const user = data;
+    const user = login_user;
+    console.log(user);
     const location = useLocation();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -140,7 +141,7 @@ function ChatApp() {
                             {personData?.map((member, index) => (
                                 <li key={index} onClick={() => personClickHandler(index)} className="flex items-center justify-between cursor-pointer hover:bg-gray-400 p-3 rounded">
                                     <span className="flex items-center">
-                                        <User2Icon className="mr-2 w-8 text-blue-700" />
+                                        {member.ProfileImage ? <img src={member.ProfileImage} className="mr-2 w-8 h-8 rounded-3xl object-fill" alt="user's ProfileImg" /> : <User2Icon className="mr-2 w-8 text-blue-700" />}
                                         <span>{member.username}</span>
                                     </span>
                                 </li>
@@ -156,7 +157,8 @@ function ChatApp() {
                         {/* Header */}
                         <header className="w-[22rem] absolute top-0 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white py-4 px-6 items-center shadow-md flex justify-between rounded-full my-5">
                             <div className="flex items-center justify-start">
-                                <SheetSide icon={<User2Icon className="hover:text-blue-600 transition duration-200 w-8" />} />
+                                {person?.ProfileImage ? <SheetSide icon={<img src={person?.ProfileImage} className="mr-2 w-8 h-8 rounded-3xl object-fill-" alt="user's ProfileImg"/>} /> : <SheetSide icon={<User2Icon className="hover:text-blue-600 transition duration-200 w-8" />} /> }
+                                
                                 <div className="flex-col">
                                     <h2 className="text-xl font-bold">{person.fullName}</h2>
                                     <p className="text-sm">Active now</p>
