@@ -7,7 +7,7 @@ const ViewPostPage = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 400px)' })
     console.log(isMobile);
     return (
-        <div>
+        <div className="h-[100vh]">
             {
                 !isMobile && 
                 <div className="flex gap-x-3 relative lg:px-40 md:px-3 bg-gray-800 overflow-x-hidden text-white"> 

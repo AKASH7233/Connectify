@@ -32,7 +32,7 @@ function UserProfile() {
       setViewProfile(prev => !prev)
     }
   return (
-    <div className='bg-black relative min-h-[100vh] text-white'>
+    <div className='bg-black relative h-[100vh] text-white'>
       {viewProfile ? 
           <ProfileImage img={user?.ProfileImage} toggleview={toggleViewProfile}/>
           : 

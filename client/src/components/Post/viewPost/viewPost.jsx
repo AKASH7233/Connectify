@@ -49,7 +49,7 @@ function ViewPost() {
     },[reRender])
     console.log();
     return (
-    <div className='bg-gray-950 min-h-[100vh]'>
+    <div className='bg-gray-950 [100vh]'>
     {
       postInfo &&
       <>
