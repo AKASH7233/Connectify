@@ -41,9 +41,12 @@ function ChatApp() {
             setOnlineUsers(users);
         });
         socket.current.on('receiveMessage', (data) => {
-            setReceiveMessage(data);
+            // Check if the received message is for the currently open chat
+            if (data.chatId === chatId) {
+                setReceiveMessage(data);
+            }
         });
-    }, [user]);
+    }, [user, chatId]);
 
     useEffect(() => {
         if (receiveMessage) {
@@ -125,101 +128,101 @@ function ChatApp() {
             };
         }
     };
-
     return (
         loading ?
             <Loader color="#00BFFF" height={300} width={300} /> :
             <div className={`bg-dark-200 h-screen flex ${isMobile ? 'flex-col' : 'flex-row'}`}>
-
-            {/* Sidebar */}
-            <div className={`flex ${isMobile ? 'w-full' : 'w-1/4'} bg-gray-200`}>
-
-                {/* Icons */}
-                <div className="w-1/4 flex flex-col items-center py-4 space-y-5">
-                    <User2Icon className="w-8 text-blue-700" />
-                    <GroupIcon className="w-8 text-blue-700" />
-                    <SettingsIcon className="w-8 text-blue-700" />
-                    <Camera className="w-8 text-blue-700" />
-                    <PodcastIcon className="w-8 text-blue-700" />
+                {/* Sidebar */}
+                <div className={`flex ${isMobile ? 'w-full' : 'w-1/4'} bg-gray-200`}>
+    
+                    {/* Icons */}
+                    <div className="w-1/4 flex flex-col items-center py-4 space-y-5">
+                        <User2Icon className="w-8 text-blue-700" />
+                        <GroupIcon className="w-8 text-blue-700" />
+                        <SettingsIcon className="w-8 text-blue-700" />
+                        <Camera className="w-8 text-blue-700" />
+                        <PodcastIcon className="w-8 text-blue-700" />
+                    </div>
+    
+                    {/* People to Chat */}
+                    <aside className="w-full bg-gray-300 p-6">
+                        <h2 className="text-xl font-bold mb-4">Message</h2>
+                        <ul className="space-y-4 overflow-y-auto">
+                            {personData?.map((member, index) => (
+                                <li key={index} onClick={() => personClickHandler(index)} className={`flex items-center justify-between cursor-pointer hover:bg-gray-400 p-3 rounded ${person?._id === member._id ? 'bg-blue-200' : ''}`}>
+                                    <span className="flex items-center">
+                                        {member.ProfileImage ? <img src={member.ProfileImage} className="mr-2 w-8 h-8 rounded-3xl object-fill" alt="user's ProfileImg" /> : <User2Icon className="mr-2 w-8 text-blue-700" />}
+                                        <span>{member.username}</span>
+                                    </span>
+                                    {person?._id !== member._id && messages.some(msg => msg.senderId === member._id) &&
+                                        <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">New Message</span>
+                                    }
+                                </li>
+                            ))}
+                        </ul>
+                    </aside>
                 </div>
-
-                {/* People to Chat */}
-                <aside className="w-full bg-gray-300 p-6">
-                    <h2 className="text-xl font-bold mb-4">Message</h2>
-                    <ul className="space-y-4 overflow-y-auto ">
-                        {personData?.map((member, index) => (
-                            <li key={index} onClick={() => personClickHandler(index)} className="flex items-center justify-between cursor-pointer hover:bg-gray-400 p-3 rounded">
-                                <span className="flex items-center">
-                                    {member.ProfileImage ? <img src={member.ProfileImage} className="mr-2 w-8 h-8 rounded-3xl object-fill" alt="user's ProfileImg" /> : <User2Icon className="mr-2 w-8 text-blue-700" />}
-                                    <span>{member.username}</span>
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
-                </aside>
-            </div>
-
-            {/* Main Chat Area */}
-            {person ? (
-                <div className={`w-full bg-gray-200 h-screen flex flex-col justify-between relative ${isMobile ? 'mt-4' : ''}`}>
-
-                    {/* Header */}
-                    <header className="w-[22rem] absolute top-0 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white py-4 px-6 items-center shadow-md flex justify-between rounded-full my-5">
-                        <div className="flex items-center justify-start">
-                            {person?.ProfileImage ? <SheetSide icon={<img src={person?.ProfileImage} className="mr-2 w-8 h-8 rounded-3xl object-fill-" alt="user's ProfileImg"/>} /> : <SheetSide icon={<User2Icon className="hover:text-blue-600 transition duration-200 w-8" />} /> }
-                            
-                            <div className="flex-col">
-                                <h2 className="text-xl font-bold">{person.fullName}</h2>
-                                <p className="text-sm">Active now</p>
+    
+                {/* Main Chat Area */}
+                {person ? (
+                    <div className={`w-full bg-gray-200 h-screen flex flex-col justify-between relative ${isMobile ? 'mt-4' : ''}`}>
+    
+                        {/* Header */}
+                        <header className="w-[22rem] absolute top-0 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white py-4 px-6 items-center shadow-md flex justify-between rounded-full my-5">
+                            <div className="flex items-center justify-start">
+                                {person?.ProfileImage ? <SheetSide icon={<img src={person?.ProfileImage} className="mr-2 w-8 h-8 rounded-3xl object-fill-" alt="user's ProfileImg" />} /> : <SheetSide icon={<User2Icon className="hover:text-blue-600 transition duration-200 w-8" />} />}
+                                <div className="flex-col">
+                                    <h2 className="text-xl font-bold">{person.fullName}</h2>
+                                    <p className="text-sm">Active now</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex space-x-5">
-                            <IoCall className="text-3xl hover:text-blue-600 transition duration-200" />
-                            <IoVideocam className="text-3xl hover:text-blue-600 transition duration-200" />
-                            <MdOutlineReport className="text-3xl hover:text-blue-600 transition duration-200" />
-                        </div>
-                    </header>
-
-                    {/* Main Chat Area */}
-                    <main ref={chatContainerRef} className="w-full flex-1 p-6 overflow-y-auto space-y-4">
-                        {messages.map((message, i) =>
-                            <animated.div style={props} key={i} className={`w-fit rounded-xl py-3 px-5 break-words ${user?._id == messages[i].senderId ? 'bg-blue-800 text-white ml-auto' : 'bg-gray-400 text-gray-800 mr-auto'}`}>
-                                {message?.message}
-                            </animated.div>
-                        )}
-                    </main>
-
-                    {/* Message Input Area */}
-                    <footer className="bg-white py-5 px-7 flex items-center shadow-md">
-                        <div className="flex items-center border border-gray-400 rounded-full px-5 py-3 focus-within:border-blue-600 w-full ">
-
-                            {/* Attachments */}
-                            <label htmlFor="image_upload">
-                                <IoImage className="text-blue-700 text-3xl cursor-pointer hover:text-blue-800 transition duration-200" />
-                            </label>
-                            <input
-                                className="hidden"
-                                type="file"
-                                onChange={handleImageUpload}
-                                id="image_upload"
-                                name="image_upload"
-                                accept=".jpg , .jpeg, .png , .svg"
-                            />
-
-                            <input type="text" value={message} onChange={(event) => setMessage(event.target.value)} placeholder="Type your message..." className="ml-3 focus:outline-none w-full" />
-                            <button onClick={sendMessage} className="ml-5 bg-blue-800 text-white px-5 py-3 rounded-full hover:bg-blue-900 focus:outline-none">
-                                <SendIcon />
-                            </button>
-                        </div>
-                    </footer>
-                </div>
-            ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                    <h2 className="text-3xl">Select a person to chat with</h2>
-                </div>
-            )}
-
-        </div>
+                            <div className="flex space-x-5">
+                                <IoCall className="text-3xl hover:text-blue-600 transition duration-200" />
+                                <IoVideocam className="text-3xl hover:text-blue-600 transition duration-200" />
+                                <MdOutlineReport className="text-3xl hover:text-blue-600 transition duration-200" />
+                            </div>
+                        </header>
+    
+                        {/* Main Chat Area */}
+                        <main ref={chatContainerRef} className="w-full flex-1 p-6 overflow-y-auto space-y-4">
+                            {messages.map((msg, i) =>
+                                <animated.div style={props} key={i} className={`w-fit rounded-xl py-3 px-5 break-words ${user?._id === msg.senderId ? 'bg-blue-800 text-white ml-auto' : 'bg-gray-400 text-gray-800 mr-auto'}`}>
+                                    {msg.text}
+                                </animated.div>
+                            )}
+                        </main>
+    
+                        {/* Message Input Area */}
+                        <footer className="bg-white py-5 px-7 flex items-center shadow-md">
+                            <div className="flex items-center border border-gray-400 rounded-full px-5 py-3 focus-within:border-blue-600 w-full ">
+    
+                                {/* Attachments */}
+                                <label htmlFor="image_upload">
+                                    <IoImage className="text-blue-700 text-3xl cursor-pointer hover:text-blue-800 transition duration-200" />
+                                </label>
+                                <input
+                                    className="hidden"
+                                    type="file"
+                                    onChange={handleImageUpload}
+                                    id="image_upload"
+                                    name="image_upload"
+                                    accept=".jpg , .jpeg, .png , .svg"
+                                />
+    
+                                <input type="text" value={message} onChange={(event) => setMessage(event.target.value)} placeholder="Type your message..." className="ml-3 focus:outline-none w-full" />
+                                <button onClick={sendMessage} className="ml-5 bg-blue-800 text-white px-5 py-3 rounded-full hover:bg-blue-900 focus:outline-none">
+                                    <SendIcon />
+                                </button>
+                            </div>
+                        </footer>
+                    </div>
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <h2 className="text-3xl">Select a person to chat with</h2>
+                    </div>
+                )}
+    
+            </div>
     );
 }
-export default ChatApp;
+export default ChatApp ;

@@ -1,5 +1,5 @@
 import MenuBar from "@/components/Feed/MenuBar"
-import ChatApp from "./Chat"
+import ChatApp from "@/pages/Chat"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
 import ViewReplies from "@/components/Post/viewPost/viewReplies";
