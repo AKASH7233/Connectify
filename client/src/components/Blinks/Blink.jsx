@@ -1,7 +1,7 @@
 import React from 'react'
-import Story from '../MyBlink/Story'
+import Story from './MyBlink/Story'
 // import StoriesComponent from './Zucks'
-import Stories from '@/components/Testing/Story'
+import Stories from '@/components/Blinks/OtherBlinks/Story'
 function Blink() {
   
   return (

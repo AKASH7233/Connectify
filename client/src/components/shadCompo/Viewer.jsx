@@ -69,15 +69,15 @@ export function ViewerList({currentOpenedStory}) {
           <DrawerHeader>
             <DrawerTitle>Viewers</DrawerTitle>
           </DrawerHeader>
-            <div>
+            <div className="relative mb-4">
               <input 
               type="text"
               placeholder="search username"
-              className="bg-transparent bg-opacity-90 border-2 border-gray-700 text-sm py-2 mx-4 px-4 rounded-[10px] outline-none text-white"
+              className="bg-transparent w-full bg-opacity-90 border-2 border-gray-700 text-sm py-3 px-4 rounded-[10px] outline-none text-white"
               value={search}
               onChange={(e)=>{setSearch(e.target.value)}}
               />
-              <button className="bg-transparent bg-opacity-90 border-2 border-gray-700 text-sm py-3 cursor-pointer px-4 rounded-[10px] outline-none text-white" onClick={searchUser}><FaSearch /></button>
+              <button className="bg-gray-900 bg-opacity-90 border-2 right-0 border-gray-700 text-sm py-3 pt-4 top-0 cursor-pointer absolute  px-4 rounded-[10px] outline-none text-white" onClick={searchUser}><FaSearch className="text-sm"/></button>
             </div>
             <div>
               { !userSearched && 
