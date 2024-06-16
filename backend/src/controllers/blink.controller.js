@@ -199,6 +199,7 @@ const getBlink = asyncHandler(async(req,res)=>{
                       title: '$title',
                       file: '$file',
                       link : '$link',
+                      seen: '$isSeen',
                       createdAt: '$createdAt'
                     }
                   }
@@ -304,6 +305,14 @@ const BlinkViewed = asyncHandler(async (req, res) => {
             blink.viewers.push(user);
             blink.save();
         }
+
+        let blinkViewed = await Blink.findByIdAndUpdate(
+            blinkId,
+            { $set: { isSeen: true } },
+            { new: true }
+        )
+
+        console.log(`blinkviewed` ,blinkViewed);
 
         return res
             .status(200)
