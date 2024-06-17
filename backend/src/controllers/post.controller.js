@@ -27,14 +27,18 @@ const showPosts = asyncHandler( async(_,res,next)=>{
         },
         {
             $project:{
-                "owner.password": 0,
-                "owner.fullName": 0,
-                "owner.email": 0,
-                "owner.coverImage": 0,
-                "owner.posts": 0,
-                "owner.createdAt": 0,
-                "owner.updatedAt": 0,
-                "owner.refreshToken": 0,
+                "_id": 1,
+                "title": 1,
+                "postFile" : 1,
+                "postedBy": 1,
+                "isPublishedDate" : 1,
+                "isPublished" : 1,
+                "createdAt" : 1,
+                "updatedAt" : 1,
+                "owner._id": 1,
+                "owner.username": 1,
+                "owner.ProfileImage" : 1,
+                "taggedTo" : 1
             }
         }
     ])
@@ -49,6 +53,57 @@ const showPosts = asyncHandler( async(_,res,next)=>{
         )
     )
     
+})
+
+const getTaggedUsers = asyncHandler(async (req, res) => {
+    try {
+        const {postId} = req.params
+    
+        if(!isValidObjectId(postId)){
+            throw new ApiError(401,'Invalid Post Id')
+        }
+    
+        const taggedUsers = await Post.aggregate([
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(postId)
+                }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "taggedTo",
+                    foreignField: "_id",
+                    as: "taggedUsers"
+                }
+            },
+            {
+                $unwind: "$taggedUsers"
+            },
+            {
+                $project: {
+                    "taggedUsers._id": 1,
+                    "taggedUsers.username": 1,
+                    "taggedUsers.ProfileImage": 1
+                }
+            }
+        ])
+    
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                taggedUsers,
+                "Tagged Users Fetched"
+            )
+        )
+    } catch (error) {
+        return res
+        .json(
+            new ApiErrResponse(error)
+        )
+    }
 })
 
 const uploadPost = asyncHandler( async(req,res)=>{
@@ -442,5 +497,6 @@ export {
     postComments,
     visitedPost,
     myPosts,
-    hiddenPost
+    hiddenPost,
+    getTaggedUsers
 }
