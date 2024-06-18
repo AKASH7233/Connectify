@@ -487,6 +487,32 @@ const hiddenPost = asyncHandler(async (req,res)=>{
     )
 })
 
+const getTaggedPost = asyncHandler(async (req,res)=>{
+   try {
+     const {userId} = req.params
+     
+    console.log(`userId ${userId}`);
+
+     if(!isValidObjectId(userId)){
+         throw new ApiError(400, "Invalid Post ID")
+     }
+
+    const posts = await Post.find({taggedTo : userId}).select('_id postFile')
+
+     console.log(`tagged posts ${posts}`);
+     return res
+    .status(200)
+    .json(
+         new ApiResponse(200, posts, 'Fetched Tagged Posts')
+     )
+   } catch (error) {
+    return res
+    .json(
+        new ApiErrResponse(error)
+    )
+   }
+})
+
 export {
     uploadPost,
     updatePostTitle,
@@ -498,5 +524,6 @@ export {
     visitedPost,
     myPosts,
     hiddenPost,
-    getTaggedUsers
+    getTaggedUsers,
+    getTaggedPost
 }

@@ -10,7 +10,8 @@ import {
     togglehidePost,
     myPosts,
     hiddenPost,
-    getTaggedUsers
+    getTaggedUsers,
+    getTaggedPost
 } from "../controllers/post.controller.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 import { verifyJWT } from "../middlewares/auth.js";
@@ -34,6 +35,10 @@ router.route('/uploadpost').post(
 
 router.route('/updatepost/:postId').post(
     updatePostTitle
+)
+
+router.route('/gettaggedpost/:userId').post(
+    getTaggedPost
 )
 
 router.route('/gettaggeduser/:postId').post(
