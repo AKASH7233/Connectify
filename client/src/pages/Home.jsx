@@ -1,7 +1,9 @@
-import MenuBar from "@/components/Feed/MenuBar"
-import Feed from "../components/Feed/Feed"
-import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
+
+import MenuBar from "@/components/Feed/MenuBar"
+import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
+
+import Feed from "../components/Feed/Feed"
 
 const Home = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 500px)' })
