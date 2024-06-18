@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import { FaBookmark } from "react-icons/fa";
+import { FaUserTag } from "react-icons/fa";
 import { FaRegImages } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa6";
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom';
-
-import { AllBookedPost } from '@/redux/bookMark';
 import { postliked } from '@/redux/likeSlice';
+import { getTaggedpost } from '@/redux/postSlice';
 
 
 function ProfileFooter({user}) {
   const dispatch = useDispatch()
   const [options,setOptions] = useState('post')
   const [likedposts,setlikedPosts] = useState()
-  const [bookedPosts,setBookedPosts] = useState()
+  const [taggedPosts,settaggedPosts] = useState()
   const [render,setRender] = useState(false)
-  // const [userpost,setUserpost] = useState()
+
   useEffect(()=>{
     (async()=>{
-      let response = await dispatch(AllBookedPost())
-      // console.log(response);
-      setBookedPosts(response?.payload?.data)
+      console.log(user?._id);
+      let response = await dispatch(getTaggedpost(user?._id))
+      console.log(response?.payload?.data);
+      settaggedPosts(response?.payload?.data)
     })()
-  },[])
+  },[render])
+
+  
 
   // useEffect(()=>{
   //   ;(async()=>{
@@ -41,16 +43,16 @@ function ProfileFooter({user}) {
    },[render])
  
   // // console.log(options);
-  // // console.log(bookedPosts);
+  // // console.log(taggedPosts);
 
   return (
     <div className='bg-black mt-2 min-h-[50vh]'>
         <div className='flex justify-evenly items-center text-xl'>
-          <button onClick={(e)=>{setOptions('post')}} className={`text-gray-400 hover:bg-gray-900 hover:bg-opacity-90 hover:border-2 hover:border-gray-700 hover:text-white px-10 py-2 rounded-[10px] ${options == 'post' ? ' bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-white' : ''}`}  name='post'><FaRegImages /></button>
+          <button onClick={()=>{setOptions('post')}} className={`text-gray-400 hover:bg-gray-900 hover:bg-opacity-90 hover:border-2 hover:border-gray-700 hover:text-white px-10 py-2 rounded-[10px] ${options == 'post' ? ' bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-white' : ''}`}  name='post'><FaRegImages /></button>
           
-          <button onClick={(e)=>{setOptions('liked');setRender(prev => !prev)}} className={`text-gray-400 hover:bg-gray-900 hover:bg-opacity-90 hover:border-2 hover:border-gray-700 hover:text-white px-10 py-2 rounded-[10px] ${options == 'liked' ? ' bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-white' : ''}`} name='liked'><FaHeart /></button>
+          <button onClick={()=>{setOptions('liked');setRender(prev => !prev)}} className={`text-gray-400 hover:bg-gray-900 hover:bg-opacity-90 hover:border-2 hover:border-gray-700 hover:text-white px-10 py-2 rounded-[10px] ${options == 'liked' ? ' bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-white' : ''}`} name='liked'><FaHeart /></button>
           
-          <button onClick={(e)=>{setOptions('bookmark')}} className={`text-gray-400 hover:bg-gray-900 hover:bg-opacity-90 hover:border-2 hover:border-gray-700 hover:text-white px-10 py-2 rounded-[10px] ${options == 'bookmark' ? ' bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-white' : ''}`}  name='bookmark'><FaBookmark /></button>
+          <button onClick={()=>{setOptions('bookmark')}} className={`text-gray-400 hover:bg-gray-900 hover:bg-opacity-90 hover:border-2 hover:border-gray-700 hover:text-white px-10 py-2 rounded-[10px] ${options == 'bookmark' ? ' bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-white' : ''}`}  name='bookmark'><FaUserTag /></button>
         </div>
         <div className='lg:mx-10 flex flex-wrap min-h-[50vh]'>
           {/* {options == 'post' && userpost?.map((post)=>{
@@ -72,12 +74,12 @@ function ProfileFooter({user}) {
           ))}
           {options == 'liked' && likedposts?.length < 1 && < div className='w-full   flex justify-center items-center text-lg'> 0 Post Liked !</div> }
 
-          {options == 'bookmark' && bookedPosts?.map((post)=>(
-            <Link key={post?.likedposts?._id} to={`/viewpost/${post?.BookedPost[0]?._id}/comment`}>
-              <img key={post?.likedposts?._id} src={post?.BookedPost[0]?.postFile} className='mx-3 my-4 w-40 md:w-36 lg:w-40 md:object-fill h-40 border-2 border-gray-800 rounded-lg object-cover'/>
+          {options == 'bookmark' && taggedPosts?.map((post)=>(
+            <Link key={post?._id} to={`/viewpost/${post?._id}/comment`}>
+              <img key={post?._id} src={post?.postFile} className='mx-3 my-4 w-40 md:w-36 lg:w-40 md:object-fill h-40 border-2 border-gray-800 rounded-lg object-cover'/>
             </Link>
           ))}
-          {options == 'bookmark' && bookedPosts?.length < 1 && < div className='w-full   flex justify-center items-center text-lg'>0 Bookmarked Post !</div> }
+          {options == 'bookmark' && taggedPosts?.length < 1 && < div className='w-full   flex justify-center items-center text-lg'>0 Tagged Post !</div> }
 
         </div>
     </div>

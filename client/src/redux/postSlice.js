@@ -145,6 +145,16 @@ export const getTaggedUser = createAsyncThunk('post/getTaggedUser',async(data)=>
     }
 })
 
+export const getTaggedpost = createAsyncThunk('post/getTaggedpost',async(data)=>{
+    try {
+        const response = await axiosInstance.post(`post/gettaggedpost/${data}`)
+    
+        return response.data
+    } catch (error) {
+        return error  
+    }
+})
+
 export const postSlice = createSlice({
     name: 'post',
     initialState,
