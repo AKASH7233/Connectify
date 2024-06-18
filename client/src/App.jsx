@@ -2,6 +2,7 @@ import './App.css'
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
+import RequireAuth from './components/auth/RequireAuth'
 import UpdateProfile from './components/Profile/UpdateProfile'
 import Chat from './pages/Chat'
 import CommentRepliesPage from './pages/CommentRepliesPage'
@@ -18,7 +19,6 @@ import UploadPage from './pages/UploadPage'
 import UserAccount from './pages/UserAccount'
 import VisitedPostPage from './pages/VistiedPost'
 import DataFetch from './utils/DataFetch'
-import RequireAuth from './components/auth/RequireAuth'
 
 function App() {
 
