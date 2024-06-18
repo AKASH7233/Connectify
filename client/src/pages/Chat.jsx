@@ -1,10 +1,12 @@
 import { Camera, GroupIcon, PodcastIcon, SendIcon, SettingsIcon, User2Icon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { CgProfile } from 'react-icons/cg';
+import { FaHome, FaUserFriends } from 'react-icons/fa';
 import { IoCall, IoImage, IoVideocam } from "react-icons/io5";
 import { MdOutlineReport } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from 'react-responsive';
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { PulseLoader as Loader } from "react-spinners";
 import { animated } from "react-spring";
 import { useSpring } from "react-spring";
@@ -13,6 +15,7 @@ import { io } from "socket.io-client";
 import { SheetSide } from "@/components/Drawer";
 import { fetchChatId, fetchPerson } from "@/redux/chatSlice";
 import { fetchMessages, sendMessageDispatch } from "@/redux/messageSlice";
+import { BsGithub, BsWhatsapp } from "react-icons/bs";
 
 function ChatApp() {
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
@@ -31,6 +34,8 @@ function ChatApp() {
     const [messages, setMessages] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [receiveMessage, setReceiveMessage] = useState(null);
+    
+    const navigate = useNavigate();
 
     const socket = useRef();
 
@@ -133,37 +138,63 @@ function ChatApp() {
         }
         
     };
+    const handleIconclick = (icon) =>{
+        switch (icon) {
+            case 'Home':
+                navigate('/')
+                break;
+            case 'Profile':
+                navigate('/myProfile')
+                break;
+            case 'Follow':
+                navigate(`/followlist/Followers/${user?._id}`)
+                break;
+            case 'Github':
+                window.location.href = 'https://github.com/daemonX10/Connectify';
+                break;
+            case 'Whatsapp':
+                window.location.href = 'https://wa.me/9082362144?text=I%27m%20here%20from%20Connectify';
+                break;
+            default:
+                break;
+        }
+    
+    }
 return (
     loading ?
         <Loader color="#00BFFF" height={300} width={300} /> :
-        <div className={`h-screen flex flex-col md:flex-row bg-gradient-to-r from-gray-600 to-black`}>
+        <div className={`h-screen max-h-screen flex flex-col md:flex-row bg-gradient-to-r from-gray-600 to-black`}>
 
             {/* Sidebar */}
-            <div className={`hidden md:flex md:w-1/5 bg-black bg-gradient-to-b from-[#2d3436] to-black shadow-lg`}>
+            <div className={`hidden md:flex md:w-1/5 bg-black bg-gradient-to-b from-[#2d3436] to-black shadow-lg `}>
 
                 {/* Icons */}
-                <div className="hidden md:flex md:flex-col items-center md:py-4 md:space-y-5 space-x-5 md:space-x-0 md:w-1/4">
-                    <User2Icon className="w-6 text-gray-400" />
-                    <GroupIcon className="w-6 text-gray-400" />
-                    <SettingsIcon className="w-6 text-gray-400" />
-                    <Camera className="w-6 text-gray-400" />
-                    <PodcastIcon className="w-6 text-gray-400" />
+                <div className="hidden m-2 mt-8 md:flex md:flex-col items-center  space-y-8 space-x-5 md:space-x-0">
+                    <FaHome onClick={()=>handleIconclick('Home')} className="w-6 text-gray-400"  />
+                    <CgProfile onClick={() => handleIconclick('Profile')} className="w-6 text-gray-400" />
+                    <FaUserFriends onClick={() => handleIconclick('Follow')} className="w-6 text-gray-400" />
+                    <BsGithub onClick={() => handleIconclick('Github')} className="w-6 text-gray-400" />
+                    <BsWhatsapp onClick={() => handleIconclick('Whatsapp')} className="w-6 text-gray-400" />
                 </div>
 
                 {/* People to Chat */}
                 <aside className="w-full bg-gradient-to-b from-slate-700 to-black p-6">
                     {/* People to Chat code here... */}
                     <h2 className="text-xl font-bold mb-4 text-white">Message</h2>
-                    <ul className="space-y-4 overflow-y-auto ">
+                    <ul className="space-y-4 h-full  overflow-y-auto overflow-hidden ">
                         {personData?.map((member, index) => (
                             <li key={index} onClick={() => personClickHandler(index)} className="flex items-center justify-between cursor-pointer hover:bg-gray-900 p-3 rounded shadow-lg">
-                                <span className="flex items-center">
-                                    {member.ProfileImage ? <img src={member.ProfileImage} className="mr-2 w-8 h-8 rounded-3xl object-fill" alt="user's ProfileImg" /> : <User2Icon className="mr-2 w-8 text-gray-400" />}
-                                    <span className="text-white">{member.username}</span>
-                                    {member.isOnline ?
-                                        <span className="ml-2 bg-green-500 rounded-full w-3 h-3 inline-block"></span> :
-                                        <span className="ml-2 bg-red-500 rounded-full w-3 h-3 inline-block"></span>
-                                    }
+                                <span className="flex items-center justify-between">
+                                    {member.ProfileImage ? 
+                                    <img src={member.ProfileImage} className="mr-2 w-8 h-8 rounded-3xl object-fill" alt="user's ProfileImg" /> : <User2Icon className="mr-2 w-8 text-gray-400" />}
+                                    <span className="text-white flex justify-between items-center">
+                                        {member.username}
+                                        {member.isOnline ?
+                                            <span className="ml-2 bg-green-500 rounded-full w-3 h-3 inline-block"></span> :
+                                            <span className="ml-2 bg-red-400 rounded-full w-3 h-3 inline-block"></span>
+                                        }
+
+                                    </span>
                                 </span>
                             </li>
                         ))}
@@ -173,7 +204,7 @@ return (
 
             {/* Main Chat Area */}
             {person ? (
-                <div className={`w-full md:w-4/5 bg-gradient-to-r from-gray-800 to-gray-900 h-screen flex flex-col justify-between relative mt-4 md:mt-0 shadow-lg`}>
+                <div className={`w-full md:w-4/5 bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 h-screen flex flex-col justify-between relative mt-4 md:mt-0 shadow-lg`}>
                     {/* Header */}
                     <header className="w-full md:w-[22rem] absolute top-0 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white py-4 px-6 items-center shadow-md flex justify-between rounded-full my-5">
                         <div className="flex items-center justify-start">
@@ -200,7 +231,7 @@ return (
                     </main>
 
                     {/* Message Input Area */}
-                    <footer className="bg-gradient-to-l from-gray-900 via-gray-800 to-gray-700 py-5 px-7 flex items-center shadow-md">
+                    <footer className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 py-5 px-7 flex items-center shadow-md">
                         <div className="flex items-center border border-gray-700 rounded-full px-5 py-3 focus-within:border-gray-600 w-full ">
 
                             {/* Attachments */}
@@ -224,7 +255,7 @@ return (
                     </footer>
                 </div>
             ) : (
-                <div className="w-full h-full flex items-center justify-center">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-gray-800 to-gray-900">
                     <h2 className="text-3xl text-white">Select a person to chat with</h2>
                 </div>
             )}
