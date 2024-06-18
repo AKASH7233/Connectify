@@ -179,7 +179,7 @@ return (
                         <div className="flex items-center justify-start">
                             {person?.ProfileImage ? <SheetSide icon={<img src={person?.ProfileImage} className="mr-2 w-8 h-8 rounded-3xl object-fill-" alt="user's ProfileImg" />} /> : <SheetSide icon={<User2Icon className="hover:text-gray-600 transition duration-200 w-8" />} />}
                             <div className="flex-col">
-                                <h2 className="text-xl font-bold">{person.fullName}</h2>
+                                <h2 className="text-xl font-bold">{person.username}</h2>
                                 <p className="text-sm">{onlineUsers.includes(person.id) ? 'Active now' : 'Offline'}</p>
                             </div>
                         </div>
