@@ -50,6 +50,8 @@ function ChatApp() {
             if (data.chatId === chatId) {
                 setReceiveMessage(data);
             }
+            console.log('recive message from socket par',setReceiveMessage);
+
         });
     }, [user, chatId]);
 
@@ -57,6 +59,7 @@ function ChatApp() {
         if (receiveMessage) {
             setMessages(prev => [...prev, receiveMessage]);
         }
+        
     }, [receiveMessage]);
 
     useEffect(() => {
@@ -74,10 +77,7 @@ function ChatApp() {
                 ...person,
                 isOnline: onlineUsers.some(onlineUsers=> onlineUsers.userId === person._id),
             }));
-            console.log('personData', personData);
             setPersonData(updatedPersonData);
-            console.log('updatePersonData', updatedPersonData);
-            console.log('online', onlineUsers);
         };
 
         loadChatId();
