@@ -1,8 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const RequireAuth = () => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn") || false;
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn) || false;
     console.log(isLoggedIn
         , 'login'
     )
