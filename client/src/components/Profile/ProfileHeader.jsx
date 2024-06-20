@@ -9,12 +9,13 @@ import { useDispatch } from 'react-redux';
 import { DropdownMenuDemo } from '@/components/shadCompo/Dropdown';
 import { DialogCloseButton } from '../shadCompo/Share';
 import { useNavigate } from 'react-router-dom'; 
+import { myPosts } from '@/redux/postSlice';
 
 
 const ProfileHeader = ({user, follow, toggle, toggleview}) => {
     const navigate = useNavigate()
     const [option,setOptions] = useState(false)
-    const [respond,setrespond] = useState('')
+    const [postCount,setPostCount] = useState('')
     const dispatch = useDispatch()
     
     const togglefollow = () =>{
@@ -35,6 +36,13 @@ const ProfileHeader = ({user, follow, toggle, toggleview}) => {
       }
       navigate('/chat' , {state : { person : user}})
     }
+
+    useEffect(()=>{
+      (async()=>{
+        let response = await dispatch(myPosts(user?._id))
+        setPostCount(response?.payload?.data?.length)
+      })()
+    })
 
     // console.log(user);
     const sharelink = `localhost:5173/user/${user?._id}`
@@ -72,8 +80,8 @@ const ProfileHeader = ({user, follow, toggle, toggleview}) => {
         
           <div className='flex justify-between items-center px-4 my-3'>
             <div>
-              <h2 className='text-center'>{user?.posts?.length}</h2>
-              <p className='text-gray-500'>{user?.posts?.length > 1 ? 'Posts' : 'Post' }</p>
+              <h2 className='text-center'>{postCount}</h2>
+              <p className='text-gray-500'>{postCount > 1 ? 'Posts' : 'Post' }</p>
             </div>
            <Link to={`/followlist/Followers/${user?._id}`}>
             <div>
