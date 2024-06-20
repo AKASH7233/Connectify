@@ -19,6 +19,7 @@ import UploadPage from './pages/UploadPage'
 import UserAccount from './pages/UserAccount'
 import VisitedPostPage from './pages/VistiedPost'
 import DataFetch from './utils/DataFetch'
+import BookedPostPage from './pages/Bookmarked'
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
             <Route path='/likes/:postId' element={<LikedByPage />} />
             <Route path='/hiddenpost' element={<HiddenPostPage />} />
             <Route path='/uploadBlink' element={<UploadBlinkPage />} />
+            <Route path='/bookedpost' element={<BookedPostPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
