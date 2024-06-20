@@ -7,10 +7,10 @@ const VisitedPostPage = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 500px)' })
     console.log(isMobile);
     return (
-        <div className="h-[100vh]">
+        <div className="h-[90vh]">
             {
                 !isMobile && 
-                <div className="flex gap-x-3 relative lg:px-40 md:px-3 bg-gray-800 overflow-x-hidden text-white"> 
+                <div className="flex gap-x-3 relative lg:px-40 md:px-3 bg-gray-800 h-screen overflow-x-hidden text-white"> 
                     <div className=" lg:w-[20vw] lg:block xl:block md:block fixed md:w-[30vw] sm:w-[10vw] hidden"><MenuBar/></div>
                     <div className="lg:w-[20vw] md:w-[30vw] sm:w-[10vw]"></div>
                     <div className="lg:w-[30vw] md:w-[45vw]"><ViewPost/></div>
