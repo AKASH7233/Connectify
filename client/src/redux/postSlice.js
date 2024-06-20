@@ -177,10 +177,6 @@ export const postSlice = createSlice({
             state.visitedPost = action.payload
             localStorage.setItem('visitedPost',JSON.stringify(action?.payload))
         })
-        .addCase(myPosts.fulfilled,(state,action)=>{
-            localStorage.setItem('myposts',JSON.stringify(action?.payload?.data))
-            state.myPosts.push(action.payload.data);
-        })
     }
 })
 
