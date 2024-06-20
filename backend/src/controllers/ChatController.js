@@ -34,31 +34,16 @@ export const userChats = async (req, res, next) => {
         const FindReceiver = (await ChatModel.find({
             member: { $in: [req.params.userId] }
         })).map(chat => chat.member)
-        // console.log('find chat patner length',FindReceiver)
 
-        const selectReciverId = (findChatPatner) => findChatPatner.map(chat => chat[1].toString())
-
-        // const chats = await ChatModel.aggregate([
-        //     {
-        //         $match: {
-        //             member: { $in: [userId] }
-        //         }
-        //     }, {
-        //         $addFields: {
-        //             personId: { $arrayElemAt: ["$member", 1] }
-        //         }
-        //     }
-        // ])
+        const selectReceiverId = (findChatPartner, userId) => findChatPartner.map(chat => chat.find(id => id.toString() !== userId).toString());
 
         let users = [];
-        for (let id of selectReciverId(FindReceiver)) {
+        for (let id of selectReceiverId(FindReceiver,req.params.userId)) {
             const user = await User.findById({ _id: id }).select('username fullName _id ProfileImage email')
-            console.log('id from ',id)
         if(id!=req.params.userId && user){
             users.push(user)
         }
         }
-        console.log('final answer for partner', users)
 
         res.status(200).json(users)
     } catch (error) {

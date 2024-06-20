@@ -1,12 +1,13 @@
-import { Camera, GroupIcon, PodcastIcon, SendIcon, SettingsIcon, User2Icon } from "lucide-react";
+import {  SendIcon,  User2Icon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { BsGithub, BsWhatsapp } from "react-icons/bs";
 import { CgProfile } from 'react-icons/cg';
 import { FaHome, FaUserFriends } from 'react-icons/fa';
 import { IoCall, IoImage, IoVideocam } from "react-icons/io5";
 import { MdOutlineReport } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from 'react-responsive';
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PulseLoader as Loader } from "react-spinners";
 import { animated } from "react-spring";
 import { useSpring } from "react-spring";
@@ -15,12 +16,11 @@ import { io } from "socket.io-client";
 import { SheetSide } from "@/components/Drawer";
 import { fetchChatId, fetchPerson } from "@/redux/chatSlice";
 import { fetchMessages, sendMessageDispatch } from "@/redux/messageSlice";
-import { BsGithub, BsWhatsapp } from "react-icons/bs";
 
 function ChatApp() {
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const login_user = useSelector((state) => state?.auth?.user?.user);
-    const data = JSON.parse(localStorage.getItem('data'))?.data[0];
+    // const data = JSON.parse(localStorage.getItem('data'))?.data[0];
     const user = login_user;
     const location = useLocation();
     const dispatch = useDispatch();
@@ -72,14 +72,17 @@ function ChatApp() {
             const result = (await dispatch(fetchPerson(user?._id))).payload;
             const updatedPersonData = result.map(person => ({
                 ...person,
-                isOnline: onlineUsers.includes(person._id)
+                isOnline: onlineUsers.some(onlineUsers=> onlineUsers.userId === person._id),
             }));
+            console.log('personData', personData);
             setPersonData(updatedPersonData);
+            console.log('updatePersonData', updatedPersonData);
+            console.log('online', onlineUsers);
         };
 
         loadChatId();
         setLoading(false);
-    }, [person, user, dispatch, onlineUsers]);
+    }, [person, user, dispatch, onlineUsers, chatId , receiveMessage]);
 
     const personClickHandler = (index) => {
         setPerson(personData[index]);
@@ -208,10 +211,11 @@ return (
                     {/* Header */}
                     <header className="w-full md:w-[22rem] absolute top-0 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white py-4 px-6 items-center shadow-md flex justify-between rounded-full my-5">
                         <div className="flex items-center justify-start">
-                            {person?.ProfileImage ? <SheetSide icon={<img src={person?.ProfileImage} className="mr-2 w-8 h-8 rounded-3xl object-fill-" alt="user's ProfileImg" />} /> : <SheetSide icon={<User2Icon className="hover:text-gray-600 transition duration-200 w-8" />} />}
+                            {person?.ProfileImage ? 
+                                <SheetSide icon={<img src={person?.ProfileImage} className=" w-6 h-8 rounded-3xl object-fill " alt="user's ProfileImg" />} /> : <SheetSide icon={<User2Icon className="hover:text-gray-600 transition duration-200 w-6" />} />}
                             <div className="flex-col">
                                 <h2 className="text-xl font-bold">{person.username}</h2>
-                                <p className="text-sm">{onlineUsers.includes(person.id) ? 'Active now' : 'Offline'}</p>
+                                <p className="text-sm">{onlineUsers.some(onlineUser=>onlineUser.userId == person?._id) ? 'Online' : 'Offline'}</p>
                             </div>
                         </div>
                         <div className="flex space-x-5">
