@@ -97,7 +97,7 @@ const showComments = asyncHandler( async(req,res,next)=>{
 const postComment = asyncHandler( async(req,res)=>{
     const {postId} = req.params;
     const {comment} = req.body;
-    console.log(comment);
+//     console.log(comment);
 
     if(!comment){
          throw new ApiError(400, "Comment is Required")
@@ -119,7 +119,7 @@ const postComment = asyncHandler( async(req,res)=>{
         comment,
         commentedBy : req.user._id
    })
-   console.log(comments)
+//    console.log(comments)
 
    return res
    .status(200)
@@ -165,7 +165,7 @@ const editComment = asyncHandler( async(req,res)=>{
                {new:true}
           )
      }
-     console.log(editedcomment);
+     // console.log(editedcomment);
      return res
      .status(200)
      .json(
@@ -223,7 +223,7 @@ const replyToComment = asyncHandler(async(req,res)=>{
           comment,
           commentedBy : req.user._id
      })
-     console.log(comments)
+     // console.log(comments)
   
      return res
      .status(200)
@@ -241,7 +241,7 @@ const showReplyComments = asyncHandler(async (req,res,next)=>{
      try {
           const { commentId } = req.params
           const skip = Number(req.query.skip) || 0 // to fetch the comments from the given index
-          console.log(commentId);
+          // console.log(commentId);
           if (!isValidObjectId(commentId)) {
                throw next(new ApiError(400, "Invalid commentId"))
           }

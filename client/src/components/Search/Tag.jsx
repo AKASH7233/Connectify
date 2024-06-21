@@ -17,12 +17,12 @@ const TaggingComponent = ({tagUsers}) => {
     }
   };
 
-  console.log(`tags: ${tags[0]?._id}`);
+  // console.log(`tags: ${tags[0]?._id}`);
 
   const handleAddTag = (user) => {
-    console.log(`userId: ${user?._id}`);
-    console.log(`tagid: ${tags[0]?.id}`);
-    tags.some(tag => console.log(tag?._id))
+    // console.log(`userId: ${user?._id}`);
+    // console.log(`tagid: ${tags[0]?.id}`);
+    // tags.some(tag => console.log(tag?._id))
     if (!tags.some(tag => tag?._id == user?._id)) {
       setTags([...tags, user]);
     }
@@ -30,7 +30,7 @@ const TaggingComponent = ({tagUsers}) => {
     setSuggestions([]);
   };
 
-  console.log(tags);
+  // console.log(tags);
 
 
   const handleRemoveTag = (user) => {
@@ -43,7 +43,7 @@ const TaggingComponent = ({tagUsers}) => {
       let id = (tag?._id)
       ids.push(id)
     })
-    console.log(`ids`,ids);
+    // console.log(`ids`,ids);
     tagUsers(ids)
   },[tags]);
 

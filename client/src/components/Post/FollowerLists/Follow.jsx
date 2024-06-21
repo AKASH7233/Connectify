@@ -38,7 +38,7 @@ function Follow() {
         toast.error('enter username to search')
        return null
       }
-      console.log(Search.length);
+      // console.log(Search.length);
       let searchedUser = [];
       user?.map((user)=>{
         return user?.followers?.username.includes(Search) || user?.followings?.username.includes(Search) ?  searchedUser.push(user) : ''  })
@@ -46,7 +46,7 @@ function Follow() {
         return searchedUser?.length > 0 ? setUserSearchedFor(searchedUser) : setUserSearchedFor(['No User Found'])
       
     }
-    console.log(userSearchedFor);
+    // console.log(userSearchedFor);
 
   return (
     <>

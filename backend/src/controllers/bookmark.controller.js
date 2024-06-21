@@ -10,7 +10,7 @@ import { BookMark } from '../models/bookmark.model.js'
 const toggleBookmark = asyncHandler(async(req,res)=>{
     const userId = req?.user?._id
     const {postId} = req.params
-    console.log(postId);
+
     let bookMarked;
     let unBookMarked;
 

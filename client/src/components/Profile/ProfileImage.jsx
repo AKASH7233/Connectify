@@ -32,7 +32,7 @@ function ProfileImage({img , toggleview,edit = false}) {
   const upload = async() => {
     const formdata = new FormData()
     formdata.append('ProfileImage',ImgforBd)
-    console.log(formdata);
+    // console.log(formdata);
     await dispatch(updateProfileImg(formdata))
   }
 

@@ -22,13 +22,13 @@ const search = asyncHandler( async(req,res)=>{
     
         if(response.length === 0){
             responsePost = await Post.find({title: {$regex : search}},{isPublished : true})
-            console.log(responsePost);
+            // console.log(responsePost);
         }
     
         if(response.length <= 0 && responsePost.length <=0){
             throw new ApiError(400, `username ${search} does not exists also Post related to ${search} does not exist !!`)
         }
-        console.log(response);
+        // console.log(response);
         return res
         .status(200)
         .json(

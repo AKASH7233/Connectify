@@ -43,7 +43,7 @@ const showPosts = asyncHandler( async(_,res,next)=>{
         }
     ])
 
-    console.log(getAllposts);
+    // console.log(getAllposts);
     return res.status(200)
     .json(
         new ApiResponse(
@@ -109,8 +109,8 @@ const getTaggedUsers = asyncHandler(async (req, res) => {
 const uploadPost = asyncHandler( async(req,res)=>{
         try {
             const { title, taggedTo } = req.body;
-            console.log(`Received title: ${title}`);
-            console.log(`Received taggedTo: ${taggedTo}`);
+            // console.log(`Received title: ${title}`);
+            // console.log(`Received taggedTo: ${taggedTo}`);
             
             let objectIdArray = [];
         
@@ -137,7 +137,7 @@ const uploadPost = asyncHandler( async(req,res)=>{
                 throw new ApiError(400, "taggedTo must be an array of ObjectId strings");
             }
         
-            console.log(`objectIdArray: ${objectIdArray}`);
+            // console.log(`objectIdArray: ${objectIdArray}`);
         
             if (!title) {
                 throw new ApiError(401, "Title is Required");
@@ -147,7 +147,7 @@ const uploadPost = asyncHandler( async(req,res)=>{
                 throw new ApiError(401, "Please upload a File");
             }
         
-            console.log(req.files);
+            // console.log(req.files);
         
             const fileKeys = Object.keys(req.files);
             const uploadedFiles = [];
@@ -171,7 +171,7 @@ const uploadPost = asyncHandler( async(req,res)=>{
                 }
             }
         
-            console.log(uploadedFiles);
+            // console.log(uploadedFiles);
         
             if (uploadedFiles.length === 0) {
                 throw new ApiError(500, "Failed to upload post-file");
@@ -203,7 +203,7 @@ const uploadPost = asyncHandler( async(req,res)=>{
 const updatePostTitle = asyncHandler( async(req,res)=>{
     const {title} = req.body
     const {postId} = req.params || req.body
-    console.log(postId);
+    // console.log(postId);
     
     if(!postId){
         throw new ApiError(500,"Failed to find Post !")
@@ -224,7 +224,7 @@ const updatePostTitle = asyncHandler( async(req,res)=>{
         {new: true}
     )
 
-    // console.log(`post`,post);
+    console.log(`post`,post);
     if(!post){
         throw new ApiError(500,"Failed to update the Title")
     }
@@ -301,8 +301,8 @@ const togglehidePost = asyncHandler( async(req,res)=>{
         }
     }
 
-    console.log('hide',hidden);
-    console.log('unhide',unhidden);
+    // console.log('hide',hidden);
+    // console.log('unhide',unhidden);
     
     return res
         .status(200)
@@ -450,7 +450,7 @@ const visitedPost = asyncHandler(async (req,res)=>{
             }
         }
     ])
-    console.log(post);
+    // console.log(post);
     return res
     .status(200)
     .json(
@@ -491,7 +491,7 @@ const getTaggedPost = asyncHandler(async (req,res)=>{
    try {
      const {userId} = req.params
      
-    console.log(`userId ${userId}`);
+    // console.log(`userId ${userId}`);
 
      if(!isValidObjectId(userId)){
          throw new ApiError(400, "Invalid Post ID")
@@ -499,7 +499,7 @@ const getTaggedPost = asyncHandler(async (req,res)=>{
 
     const posts = await Post.find({taggedTo : userId}).select('_id postFile')
 
-     console.log(`tagged posts ${posts}`);
+    //  console.log(`tagged posts ${posts}`);
      return res
     .status(200)
     .json(

@@ -15,7 +15,7 @@ import Post from '../Post/post/Post'
   useEffect(()=>{
     (async()=>{
       let data = await (dispatch(getPosts()))
-      console.log('feed data', data)
+      // console.log('feed data', data)
       setPosts(data?.payload.data)
     })()
   },[])

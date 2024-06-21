@@ -19,17 +19,17 @@ function UploadPost() {
         let value = e.target.files;
         let uploads = Array.from(value)
         let name  = []
-        console.log(uploads);
+        // console.log(uploads);
         uploads?.map((post)=>{
-            console.log(post.name);
+            // console.log(post.name);
             return name.push(post.name);
         })
-        console.log(name);
+        // console.log(name);
         setFileName(name)
         setPost({...post,[e.target.name]: e.target.files})        
     }
-    console.log(fileName);
-    console.log(post);
+    // console.log(fileName);
+    // console.log(post);
 
     const remove = (e) =>{
         const fileId = e.target.id;
@@ -39,7 +39,7 @@ function UploadPost() {
         }
     }
 
-    console.log(post.postFile);
+    // console.log(post.postFile);
     
     const onFormSubmit = async(e) => {
         e.preventDefault()
@@ -51,13 +51,13 @@ function UploadPost() {
         }
 
         let response =  await axiosInstance.post('/post/uploadpost',formdata)
-        console.log(response);
+        // console.log(response);
 
 
         if(response?.data?.error){
             toast.error(response?.data?.error)
         }
-        console.log(post.postFile);
+        // console.log(post.postFile);
         if(response?.data?.message){
             toast.success(response?.data?.message)
             // navigate('/')
@@ -73,7 +73,7 @@ function UploadPost() {
         }
     };
 
-    console.log(`taggedUser`, taggedUser);
+    // console.log(`taggedUser`, taggedUser);
 
   return (
     <div className='w-full h-[100vh] flex items-center align-center  bg-[#000000] overflow-hidden' method='post'>

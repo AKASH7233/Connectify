@@ -51,7 +51,7 @@ export const login = createAsyncThunk('auth/login',async(data)=>{
         if(response?.data?.error){
             toast.error(response?.data?.error)
         }
-        console.log(response)
+        // console.log(response)
         return response.data;
     } catch (error) {
         toast.error(error.message || "Something Went Wrong")
@@ -173,7 +173,7 @@ export const deleteUser = createAsyncThunk('auth/deleteUser',async()=>{
             })
             
             const response = await responsePromise;
-            console.log(response);
+            // console.log(response);
             return response;
     } catch (error) {
         toast.error(`Failed To update`)
