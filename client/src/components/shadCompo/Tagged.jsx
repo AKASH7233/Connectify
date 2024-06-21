@@ -38,13 +38,33 @@ export function TaggedList({currentPost}) {
     }
   }, [currentPost, dispatch]);
 
-  const searchUser = async() => {
-    viewers?.map(viewer => {
-      const searched = viewer?.username.includes(search) ?  viewer : null
-      setSearch('')
-      return searched ? setUserSearched([searched]) : setUserSearched('No User Found !!')
-    })
+  // const searchUser = async() => {
+  //   console.log(viewers);
+  //   viewers?.map(viewer => {
+  //     console.log(viewer);
+  //     const searched = viewer?.taggedUsers.username?.includes(search) ?  viewer : null
+  //     console.log(searched)
+  //     return searched != null ? setUserSearched([searched]) : setUserSearched('No User Found !!')
+  //   })
+  // }
+
+  const searchUser = () => {
+    if(search?.trim() == ""){
+      toast.error('enter username to search')
+     return null
+    }
+    console.log(search.length);
+    let searchedUser = [];
+    viewers?.map((user)=>{
+      console.log(user);
+      return user?.taggedUsers?.username.includes(search) ? searchedUser.push(user) : ''  })
+      
+      return searchedUser?.length > 0 ? setUserSearched(searchedUser) : setUserSearched(['No User Found'])
+    
   }
+  console.log(userSearched);
+
+  // console.log(userSearched);
 
   return ( 
     <Drawer>
@@ -77,24 +97,23 @@ export function TaggedList({currentPost}) {
               placeholder="search username"
               className="bg-transparent w-full bg-opacity-90 border-2 border-gray-700 text-sm py-3 px-4 rounded-[10px] outline-none text-white"
               value={search}
-              onChange={(e)=>{setSearch(e.target.value)}}
+              onChange={(e)=>{setSearch(e.target.value);setUserSearched([])}}
               />
               <button className="bg-gray-900 bg-opacity-90 border-2 right-0 border-gray-700 text-sm py-3 pt-4 top-0 cursor-pointer absolute  px-4 rounded-[10px] outline-none text-white" onClick={searchUser}><FaSearch className="text-sm"/></button>
             </div>
             <div>
-              { !userSearched && 
-                viewers?.map((viewer) =>(
-                  <UserHeader key={viewer?.taggedUsers?._id} user={viewer?.taggedUsers} viewer={true}/>
-                ))
-              }
-              { userSearched?.length != 0 && Array.isArray(userSearched) &&
-                userSearched?.map((viewer) =>(
-                  <UserHeader key={viewer?.taggedUsers?._id} user={viewer?.taggedUsers} viewer={true}/>
-                ))
-              }
-              {
-                typeof(userSearched) == 'string' && <div className="min-h-[10vh] my-4 h-full flex justify-center items-center">{userSearched}</div>
-              }
+            {search.trim() == '' && viewers?.map((user)=>( 
+              <UserHeader key={user?._id} user={user?.taggedUsers}/>
+            ))}
+            {search.trim() != '' && userSearched != 'No User Found' && userSearched?.map((user)=>( 
+              <UserHeader key={user?._id} user={user?.taggedUsers}/>
+            ))
+            }
+            {
+              search.trim() == "" || userSearched == 'No User Found' && <div className='text-white min-h-[50vh] w-full flex items-center justify-center text-lg'>
+                No User Found !!
+              </div>
+            }
             </div>
           <DrawerFooter>
             <DrawerClose asChild>
