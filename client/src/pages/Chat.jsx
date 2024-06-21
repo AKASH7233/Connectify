@@ -209,7 +209,7 @@ return (
             {person ? (
                 <div className={`w-full md:w-4/5 bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 h-screen flex flex-col justify-between relative mt-4 md:mt-0 shadow-lg`}>
                     {/* Header */}
-                    <header className="w-full md:w-[22rem] absolute top-0 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white py-4 px-6 items-center shadow-md flex justify-between rounded-full my-5">
+                    <header onClick={()=>{window.location.href = `user/${person?._id}`}} className="cursor-pointer md:w-[15rem] absolute top-0 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white py-4 px-6 items-center shadow-md flex justify-between rounded-full my-5">
                         <div className="flex items-center justify-start">
                             {person?.ProfileImage ? 
                                 <SheetSide icon={<img src={person?.ProfileImage} className=" w-6 h-8 rounded-3xl object-fill " alt="user's ProfileImg" />} /> : <SheetSide icon={<User2Icon className="hover:text-gray-600 transition duration-200 w-6" />} />}
@@ -218,11 +218,11 @@ return (
                                 <p className="text-sm">{onlineUsers.some(onlineUser=>onlineUser.userId == person?._id) ? 'Online' : 'Offline'}</p>
                             </div>
                         </div>
-                        <div className="flex space-x-5">
+                        {/*<div className="flex space-x-5">
                             <IoCall className="text-3xl hover:text-gray-600 transition duration-200" />
                             <IoVideocam className="text-3xl hover:text-gray-600 transition duration-200" />
                             <MdOutlineReport className="text-3xl hover:text-gray-600 transition duration-200" />
-                        </div>
+                        </div>*/}
                     </header>
 
                     {/* Main Chat Area */}
