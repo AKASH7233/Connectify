@@ -168,7 +168,7 @@ export const deleteUser = createAsyncThunk('auth/deleteUser',async()=>{
                     return response
                 },
                 error: (error) => {
-                    return response?.error 
+                    return error.message 
                 }
             })
             

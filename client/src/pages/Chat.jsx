@@ -28,14 +28,14 @@ function ChatApp() {
     const [messages, setMessages] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const socket = useRef();
-
-
+    
+    
     useEffect(() => {
         const loadChatId = async () => {
             if (person && user) {
                 const chatId = (await dispatch(fetchChatId({ receiverId: person._id, senderId: user._id }))).payload._id;
                 setChatId(chatId);
-
+                
                 const oldMessage = (await dispatch(fetchMessages(chatId))).payload;
                 setMessages(oldMessage);
             }
@@ -48,6 +48,14 @@ function ChatApp() {
         };
         loadChatId();
     }, [person]);
+    
+    useEffect(() => {
+        socket.current = io('http://localhost:8800');
+        socket.current.emit('addUser', user?._id);
+        socket.current.on('getUsers', (users) => {
+            setOnlineUsers(users);
+        });
+    }, [user, chatId,person]);
 
     const personClickHandler = (index) => {
         setPerson(personData[index]);
@@ -79,19 +87,13 @@ function ChatApp() {
     };
     
 
-    useEffect(() => {
-        socket.current = io('http://localhost:8800');
-        socket.current.emit('addUser', user?._id);
-        socket.current.on('getUsers', (users) => {
-            setOnlineUsers(users);
-        });
-    }, [user, chatId]);
 
     useEffect(() => {
         // socket.current.emit('sendMessage',(data)=>{
         //     setMessages(prevMessages => [...prevMessages, data]);
         // })
         socket.current.on('receiveMessage', (data) => {
+            console.log('data',data)
             setMessages(prevMessages => [...prevMessages, data]);
         });
     },[message]);
