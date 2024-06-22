@@ -21,6 +21,7 @@ function Comment({post ,reply=false, render}) {
         reply ? await dispatch(replyToComment({url:`${post}`,comment:addComment}))  : await dispatch(addComments({url:`${post?._id}`,comment:addComment})) 
         setAddComment('')
         render ?  console.log(render) : ''
+        location.reload()
     }
   return (
     <>

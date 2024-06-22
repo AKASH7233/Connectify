@@ -68,7 +68,7 @@ function ViewPost() {
                 {allComment?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i} render={load}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
                 </div>
               </div>
-              <div className='fixed bottom-0 bg-gray-950 lg:w-[30%] py-3 w-full'><Comment post = {postInfo} render={load}/></div>
+              <div className='fixed bottom-0 bg-gray-950 z-50 lg:w-[30%] py-3 w-full'><Comment post = {postInfo} render={load}/></div>
 
             </>
           }

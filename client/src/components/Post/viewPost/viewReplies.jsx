@@ -12,8 +12,8 @@ function ViewReplies() {
     const [replyComments,setReplyComments] = useState()
 
     const load = async() => {
-        let response = await dispatch(showReplyComments(RepliedComment?._id))
-        console.log(response);
+        let response = await dispatch(showReplyComments(commentId))
+        console.log(response?.payload?.data);
         setReplyComments(response?.payload?.data)
     }
     useState(()=>{
