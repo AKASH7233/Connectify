@@ -13,7 +13,7 @@ const toggleFollow = asyncHandler( async(req,res)=>{
         followedBy: userId
     })
 
-    console.log(followed);
+    // console.log(followed);
 
     if(!followed){
         const createfollowreq = await Follow.create({
@@ -50,7 +50,7 @@ const toggleFollow = asyncHandler( async(req,res)=>{
 const Followers = asyncHandler( async(req,res)=>{
     const {followedTo} = req.params;
     
-    console.log(followedTo);
+    // console.log(followedTo);
     if(!followedTo){
         throw new ApiError(400, "Followed id does not exist")
     }
@@ -82,7 +82,7 @@ const Followers = asyncHandler( async(req,res)=>{
         },
     ])
 
-    console.log('followerss',follower);
+    // console.log('followerss',follower);
     if(!follower || follower.length === 0 ){
         return res
         .status(200)
@@ -104,7 +104,7 @@ const Followers = asyncHandler( async(req,res)=>{
 const following = asyncHandler( async(req,res)=>{
     const {followingBy} = req.params;
     
-    console.log(followingBy);
+    // console.log(followingBy);
     if(!followingBy){
         throw new ApiError(400,"Invalid Following Id")
     }
@@ -143,7 +143,7 @@ const following = asyncHandler( async(req,res)=>{
 
     }
 
-    console.log(`following`, followings);
+    // console.log(`following`, followings);
     return res
     .status(200)
     .json(

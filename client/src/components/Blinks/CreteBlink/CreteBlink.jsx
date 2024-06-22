@@ -17,17 +17,17 @@ function UploadBlink() {
         let value = e.target.files;
         let uploads = Array.from(value)
         let name  = []
-        console.log(uploads);
+        // console.log(uploads);
         uploads?.map((Blink)=>{
-            console.log(Blink.name);
+            // console.log(Blink.name);
             return name.push(Blink.name);
         })
-        console.log(name);
+        // console.log(name);
         setFileName(name)
         setBlink({...Blink,[e.target.name]: e.target.files})        
     }
-    console.log(fileName);
-    console.log(Blink);
+    // console.log(fileName);
+    // console.log(Blink);
 
     const remove = (e) =>{
         const fileId = e.target.id;
@@ -37,7 +37,7 @@ function UploadBlink() {
         }
     }
 
-    console.log(Blink.BlinkFile);
+    // console.log(Blink.BlinkFile);
     
     const onFormSubmit = async(e) => {
         e.preventDefault()
@@ -49,7 +49,7 @@ function UploadBlink() {
         
         setLoading(true)
         let response =  await dispatch(createBlink(formdata))
-        console.log(response);
+        // console.log(response);
         setLoading(false)
        
         if(response?.payload.message){

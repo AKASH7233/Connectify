@@ -50,7 +50,7 @@ export default function StoryList({ onSelectStory }) {
   useEffect(()=>{
     (async()=>{
       let response =  await dispatch(currentBlink())
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
       setstories(response?.payload?.data)
     })()
   },[])

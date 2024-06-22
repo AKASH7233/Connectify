@@ -11,14 +11,14 @@ function UpdateProfile() {
         fullName : user?.fullName,
     })
     
-    console.log(info);
+    // console.log(info);
     const submit = async(e) =>{
         e.preventDefault()
         if(!info.username  || !info.fullName){
             toast.error(`username and fullname is required !`)
         }
         let response = await dispatch(updateProfile(info))
-        console.log(response);
+        // console.log(response);
     }
     
   return (

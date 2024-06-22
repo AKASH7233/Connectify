@@ -30,7 +30,6 @@ export const createChat = async (req, res,next) => {
 
 export const userChats = async (req, res, next) => {
     try {
-        console.log('userId from chatcontroller',req.params.userId);
         const FindReceiver = (await ChatModel.find({
             member: { $in: [req.params.userId] }
         })).map(chat => chat.member)
@@ -38,16 +37,21 @@ export const userChats = async (req, res, next) => {
         const selectReceiverId = (findChatPartner, userId) => findChatPartner.map(chat => chat.find(id => id.toString() !== userId).toString());
 
         let users = [];
-        for (let id of selectReceiverId(FindReceiver,req.params.userId)) {
-            const user = await User.findById({ _id: id }).select('username fullName _id ProfileImage email')
-        if(id!=req.params.userId && user){
-            users.push(user)
-        }
+        let uniqueUsersMap = new Map(); // Use a Map to track unique users
+
+        for (let id of selectReceiverId(FindReceiver, req.params.userId)) {
+            if (!uniqueUsersMap.has(id) && id != req.params.userId) { // Check if the user is unique and not the requesting user
+                const user = await User.findById({ _id: id }).select('username fullName _id ProfileImage email');
+                if (user) {
+                    users.push(user);
+                    uniqueUsersMap.set(id, true); // Mark this user as added
+                }
+            }
         }
 
-        res.status(200).json(users)
+        res.status(200).json(users);
     } catch (error) {
-        return next(new ApiError(error.message, 500))
+        return next(new ApiError(error.message, 500));
     }
 }
 
