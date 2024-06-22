@@ -87,6 +87,12 @@ function ChatApp() {
                     ...response.payload,
                     receiverId: person._id
                 });
+                // Updating the last person message on top 
+                const personIndex = personData.findIndex(p => p._id === person._id);
+                if (personIndex > -1) {
+                    const updatedPersonData = [personData[personIndex], ...personData.slice(0, personIndex), ...personData.slice(personIndex + 1)];
+                    setPersonData(updatedPersonData);
+                }
             } catch (error) {
                 console.error(error.message);
             }
