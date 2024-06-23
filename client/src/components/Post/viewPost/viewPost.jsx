@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import Header from '../post/Header'
-import Like from '../post/Like';
+import { useDispatch } from 'react-redux'
 import Comment from './Comment';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getVisitedPosts } from '@/redux/postSlice';
-import ViewLikes from './viewLike';
 import ViewComment from './ViewComment';
 import { showComments } from '@/redux/commentSlice';
 import Post from '../post/Post';
-import LikedBy from './LikedBy';
+import toast from 'react-hot-toast';
 
 function ViewPost() {
     const {postId} = useParams()
     const {type} = useParams()
     const dispatch = useDispatch()
     const [postInfo,setPostInfo] = useState()
-
+    const navigate =  useNavigate()
     const [allComment,setAllComment] = useState()
     const [showSection,setShowSection] = useState(type)
     const [reRender,setReRender] = useState(true)
@@ -43,7 +40,10 @@ function ViewPost() {
     useEffect(()=>{
       ;(async()=>{
         let response= await dispatch(showComments(postId))
-        console.log(response);
+          if(response?.payload?.error){
+          toast.error(response?.payload.error)
+          navigate('/login')
+        }
         setAllComment(response?.payload?.data)
       })()
     },[reRender])

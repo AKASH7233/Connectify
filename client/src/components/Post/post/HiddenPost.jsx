@@ -1,14 +1,20 @@
 import { showHiddenPost } from '@/redux/postSlice'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 function HiddenPost() {
     const dispatch = useDispatch()
     const [post,setPost] = useState('')
+    const navigate = useNavigate()
     useEffect(()=>{
         ;(async()=>{
             let response = await dispatch(showHiddenPost())
+            if(response?.payload?.error){
+              toast.error(response?.payload.error)
+              navigate('/login')
+            }
             setPost(response?.payload?.data)
         })()
     },[])

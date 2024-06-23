@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { profile } from '../../redux/usersSlice'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toggleFollow } from '../../redux/followSlice'
 import ProfileHeader from '../Profile/ProfileHeader'
 import ProfileFooter from '../Profile/ProfileFooter'
 import ProfileImage from '@/components/Profile/ProfileImage'
+import toast from 'react-hot-toast'
 
 function UserProfile() {
     const dispatch = useDispatch()
     const userFromSlice = useSelector(state => state.visitedUser?.searchedUser)
     const [user,setUser] = useState(userFromSlice)
     const {userId} = useParams()
+    const navigate = useNavigate()
     
     const search = async() =>{
       let response = await dispatch(profile(userId))
+      if(response?.payload?.error){
+        toast.error(response?.payload.error)
+        navigate('/login')
+      }
       setUser(response?.payload?.data[0]);
     }
 

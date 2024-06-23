@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react'
 import { useDispatch } from 'react-redux'
-import { useParams, } from 'react-router-dom'
+import { useNavigate, useParams, } from 'react-router-dom'
 import { postlikes } from '@/redux/likeSlice'
 import UserHeader from '@/components/userHeader/UserHeader'
 import { IoSearchSharp } from "react-icons/io5";
@@ -11,9 +11,14 @@ function LikedBy() {
     const dispatch = useDispatch()
     const {postId} = useParams()
     const [likedBy,setLikedBy] = useState()
+    const navigate = useNavigate()
     useEffect(()=>{
         ;(async()=>{
           let response = await dispatch(postlikes(postId))
+          if(response?.payload?.error){
+            toast.error(response?.payload.error)
+            navigate('/login')
+          }
           setLikedBy(response?.payload?.data?.likedUsers)
         })()
       },[])

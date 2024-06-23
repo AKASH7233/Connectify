@@ -45,15 +45,15 @@ export const deleteBlink = createAsyncThunk('blink/deleteBlink',async(data)=>{
 export const getBlink = createAsyncThunk('blink/getBlink',async()=>{
     try {
         const responsePromise = axiosInstance.get(`/blink/getBlinks`)
-        toast.promise(responsePromise,{
-            loading: 'loading',
-            success : (responsePromise)=>{
-                return responsePromise?.data?.message
-            },
-            error: (error)=>{
-                return error.response?.message
-            }
-        })
+        // toast.promise(responsePromise,{
+        //     loading: 'loading',
+        //     success : (responsePromise)=>{
+        //         return responsePromise?.data?.message
+        //     },
+        //     error: (error)=>{
+        //         return error.response?.message
+        //     }
+        // })
         const response = await responsePromise;
         return response.data;
     } catch (error) {

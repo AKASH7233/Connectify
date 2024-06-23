@@ -1,15 +1,20 @@
 import { AllBookedPost } from '@/redux/bookMark'
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function BookedPost() {
     const dispatch = useDispatch()
     const [post,setPost] = useState('')
+    const navigate = useNavigate()
     useEffect(()=>{
         ;(async()=>{
             let response = await dispatch(AllBookedPost())
-            console.log(response?.payload?.data);
+            if(response?.payload?.error){
+              toast.error(response?.payload.error)
+              navigate('/login')
+            }
             setPost(response?.payload?.data)
         })()
     },[])

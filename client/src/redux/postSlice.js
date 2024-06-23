@@ -15,15 +15,15 @@ export const getPosts = createAsyncThunk('post/getpost',async()=>{
     try {
         const responsePromise =  axiosInstance.post('/post/post')
 
-        toast.promise(responsePromise, {
-            loading: "Getting Post...",
-            success: (res) => {
-                return res.data?.message || "Post Fetched Successfully";
-            },
-            error: (err) => {
-                return err?.response?.data?.message || "Failed To Fetch Post";
-            }
-        })
+        // toast.promise(responsePromise, {
+        //     loading: "Getting Post...",
+        //     success: (res) => {
+        //         return res.data?.message || "Post Fetched Successfully";
+        //     },
+        //     error: (err) => {
+        //         return err?.response?.error || "Failed To Fetch Post";
+        //     }
+        // })
         const response = await responsePromise
         console.log('post response',response)
         return response.data
@@ -36,15 +36,15 @@ export const getVisitedPosts = createAsyncThunk('post/getVisitedpost',async(data
     try {
         const responsePromise = axiosInstance.post(`/post/visitedpost/${data}`)
     
-        toast.promise(responsePromise,{
-            loading : "loading ... ",
-            success: (res)=>{
-                return res.data.message || "visited Post"
-            },
-            error : (err)=>{
-                return err.data.message || "Failed visit"
-            }
-        })
+        // toast.promise(responsePromise,{
+        //     loading : "loading ... ",
+        //     success: (res)=>{
+        //         return res.data.message || "visited Post"
+        //     },
+        //     error : (err)=>{
+        //         return err.data.message || "Failed visit"
+        //     }
+        // })
     
         const response = await responsePromise
     
