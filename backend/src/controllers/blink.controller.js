@@ -123,7 +123,7 @@ const myBlink = asyncHandler(async(req,res)=>{
         const blink = await Blink.find({
             user: req.user._id
         })
-        console.log(blink);
+
         if(!blink){
             throw new ApiError(500,`Failed to Fetch Blinks !!`)
         }
@@ -199,6 +199,7 @@ const getBlink = asyncHandler(async(req,res)=>{
                       title: '$title',
                       file: '$file',
                       link : '$link',
+                      seen: '$isSeen',
                       createdAt: '$createdAt'
                     }
                   }
@@ -213,9 +214,7 @@ const getBlink = asyncHandler(async(req,res)=>{
                 }
             },
           ]);
-
-        console.log(`blink`,blink);
-      
+     
        return res.status(200).json(
             new ApiResponse(
                 200,
@@ -231,7 +230,7 @@ const getBlink = asyncHandler(async(req,res)=>{
 const viewersOfBlink = asyncHandler(async (req, res) => {
     try {
         const {blinkId} = req.params
-        console.log(`blinkId`,blinkId);
+
         if(!blinkId){
             throw new ApiError(400,'Invalid Blink Id!!')
         }
@@ -259,7 +258,7 @@ const viewersOfBlink = asyncHandler(async (req, res) => {
                 }
             }
         ])
-        console.log(`Viewers`, Viewers);
+
         return res.status(200).json(
             new ApiResponse(
                 200,
@@ -276,20 +275,20 @@ const BlinkViewed = asyncHandler(async (req, res) => {
     try {
         const { blinkId } = req.params;
 
-        console.log(`blinkId`, blinkId);
+      
         if (!blinkId) {
             throw new ApiError(400, 'Invalid Blink Id !!');
         }
 
         const user = await User.findById(req.user._id).select('username _id ProfileImage');
-        console.log(user);
+  
         if (!user) {
             throw new ApiError(404, 'User not found !!');
         }
 
         const blink = await Blink.findById(blinkId);
 
-        console.log(`blink in blinkViewed: ${blink}`)
+
         if (!blink) {
             throw new ApiError(404, 'Blink not found !!');
         }
@@ -304,6 +303,13 @@ const BlinkViewed = asyncHandler(async (req, res) => {
             blink.viewers.push(user);
             blink.save();
         }
+
+        let blinkViewed = await Blink.findByIdAndUpdate(
+            blinkId,
+            { $set: { isSeen: true } },
+            { new: true }
+        )
+
 
         return res
             .status(200)

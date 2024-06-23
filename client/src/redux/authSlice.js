@@ -51,7 +51,7 @@ export const login = createAsyncThunk('auth/login',async(data)=>{
         if(response?.data?.error){
             toast.error(response?.data?.error)
         }
-        console.log(response)
+        // console.log(response)
         return response.data;
     } catch (error) {
         toast.error(error.message || "Something Went Wrong")
@@ -168,12 +168,12 @@ export const deleteUser = createAsyncThunk('auth/deleteUser',async()=>{
                     return response
                 },
                 error: (error) => {
-                    return response?.error 
+                    return error.message 
                 }
             })
             
             const response = await responsePromise;
-            console.log(response);
+            // console.log(response);
             return response;
     } catch (error) {
         toast.error(`Failed To update`)
@@ -182,12 +182,21 @@ export const deleteUser = createAsyncThunk('auth/deleteUser',async()=>{
 
 })
 
-export const updateRefreshToken = createAsyncThunk('auth/updateRefreshToken',async()=>{
-    let response =  axiosInstance.post('/user/refreshToken')
+export const updateRefreshToken = createAsyncThunk("/auth/updateRefreshToken", async () => {
+    try {
+        const response = await axiosInstance.post("user/refreshToken");
+        if(response?.data?.error){
+            toast.error(response?.data?.error)
+            localStorage.clear();
+        }
+        console.log('response updateRefreshToken',response.data,response)
+        return response.data;
+    } catch (error) {
+        localStorage.clear();
+        throw error.message;
+    }
+});
 
-    let resp =  await response
-    return resp.data
-})
 
 
 
@@ -217,12 +226,12 @@ export const authSlice = createSlice({
             state.user = {}
         })
 
-        .addCase(getUserData.fulfilled,(state,action)=>{
-            localStorage.setItem("data",JSON.stringify(action?.payload));
-            localStorage.setItem("isLoggedIn",true);
-            state.isLoggedIn=true;
-            state.user=action?.payload?.data;
-        })
+        // .addCase(getUserData.fulfilled,(state,action)=>{
+        //     // localStorage.setItem("data",JSON.stringify(action?.payload));
+        //     // localStorage.setItem("isLoggedIn",true);
+        //     // state.isLoggedIn=true;
+        //     // state.user=action?.payload?.data;
+        // })
     }
 })
 

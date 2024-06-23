@@ -8,10 +8,10 @@ import { toggleFollow } from '../../../redux/followSlice';
 import { BsChevronCompactLeft, BsChevronCompactRight,BsThreeDotsVertical } from "react-icons/bs";
 import { RxDot, RxDotFilled } from "react-icons/rx";
 import DrawerPost from '../../shadCompo/Drawer';
-
+import { TaggedList } from '@/components/shadCompo/Tagged';
 function Header({post}) {
     const currentUser = useSelector(state=> state?.auth?.user) 
-    const currentUserId = currentUser?.user?._id || currentUser[0]?._id
+    const currentUserId = currentUser?.user?._id 
     const profileImg = post?.owner.ProfileImage ? post?.owner.ProfileImage : profileImage
     const dispatch = useDispatch()
     const [isFollowing,setIsFollowing] = useState()
@@ -99,6 +99,7 @@ function Header({post}) {
             {Array.isArray(post?.postFile) && 
               
               <div style={{backgroundImage : `url(${post?.postFile[currentIndex]})`}} className='rounded-xl w-full bg-center bg-cover bg-no-repeat h-64 duration-400 text-white group'>
+                {post?.taggedTo?.length > 0 && <h2 className='absolute bottom-4 left-2 cursor-pointer z-40'><TaggedList currentPost={post?._id}/></h2>}
                 {post?.postFile.length > 1 && <div className='hidden group-hover:block p-2 absolute top-[45%] left-5 rounded-3xl cursor-pointer bg-gray-900 bg-opacity-90 border-2 border-gray-700  '><BsChevronCompactLeft onClick={prevSlide} size={20}/></div>}
                 {post?.postFile.length > 1 && <div className='hidden group-hover:block p-2 absolute top-[45%] right-5 rounded-3xl cursor-pointer bg-gray-900 bg-opacity-90 border-2 border-gray-700 '><BsChevronCompactRight onClick = {nextSlide} size={20}/></div>}
                 {post.postFile.length > 1 && <div className='right-[40%] -bottom-[70px] flex absolute py-2'>

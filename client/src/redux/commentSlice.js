@@ -3,7 +3,7 @@ import axiosInstance from '../utils/ApiFetch'
 import toast from 'react-hot-toast'
 
 const initialState = {
-    comments : JSON.parse(localStorage.getItem('Comment')) || [],
+    comments : [] || JSON.parse(localStorage.getItem('Comment')) ,
     mycomment : {},
     RepliedComment : JSON.parse(localStorage.getItem('comment')) || {} ,
 }

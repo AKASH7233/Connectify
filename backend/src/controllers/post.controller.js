@@ -27,14 +27,18 @@ const showPosts = asyncHandler( async(_,res,next)=>{
         },
         {
             $project:{
-                "owner.password": 0,
-                "owner.fullName": 0,
-                "owner.email": 0,
-                "owner.coverImage": 0,
-                "owner.posts": 0,
-                "owner.createdAt": 0,
-                "owner.updatedAt": 0,
-                "owner.refreshToken": 0,
+                "_id": 1,
+                "title": 1,
+                "postFile" : 1,
+                "postedBy": 1,
+                "isPublishedDate" : 1,
+                "isPublished" : 1,
+                "createdAt" : 1,
+                "updatedAt" : 1,
+                "owner._id": 1,
+                "owner.username": 1,
+                "owner.ProfileImage" : 1,
+                "taggedTo" : 1
             }
         }
     ])
@@ -51,104 +55,155 @@ const showPosts = asyncHandler( async(_,res,next)=>{
     
 })
 
+const getTaggedUsers = asyncHandler(async (req, res) => {
+    try {
+        const {postId} = req.params
+    
+        if(!isValidObjectId(postId)){
+            throw new ApiError(401,'Invalid Post Id')
+        }
+    
+        const taggedUsers = await Post.aggregate([
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(postId)
+                }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "taggedTo",
+                    foreignField: "_id",
+                    as: "taggedUsers"
+                }
+            },
+            {
+                $unwind: "$taggedUsers"
+            },
+            {
+                $project: {
+                    "taggedUsers._id": 1,
+                    "taggedUsers.username": 1,
+                    "taggedUsers.ProfileImage": 1
+                }
+            }
+        ])
+    
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                taggedUsers,
+                "Tagged Users Fetched"
+            )
+        )
+    } catch (error) {
+        return res
+        .json(
+            new ApiErrResponse(error)
+        )
+    }
+})
+
 const uploadPost = asyncHandler( async(req,res)=>{
         try {
-            const {title} = req.body
-            if(!title){
-                throw new ApiError(401, "Title is Required")
+            const { title, taggedTo } = req.body;
+            // console.log(`Received title: ${title}`);
+            // console.log(`Received taggedTo: ${taggedTo}`);
+            
+            let objectIdArray = [];
+        
+            // Parse taggedTo if it's a string
+            let parsedTaggedTo = taggedTo;
+            if (typeof taggedTo === 'string') {
+                try {
+                    parsedTaggedTo = JSON.parse(taggedTo);
+                } catch (error) {
+                    throw new ApiError(400, "taggedTo must be a valid JSON array");
+                }
             }
-            if(!req.files){
-                throw new ApiError(401, "Please upload a File")
+        
+            // Ensure parsedTaggedTo is an array
+            if (Array.isArray(parsedTaggedTo)) {
+                objectIdArray = parsedTaggedTo.map(item => {
+                    if (mongoose.Types.ObjectId.isValid(item)) {
+                        return new mongoose.Types.ObjectId(item);
+                    } else {
+                        throw new ApiError(400, `Invalid ObjectId: ${item}`);
+                    }
+                });
+            } else {
+                throw new ApiError(400, "taggedTo must be an array of ObjectId strings");
             }
-            console.log(req?.files);
-
+        
+            // console.log(`objectIdArray: ${objectIdArray}`);
+        
+            if (!title) {
+                throw new ApiError(401, "Title is Required");
+            }
+        
+            if (!req.files) {
+                throw new ApiError(401, "Please upload a File");
+            }
+        
+            // console.log(req.files);
+        
             const fileKeys = Object.keys(req.files);
             const uploadedFiles = [];
-    
+        
             for (const key of fileKeys) {
                 const file = req.files[key];
-    
+        
                 if (!Array.isArray(file)) {
                     throw new ApiError(400, "Invalid file format.");
                 }
-    
+        
                 for (const singleFile of file) {
                     const filePath = singleFile.path;
                     const cloudinaryResponse = await uploadToCloudinary(filePath);
-    
+        
                     if (!cloudinaryResponse || !cloudinaryResponse.url) {
                         throw new ApiError(500, "Failed to upload file to Cloudinary.");
                     }
-    
+        
                     uploadedFiles.push(cloudinaryResponse.url);
                 }
             }
-            console.log(uploadedFiles);
-            // let postLocalPath = []
-            // req?.files?.postFile.map((file)=>(
-            //    postLocalPath.push(file.path)
-            // ));
-            // console.log(postLocalPath);
-            // if(!postLocalPath){
-            //     throw new ApiError(401, "Post should contain a Image/Video")
-            // }
-            
-            // const postFile = []
-            // for (const filePath of postLocalPath) {
-            //     const uploadedFile = await uploadToCloudinary(filePath);
-            //     if (!uploadedFile || !uploadedFile.url) {
-            //         throw new ApiError(500, "Failed To upload post-file");
-            //     }
-            //     postFile.push(uploadedFile.url);
-            // }
         
-            if(!uploadedFiles){
-                throw new ApiError(500, "Failed To upload post-file")
+            // console.log(uploadedFiles);
+        
+            if (uploadedFiles.length === 0) {
+                throw new ApiError(500, "Failed to upload post-file");
             }
         
-            // const isPublished = true
+            const postedBy = await User.findById(req.user._id).select("username ProfileImage");
         
-            const postedBy = await User.findById(req.user._id).select("username ProfileImage")
-
-            // console.log(postedBy);
-            // console.log(postFile.url);
             const post = await Post.create({
                 title,
-                postFile : uploadedFiles,
+                postFile: uploadedFiles,
                 postedBy,
+                taggedTo: objectIdArray,
                 isPublished: true,
-            })
+            });
         
-            if(!post){
-                throw new ApiError(500,"Failed to Upload Post")
+            if (!post) {
+                throw new ApiError(500, "Failed to Upload Post");
             }
-            
-            // const user = await User.findById(req.user._id)
         
-            // user.posts.push(await post.populate())
-            // user.save({validateBeforeSave : false})
-        
-            return res
-            .status(200)
-            .json(
-                new ApiResponse(
-                    200,
-                    post,
-                    "Post uploaded Successfully"
-                )
-            )
+            return res.status(200).json(new ApiResponse(200, post, "Post uploaded Successfully"));
         } catch (error) {
-            return res.json(
-                new ApiErrResponse(error)
-            )
+            console.error(error);
+            return res.status(error.statusCode || 500).json(new ApiResponse(error.statusCode || 500, null, error.message));
         }
+        
     
 })
 
 const updatePostTitle = asyncHandler( async(req,res)=>{
     const {title} = req.body
     const {postId} = req.params || req.body
-    console.log(postId);
+    // console.log(postId);
     
     if(!postId){
         throw new ApiError(500,"Failed to find Post !")
@@ -246,8 +301,8 @@ const togglehidePost = asyncHandler( async(req,res)=>{
         }
     }
 
-    console.log('hide',hidden);
-    console.log('unhide',unhidden);
+    // console.log('hide',hidden);
+    // console.log('unhide',unhidden);
     
     return res
         .status(200)
@@ -395,7 +450,7 @@ const visitedPost = asyncHandler(async (req,res)=>{
             }
         }
     ])
-    console.log(post);
+    // console.log(post);
     return res
     .status(200)
     .json(
@@ -432,6 +487,32 @@ const hiddenPost = asyncHandler(async (req,res)=>{
     )
 })
 
+const getTaggedPost = asyncHandler(async (req,res)=>{
+   try {
+     const {userId} = req.params
+     
+    // console.log(`userId ${userId}`);
+
+     if(!isValidObjectId(userId)){
+         throw new ApiError(400, "Invalid Post ID")
+     }
+
+    const posts = await Post.find({taggedTo : userId}).select('_id postFile')
+
+    //  console.log(`tagged posts ${posts}`);
+     return res
+    .status(200)
+    .json(
+         new ApiResponse(200, posts, 'Fetched Tagged Posts')
+     )
+   } catch (error) {
+    return res
+    .json(
+        new ApiErrResponse(error)
+    )
+   }
+})
+
 export {
     uploadPost,
     updatePostTitle,
@@ -442,5 +523,7 @@ export {
     postComments,
     visitedPost,
     myPosts,
-    hiddenPost
+    hiddenPost,
+    getTaggedUsers,
+    getTaggedPost
 }

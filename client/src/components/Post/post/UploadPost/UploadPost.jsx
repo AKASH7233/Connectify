@@ -3,12 +3,14 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import axiosInstance from '../../../../utils/ApiFetch';
+import TaggingComponent from '@/components/Search/Tag';
 
 
 
 function UploadPost() {
     const navigate = useNavigate()
     let [fileName,setFileName] = useState([])
+    const [taggedUser,setTaggedUser] = useState()
     const [post,setPost] = useState({
         title: '',
         postFile: []
@@ -17,17 +19,17 @@ function UploadPost() {
         let value = e.target.files;
         let uploads = Array.from(value)
         let name  = []
-        console.log(uploads);
+        // console.log(uploads);
         uploads?.map((post)=>{
-            console.log(post.name);
+            // console.log(post.name);
             return name.push(post.name);
         })
-        console.log(name);
+        // console.log(name);
         setFileName(name)
         setPost({...post,[e.target.name]: e.target.files})        
     }
-    console.log(fileName);
-    console.log(post);
+    // console.log(fileName);
+    // console.log(post);
 
     const remove = (e) =>{
         const fileId = e.target.id;
@@ -37,24 +39,25 @@ function UploadPost() {
         }
     }
 
-    console.log(post.postFile);
+    // console.log(post.postFile);
     
     const onFormSubmit = async(e) => {
         e.preventDefault()
         const formdata = new FormData()
         formdata.append('title',post.title)
+        formdata.append('taggedTo',JSON.stringify(taggedUser))
         for (let i = 0; i < post.postFile.length; i++) {
             formdata.append('postFile',post.postFile[i])
         }
 
         let response =  await axiosInstance.post('/post/uploadpost',formdata)
-        console.log(response);
+        // console.log(response);
 
 
         if(response?.data?.error){
             toast.error(response?.data?.error)
         }
-        console.log(post.postFile);
+        // console.log(post.postFile);
         if(response?.data?.message){
             toast.success(response?.data?.message)
             // navigate('/')
@@ -70,12 +73,14 @@ function UploadPost() {
         }
     };
 
+    // console.log(`taggedUser`, taggedUser);
+
   return (
     <div className='w-full h-[100vh] flex items-center align-center  bg-[#000000] overflow-hidden' method='post'>
         <div className='bg-gray-800 lg:mx-20 py-12 mx-10 bg-opacity-50 rounded-xl text-white text-center'>
             <h2 className='text-lg'>Upload the Pictures</h2>
             <p className='text-gray-400 text-sm'>in JPEG,PNG or WEBP</p>
-        <form onSubmit={onFormSubmit} encType='multipart/form-data'>
+        <form  encType='multipart/form-data'>
         <div className='my-7'>
         <label 
             htmlFor="file"
@@ -112,8 +117,9 @@ function UploadPost() {
         autoFocus 
         placeholder='write about the post . . . .'
         className=' w-full px-5 text-gray-400 bg-transparent outline-none'/>
+        <TaggingComponent tagUsers = {setTaggedUser}/>
         <div>
-        <button type="submit" className='bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-sm py-4 px-5 text-white rounded-xl'>Upload Post</button>
+        <button onClick={onFormSubmit} className='bg-gray-900 bg-opacity-90 border-2 border-gray-700 text-sm py-4 px-5 text-white rounded-xl'>Upload Post</button>
         </div>
         </form>
         </div>  

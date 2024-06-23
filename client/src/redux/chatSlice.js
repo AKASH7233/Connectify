@@ -24,6 +24,7 @@ export const fetchChatId = createAsyncThunk('chat/fetchChatId', async ( data )=>
 
 export const fetchPerson = createAsyncThunk('chat/fetchPerson', async ( data )=>{
     try {
+        // console.log('data for fetch person ', data)
         const response = await axiosInstance.get(`/chat/${data}`);
         return response.data;
     } catch (error) {

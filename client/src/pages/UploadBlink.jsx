@@ -1,13 +1,15 @@
 import UploadBlink from "@/components/Blinks/CreteBlink/CreteBlink";
 import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
+import Footer from "@/components/navForMobile/Footer";
+import Navbar from "@/components/navForMobile/Navbar";
 import { useMediaQuery } from "react-responsive";
 
 const UploadBlinkPage = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 400px)' })
     console.log(isMobile);
     return (
-        <div>
+        <div className="h-[90vh]">
             {
                 !isMobile && 
                 <div className="flex gap-x-3 relative lg:px-40 md:px-3 bg-gray-800 overflow-x-hidden text-white"> 
@@ -21,7 +23,11 @@ const UploadBlinkPage = () => {
             }
             {
                 isMobile &&
-                <div><UploadBlink/></div>
+                <div>
+                    <Navbar />
+                    <UploadBlink/>
+                    <Footer />
+                </div>
             }
         </div>
     )

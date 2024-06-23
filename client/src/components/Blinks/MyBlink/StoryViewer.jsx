@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Stories from 'react-insta-stories';
-import profileImg from '../../assets/profile.png'
+import profileImg from '../../../assets/profile.png'
 import { IoMdArrowDropleft } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import {Trash2} from 'lucide-react'
-import AlertBox from '../shadCompo/AlertBox';
-import { ViewerList } from '../shadCompo/Viewer';
+import AlertBox from '../../shadCompo/AlertBox';
+import { ViewerList } from '../../shadCompo/Viewer';
 
 export default function StoryViewer({ story, onClose }) {
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);

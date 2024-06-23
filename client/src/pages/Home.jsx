@@ -1,13 +1,17 @@
-import MenuBar from "@/components/Feed/MenuBar"
-import Feed from "../components/Feed/Feed"
-import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
+
+import MenuBar from "@/components/Feed/MenuBar"
+import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
+
+import Feed from "../components/Feed/Feed"
+import Navbar from "@/components/navForMobile/Navbar";
+import Footer from "@/components/navForMobile/Footer";
 
 const Home = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 500px)' })
     console.log(isMobile);
     return (
-        <div>
+        <div className="h-[100vh]">
             {
                 !isMobile && 
                 <div className="flex gap-x-3 relative lg:px-40 md:px-3 bg-gray-800 overflow-x-hidden text-white"> 
@@ -21,7 +25,11 @@ const Home = () => {
             }
             {
                 isMobile &&
-                <div><Feed/></div>
+                <div>
+                    <Navbar />
+                    <Feed/>
+                    <Footer ActiveMenuItem={'Home'}/>
+                </div>
             }
         </div>
     )

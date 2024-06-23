@@ -1,4 +1,5 @@
 import {
+    BookmarkCheck,
     Cloud,
     CreditCard,
     Forward,
@@ -108,11 +109,13 @@ import AlertBox from "./AlertBox";
                 <span>Edit Profile</span>
                 <DropdownMenuShortcut>ALT+P</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem disabled  id='billing' >
-                <CreditCard className="mr-2 h-4 w-4" />
-                <span>Billing</span>
-                <DropdownMenuShortcut>ALT+ B</DropdownMenuShortcut>
-                </DropdownMenuItem>
+                <Link to={`/bookedpost`}>
+                    <DropdownMenuItem >
+                    <BookmarkCheck className="mr-2 h-4 w-4" />
+                    <span>Bookmark Posts</span>
+                    <DropdownMenuShortcut>ALT+ B</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                </Link>
                 <h1 className="flex items-center justify-between px-2 ">
                 {/* <Forward className="mr-2 h-4 w-4" /> */}
                 <span><DialogCloseButton  className = 'text-sm gap-x-0 -ml-5 ' shareLink={shareLink} title={title} drawer={true}/></span>

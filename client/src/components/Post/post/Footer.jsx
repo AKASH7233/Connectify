@@ -16,7 +16,7 @@ function Footer({post}) {
     const [addToBookMark,setAddToBookMark] = useState(false)
     
     const currentUser = useSelector(state=> state?.auth?.user) 
-    const currentUserId = currentUser?.user?._id || currentUser[0]?._id
+    const currentUserId = currentUser?.user?._id 
 
     useEffect(()=>{
      ;(async()=>{

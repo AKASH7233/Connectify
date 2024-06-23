@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import Header from '../post/Header'
-import Like from '../post/Like';
+import { useDispatch } from 'react-redux'
 import Comment from './Comment';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getVisitedPosts } from '@/redux/postSlice';
-import ViewLikes from './viewLike';
 import ViewComment from './ViewComment';
 import { showComments } from '@/redux/commentSlice';
 import Post from '../post/Post';
-import LikedBy from './LikedBy';
+import toast from 'react-hot-toast';
 
 function ViewPost() {
     const {postId} = useParams()
     const {type} = useParams()
     const dispatch = useDispatch()
     const [postInfo,setPostInfo] = useState()
-
+    const navigate =  useNavigate()
     const [allComment,setAllComment] = useState()
     const [showSection,setShowSection] = useState(type)
     const [reRender,setReRender] = useState(true)
@@ -43,13 +40,16 @@ function ViewPost() {
     useEffect(()=>{
       ;(async()=>{
         let response= await dispatch(showComments(postId))
-        console.log(response);
+          if(response?.payload?.error){
+          toast.error(response?.payload.error)
+          navigate('/login')
+        }
         setAllComment(response?.payload?.data)
       })()
     },[reRender])
     console.log();
     return (
-    <div className='bg-gray-950 min-h-[100vh]'>
+    <div className='bg-gray-950 [100vh]'>
     {
       postInfo &&
       <>
@@ -68,7 +68,7 @@ function ViewPost() {
                 {allComment?.length > 0 ? allComment?.map((comment,i)=>(<ViewComment info={comment} key={i} render={load}/>)) : <div className='text-white h-[20vh] flex  justify-center items-center text-lg font-medium'>Be First One To Comment !</div>}
                 </div>
               </div>
-              <div className='fixed bottom-0 bg-gray-950 lg:w-[30%] py-3 w-full'><Comment post = {postInfo} render={load}/></div>
+              <div className='fixed bottom-0 bg-gray-950 z-50 lg:w-[30%] py-3 w-full'><Comment post = {postInfo} render={load}/></div>
 
             </>
           }

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axiosInstance from "../utils/ApiFetch";
 import toast from "react-hot-toast";
+
+import axiosInstance from "../utils/ApiFetch";
 
 const initialState = {
     posts: [] || JSON.parse(localStorage.getItem('posts')),
@@ -12,42 +13,44 @@ const initialState = {
 
 export const getPosts = createAsyncThunk('post/getpost',async()=>{
     try {
-        const responsePromise = await axiosInstance.post('/post/post')
-    
-        if(responsePromise?.data.message){
-            toast.success(responsePromise?.data.message)
-        }
-        if(responsePromise?.data.error){
-            toast.error(responsePromise?.data.error)
-            navigate('/login')
-        }
-    
-        const response = responsePromise
-    
+        const responsePromise =  axiosInstance.post('/post/post')
+
+        // toast.promise(responsePromise, {
+        //     loading: "Getting Post...",
+        //     success: (res) => {
+        //         return res.data?.message || "Post Fetched Successfully";
+        //     },
+        //     error: (err) => {
+        //         return err?.response?.error || "Failed To Fetch Post";
+        //     }
+        // })
+        const response = await responsePromise
+        console.log('post response',response)
         return response.data
     } catch (error) {
-        throw error   
+        return error
     }
 })
 
 export const getVisitedPosts = createAsyncThunk('post/getVisitedpost',async(data)=>{
     try {
-        const responsePromise = await axiosInstance.post(`/post/visitedpost/${data}`)
+        const responsePromise = axiosInstance.post(`/post/visitedpost/${data}`)
     
-        if(responsePromise?.data.message){
-            toast.success(responsePromise?.data.message)
-        }
-        if(responsePromise?.data.error){
-            toast.error(responsePromise?.data.error)
-            navigate('/login')
-        }
+        // toast.promise(responsePromise,{
+        //     loading : "loading ... ",
+        //     success: (res)=>{
+        //         return res.data.message || "visited Post"
+        //     },
+        //     error : (err)=>{
+        //         return err.data.message || "Failed visit"
+        //     }
+        // })
     
-        const response = responsePromise
+        const response = await responsePromise
     
         return response.data
     } catch (error) {
-        toast.error('Failed To Fetch Post')
-        throw error   
+        return error 
     }
 })
 
@@ -132,6 +135,26 @@ export const showHiddenPost = createAsyncThunk('post/showHiddenPost',async()=>{
     return response.data
 })
 
+export const getTaggedUser = createAsyncThunk('post/getTaggedUser',async(data)=>{
+    try {
+        const response = await axiosInstance.post(`post/gettaggeduser/${data}`)
+    
+        return response.data
+    } catch (error) {
+        return error  
+    }
+})
+
+export const getTaggedpost = createAsyncThunk('post/getTaggedpost',async(data)=>{
+    try {
+        const response = await axiosInstance.post(`post/gettaggedpost/${data}`)
+    
+        return response.data
+    } catch (error) {
+        return error  
+    }
+})
+
 export const postSlice = createSlice({
     name: 'post',
     initialState,
@@ -153,10 +176,6 @@ export const postSlice = createSlice({
         .addCase(getVisitedPosts.fulfilled,(state,action)=>{
             state.visitedPost = action.payload
             localStorage.setItem('visitedPost',JSON.stringify(action?.payload))
-        })
-        .addCase(myPosts.fulfilled,(state,action)=>{
-            localStorage.setItem('myposts',JSON.stringify(action?.payload?.data))
-            state.myPosts.push(action.payload.data);
         })
     }
 })

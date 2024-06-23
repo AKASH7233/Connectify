@@ -2,12 +2,14 @@ import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
 import Follow from "@/components/Post/FollowerLists/Follow";
+import Navbar from "@/components/navForMobile/Navbar";
+import Footer from "@/components/navForMobile/Footer";
 
 const FollowPage = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 500px)' })
     console.log(isMobile);
     return (
-        <div>
+        <div className="h-[100vh]">
             {
                 !isMobile && 
                 <div className="flex gap-x-3 relative lg:px-40 md:px-3 bg-gray-800 overflow-x-hidden text-white"> 
@@ -21,7 +23,11 @@ const FollowPage = () => {
             }
             {
                 isMobile &&
-                <div><Follow/></div>
+                <div>
+                    <Navbar/>
+                    <Follow/>
+                    <Footer ActiveMenuItem={'Follow'}/>
+                </div>
             }
         </div>
     )

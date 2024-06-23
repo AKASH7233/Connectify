@@ -10,7 +10,7 @@ function DataFetch(url, info) {
             let response =  await axiosInstance.post(url,info)
             setLoading(true)
             setData(response.data)
-            console.log(response.data);
+            // console.log(response.data);
             if(response.data.message){
                 toast.success(response.data.message)
             }

@@ -7,11 +7,12 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { BsThreeDots, BsThreeDotsVertical } from 'react-icons/bs';
 import { commentlikes, toggleCommentlike } from '@/redux/likeSlice';
+import { CommentOpt } from '@/components/shadCompo/EditComment';
 
-function ViewComment({info , reply = true ,render}) {
+function ViewComment({info , reply = true }) {
     const dispatch = useDispatch()
     const profileImage = info?.commentedBy?.ProfileImage ? info?.commentedBy?.ProfileImage : profileImg
-    const currentUserId = useSelector(state => state.auth?.user[0])?._id || useSelector(state => state.auth?.user)?.user?._id
+    const currentUserId = useSelector(state => state.auth?.user)?.user?._id
     const sameUser = currentUserId == info?.commentedBy?._id
     const userUrl = sameUser ? `/myprofile` : `/user/${info?.commentedBy?._id}`
 
@@ -36,25 +37,22 @@ function ViewComment({info , reply = true ,render}) {
       commentAt = `${Math.floor(diffMs / 1000)}s ago`
     }
 
-
+console.log(info);
 
     const [replyComments,setReplyComments] = useState()
     const ownerOfComment = currentUserId == info?.commentedBy._id
-    const [viewOptions,setViewOptions] = useState(false)
     const [isCommentLiked,setIsCommentLiked] = useState(false)
     const [likeCount,setLikeCount] = useState()
     const [reload,setReload] = useState(true)
     const [editable,setEditable] = useState(false)
     const [comment,setComment] = useState(info?.comment)
     const [edited,setEdited] = useState(false)
-    const showOptions = () => {
-      setViewOptions(prev => !prev)
-    }
 
     useEffect(()=>{
       ;(async()=>{
           let response = await dispatch(showReplyComments(info?._id))
           setReplyComments(response?.payload?.data)
+          console.log(response?.payload?.data);
       })()
     },[reload])
 
@@ -72,25 +70,6 @@ function ViewComment({info , reply = true ,render}) {
       load()
     }
 
-    const deletecomment = async() =>{
-      await dispatch(deleteComment(info?._id))
-      setReload(prev => !prev)
-    }
-
-    const startEditingComment = async(e) =>{
-      setEditable(true)
-      setViewOptions(prev=> !prev)
-    }
-
-    const editTheComment = async(e)=>{
-      e.preventDefault()
-      setComment(e.target.value)
-      await dispatch(editComment({url: info?._id, comment: comment}))
-      setComment(comment)
-      setEditable(prev => !prev)
-      setEdited(true)
-    }
-    console.log(ownerOfComment);
   return (
     <>
       {
@@ -110,50 +89,22 @@ function ViewComment({info , reply = true ,render}) {
               {
                 edited &&  <h2 className='text-[12px] font-semibold'>(Edit)</h2>
               }
-              <div className='absolute right-4 text-sm z-50'><BsThreeDotsVertical onClick={showOptions}/></div>
+              <div className='absolute right-0 text-sm z-50'><CommentOpt currentComment={info} selfID={sameUser} isAlreadyReply={reply}/></div>
           </div>
-          {
-            !editable && <h2 className={`my-1 mx-8 w-[55vw] lg:w-[20vw] break-words bg-transparent outline-none ${readMore ? '' : 'truncate'} ${editable ? 'hidden' : 'block'}`} onClick={()=>{setReadMore(prev => !prev)}} >{comment}</h2>
-          }
-          {
-            editable && 
-            <div>
-              <input 
-              type="text" 
-              value={comment}
-              onChange={(e)=>{setComment(e.target.value)}}
-              className={`my-1 mx-8 w-[55vw] break-words bg-transparent  outline-none ${readMore ? '' : 'truncate'}`}
-              autoFocus
-              />
-              <button onClick={editTheComment}>edit</button>
-            </div>
-          }
-          {reply && 
-            <Link to={`/viewreplies/${info?._id}`}>
-              <button onClick={()=>{dispatch(addRepliedComment(info))}} className={`text-blue-500 text-sm mt-2  mx-8 ${replyComments?.length > 0 ?'visible' : 'hidden'}`}>{replyComments?.length} {replyComments?.length > 1 ? 'replies' : 'reply'}</button>
-            </Link>
-          }
+          <h2 className={`my-1 mx-8 w-[55vw] lg:w-[20vw] break-words bg-transparent outline-none ${readMore ? '' : 'truncate'} ${editable ? 'hidden' : 'block'}`} onClick={()=>{setReadMore(prev => !prev)}} >{comment}</h2>
+         {
+           reply && replyComments?.length > 0 && <Link to = {`/viewreplies/${info?._id}`}>
+              <div className='px-8'>
+                <h2 className='text-blue-500 text-sm font-medium'>{replyComments?.length} {replyComments?.length == 1 ? 'Reply' : 'Replies'}</h2>
+              </div>
+          </Link>
+         } 
         </div>
         <div className='text-white pt-6 relative'>
         <button onClick={toggleCommentLike}>{isCommentLiked ? <FaHeart className='text-red-400'/> : <FaRegHeart />}</button>
         <h2 className='absolute text-sm top-11 left-1 italic'>{likeCount}</h2>
         </div>
       </div>
-      {
-        viewOptions && 
-        <div className={`text-white text-sm w-[30vw] bg-black flex flex-col whitespace-nowrap absolute right-8 top-5`}>
-          {ownerOfComment && <button onClick={startEditingComment} className='w-full  border border-gray-700'>Edit</button>}
-          {
-            reply && replyComments?.length == 0 &&
-            <Link to={`/viewreplies/${info?._id}`}>
-            <button onClick={()=>{dispatch(addRepliedComment(info))}} className='w-full border border-gray-700'>reply</button>
-          </Link>
-          }
-          {ownerOfComment  &&  <button onClick={deletecomment} className='w-full border border-gray-700'>delete</button>}
-          {!ownerOfComment && <button onClick={()=>setViewOptions(prev => !prev)} className='w-full  border border-gray-700'>Report</button>
-}
-        </div>
-      }
     </div>
       }
     </>

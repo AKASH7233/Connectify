@@ -45,8 +45,8 @@ function Login() {
 
   return (
     
-  <div className="bg-black h-screen pt-3 lg:pt-10 ">
-    <div className="max-w-md md:border-2 lg:border-2 xl:border-2 2xl:border-2 border-neutral-600  w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black">
+  <div className="bg-black h-[97vh] flex justify-center items-center">
+    <div className="max-w-md sm:border-2 md:border-2 lg:border-2 xl:border-2 2xl:border-2 border-neutral-600  w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black">
       <h2 className="font-bold text-xl text-neutral-200">
         Welcome to ConnectiFy !!
       </h2>
@@ -98,7 +98,7 @@ function Login() {
 
         <div className="bg-gradient-to-r from-transparentvia-neutral-700 to-transparent mb-4 h-[1px] w-full" />
 
-        <div className="flex flex-col space-y-4">
+        {/* <div className="flex flex-col space-y-4">
           <button
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input  bg-zinc-900 shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
@@ -119,7 +119,7 @@ function Login() {
             </span>
             <BottomGradient />
           </button>
-        </div>
+        </div> */}
       </form>
     </div>
    </div>

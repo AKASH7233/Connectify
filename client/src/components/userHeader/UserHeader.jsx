@@ -9,7 +9,7 @@ import { toggleFollow } from '../../redux/followSlice'
 function UserHeader({user}) {
     const profileImg =  user?.ProfileImage ? user?.ProfileImage : profileimg
     const dispatch = useDispatch()
-    const currentUserId = useSelector(state => state.auth?.user[0])?._id || useSelector(state => state.auth?.user)?.user?._id
+    const currentUserId = useSelector(state => state.auth?.user)?.user?._id
     const [isFollowed,setIsFollowed] = useState(false)
     const selfAccount = currentUserId == user?._id 
     const userID = selfAccount ? 'myprofile' : `user/${user?._id}`

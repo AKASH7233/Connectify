@@ -1,19 +1,24 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { showReplyComments } from '@/redux/commentSlice'
 import ViewComment from './ViewComment'
 import Comment from './Comment'
+import toast from 'react-hot-toast'
 
 function ViewReplies() {
     const {commentId} = useParams()
     const dispatch = useDispatch()
     const RepliedComment = useSelector(state => state.comment?.RepliedComment)
     const [replyComments,setReplyComments] = useState()
+    const navigate = useNavigate()
 
     const load = async() => {
-        let response = await dispatch(showReplyComments(RepliedComment?._id))
-        console.log(response);
+        let response = await dispatch(showReplyComments(commentId))
+        if(response?.payload?.error){
+          toast.error(response?.payload.error)
+          navigate('/login')
+        }
         setReplyComments(response?.payload?.data)
     }
     useState(()=>{

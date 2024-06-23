@@ -16,6 +16,10 @@ const BlinkSchema = new Schema(
             heading: String,
             value : String
         }],
+        isSeen: {
+            type: Boolean,
+            default: false
+        },
         viewers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
     },
     {timestamps: true}

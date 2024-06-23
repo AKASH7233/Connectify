@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-
-import { getUserData } from '../../../redux/authSlice'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Followers, Following } from '../../../redux/followSlice'
 import UserHeader from '../../userHeader/UserHeader'
-import Header from '../post/Header'
 import { IoSearchSharp } from "react-icons/io5";
 import { toast } from 'react-toastify'
 
@@ -19,9 +16,15 @@ function Follow() {
     const otherType = listType == 'Followers' ? 'Following' : 'Followers'
     const [Search,setSearch] = useState('')
     let [userSearchedFor,setUserSearchedFor] = useState([]);
+    const navigate = useNavigate()
+
     const load = async() => {
       let response ;
       {listType == 'Followers' ? response = await dispatch(Followers(userId)) : response = await dispatch(Following(userId))}
+      if(response?.payload?.error){
+        toast.error(response?.payload.error)
+        navigate('/login')
+      }
       setUser(response?.payload?.data)
     }
     useEffect(()=>{
@@ -38,7 +41,7 @@ function Follow() {
         toast.error('enter username to search')
        return null
       }
-      console.log(Search.length);
+      // console.log(Search.length);
       let searchedUser = [];
       user?.map((user)=>{
         return user?.followers?.username.includes(Search) || user?.followings?.username.includes(Search) ?  searchedUser.push(user) : ''  })
@@ -46,7 +49,7 @@ function Follow() {
         return searchedUser?.length > 0 ? setUserSearchedFor(searchedUser) : setUserSearchedFor(['No User Found'])
       
     }
-    console.log(userSearchedFor);
+    // console.log(userSearchedFor);
 
   return (
     <>
