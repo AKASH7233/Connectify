@@ -2,6 +2,8 @@ import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
 import Follow from "@/components/Post/FollowerLists/Follow";
+import Navbar from "@/components/navForMobile/Navbar";
+import Footer from "@/components/navForMobile/Footer";
 
 const FollowPage = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 500px)' })
@@ -21,7 +23,11 @@ const FollowPage = () => {
             }
             {
                 isMobile &&
-                <div><Follow/></div>
+                <div>
+                    <Navbar/>
+                    <Follow/>
+                    <Footer ActiveMenuItem={'Follow'}/>
+                </div>
             }
         </div>
     )

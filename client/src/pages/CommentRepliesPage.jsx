@@ -3,6 +3,8 @@ import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
 import ViewReplies from "@/components/Post/viewPost/viewReplies";
+import Navbar from "@/components/navForMobile/Navbar";
+import Footer from "@/components/navForMobile/Footer";
 
 const CommentRepliesPage
  = () => {
@@ -23,7 +25,11 @@ const CommentRepliesPage
             }
             {
                 isMobile &&
-                <div><ViewReplies/></div>
+                <div>
+                    <Navbar/>
+                    <ViewReplies/>
+                    <Footer/>
+                </div>
             }
         </div>
     )

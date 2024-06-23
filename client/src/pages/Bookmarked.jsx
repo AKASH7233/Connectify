@@ -2,6 +2,8 @@ import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
 import BookedPost from "@/components/Post/post/Bookmark/BookmarkPost";
+import Navbar from "@/components/navForMobile/Navbar";
+import Footer from "@/components/navForMobile/Footer";
 
 const BookedPostPage = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 500px)' })
@@ -21,7 +23,11 @@ const BookedPostPage = () => {
             }
             {
                 isMobile &&
-                <div><BookedPost/></div>
+                <div>
+                    <Navbar />
+                    <BookedPost/>
+                    <Footer />
+                </div>
             }
         </div>
     )

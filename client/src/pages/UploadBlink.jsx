@@ -1,6 +1,8 @@
 import UploadBlink from "@/components/Blinks/CreteBlink/CreteBlink";
 import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
+import Footer from "@/components/navForMobile/Footer";
+import Navbar from "@/components/navForMobile/Navbar";
 import { useMediaQuery } from "react-responsive";
 
 const UploadBlinkPage = () => {
@@ -21,7 +23,11 @@ const UploadBlinkPage = () => {
             }
             {
                 isMobile &&
-                <div><UploadBlink/></div>
+                <div>
+                    <Navbar />
+                    <UploadBlink/>
+                    <Footer />
+                </div>
             }
         </div>
     )

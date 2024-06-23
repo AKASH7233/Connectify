@@ -4,6 +4,8 @@ import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 
 import Feed from "../components/Feed/Feed"
+import Navbar from "@/components/navForMobile/Navbar";
+import Footer from "@/components/navForMobile/Footer";
 
 const Home = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 500px)' })
@@ -23,7 +25,11 @@ const Home = () => {
             }
             {
                 isMobile &&
-                <div><Feed/></div>
+                <div>
+                    <Navbar />
+                    <Feed/>
+                    <Footer ActiveMenuItem={'Home'}/>
+                </div>
             }
         </div>
     )

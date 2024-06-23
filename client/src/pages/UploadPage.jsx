@@ -2,6 +2,8 @@ import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
 import UploadPost from "@/components/Post/post/UploadPost/UploadPost";
+import Navbar from "@/components/navForMobile/Navbar";
+import Footer from "@/components/navForMobile/Footer";
 
 const UploadPage = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 400px)' })
@@ -21,7 +23,11 @@ const UploadPage = () => {
             }
             {
                 isMobile &&
-                <div><UploadPost/></div>
+                <div>
+                    <Navbar/>
+                    <UploadPost/>
+                    <Footer  ActiveMenuItem={'Upload'}/>
+                </div>
             }
         </div>
     )

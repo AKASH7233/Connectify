@@ -2,6 +2,8 @@ import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
 import UserProfile from "@/components/Profiles/UserProfile";
+import Navbar from "@/components/navForMobile/Navbar";
+import Footer from "@/components/navForMobile/Footer";
 
 const UserAccount = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 400px)' })
@@ -21,7 +23,11 @@ const UserAccount = () => {
             }
             {
                 isMobile &&
-                <div><UserProfile/></div>
+                <div>
+                    <Navbar/>
+                    <UserProfile/>
+                    <Footer/>
+                </div>
             }
         </div>
     )

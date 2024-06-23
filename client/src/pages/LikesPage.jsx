@@ -21,7 +21,9 @@ const LikedByPage = () => {
             }
             {
                 isMobile &&
-                <div><LikedBy/></div>
+                <div>
+                    <LikedBy/>
+                </div>
             }
         </div>
     )

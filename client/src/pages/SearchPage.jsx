@@ -2,6 +2,8 @@ import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
 import Search from "@/components/Search/Search";
+import Navbar from "@/components/navForMobile/Navbar";
+import Footer from "@/components/navForMobile/Footer";
 
 const SearchPage = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 400px)' })
@@ -21,7 +23,11 @@ const SearchPage = () => {
             }
             {
                 isMobile &&
-                <div><Search/></div>
+                <div>
+                    <Navbar />
+                    <Search/>
+                    <Footer ActiveMenuItem={'Search'}/>
+                </div>
             }
         </div>
     )

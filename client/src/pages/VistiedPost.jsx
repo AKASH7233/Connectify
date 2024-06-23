@@ -2,6 +2,8 @@ import MenuBar from "@/components/Feed/MenuBar"
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
 import ViewPost from "@/components/Post/viewPost/viewPost";
+import Navbar from "@/components/navForMobile/Navbar";
+import Footer from "@/components/navForMobile/Footer";
 
 const VisitedPostPage = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 500px)' })
@@ -21,7 +23,11 @@ const VisitedPostPage = () => {
             }
             {
                 isMobile &&
-                <div><ViewPost/></div>
+                <div>
+                    <Navbar/>
+                    <ViewPost/>
+                    <Footer />
+                </div>
             }
         </div>
     )
