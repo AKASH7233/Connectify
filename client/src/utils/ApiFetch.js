@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const Base_url =  "http://localhost:8000/api/v1" || "https://connectify-6tvs.onrender.com/api/v1" 
+const Base_url =  "http://localhost:8000/api/v1" || "https://connectify-1-ujfo.onrender.com" 
 
 const axiosInstance = axios.create({
     baseURL: Base_url,
