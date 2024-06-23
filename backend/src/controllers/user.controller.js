@@ -323,7 +323,8 @@ const updateAccountDetails = asyncHandler( async(req,res,next)=>{
         if(!user){
             throw next( new ApiError(500, "Failed to update Details"))
         }
-        res
+        
+        return res
         .status(200)
         .json(
             new ApiResponse(

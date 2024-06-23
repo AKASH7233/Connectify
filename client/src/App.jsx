@@ -2,8 +2,9 @@ import './App.css'
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-// import RequireAuth from './components/auth/RequireAuth'
+import RequireAuth from './components/auth/RequireAuth'
 import UpdateProfile from './components/Profile/UpdateProfile'
+import BookedPostPage from './pages/Bookmarked'
 import Chat from './pages/Chat'
 import CommentRepliesPage from './pages/CommentRepliesPage'
 import FollowPage from './pages/FollowPage'
@@ -12,6 +13,7 @@ import Home from './pages/Home'
 import LikedByPage from './pages/LikesPage'
 import Login from './pages/Login'
 import MyAccount from './pages/MyAccount'
+import NotFound from './pages/NotFound404'
 import Register from './pages/Register'
 import SearchPage from './pages/SearchPage'
 import UploadBlinkPage from './pages/UploadBlink'
@@ -19,8 +21,6 @@ import UploadPage from './pages/UploadPage'
 import UserAccount from './pages/UserAccount'
 import VisitedPostPage from './pages/VistiedPost'
 import DataFetch from './utils/DataFetch'
-import BookedPostPage from './pages/Bookmarked'
-import NotFound from './pages/NotFound404'
 
 function App() {
 
@@ -31,7 +31,7 @@ function App() {
           <Route path='/register' element = {<Register/>} />
           <Route path='/login' element = {<Login/>} />
 
-          {/* <Route element={<RequireAuth />} > */}
+          <Route element={<RequireAuth />} >
             <Route path='/' element={<Home />} />
             <Route path='/user/:userId' element={<UserAccount />} />
             <Route path='/myProfile' element={<MyAccount />} />
@@ -50,7 +50,7 @@ function App() {
             <Route path='/hiddenpost' element={<HiddenPostPage />} />
             <Route path='/uploadBlink' element={<UploadBlinkPage />} />
             <Route path='/bookedpost' element={<BookedPostPage />} />
-          {/* </Route> */}
+          </Route>
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -182,12 +182,21 @@ export const deleteUser = createAsyncThunk('auth/deleteUser',async()=>{
 
 })
 
-export const updateRefreshToken = createAsyncThunk('auth/updateRefreshToken',async()=>{
-    let response =  axiosInstance.post('/user/refreshToken')
+export const updateRefreshToken = createAsyncThunk("/auth/updateRefreshToken", async () => {
+    try {
+        const response = await axiosInstance.post("user/refreshToken");
+        if(response?.data?.error){
+            toast.error(response?.data?.error)
+            localStorage.clear();
+        }
+        console.log('response updateRefreshToken',response.data,response)
+        return response.data;
+    } catch (error) {
+        localStorage.clear();
+        throw error.message;
+    }
+});
 
-    let resp =  await response
-    return resp.data
-})
 
 
 
