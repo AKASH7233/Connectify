@@ -1,18 +1,19 @@
-import React,{useState} from "react";
-import { Label } from "../components/ui/LabelAccer";
-import { Input } from "../components/ui/InputAcc";
-import { cn } from "@/utils/cn";
 import {
   IconBrandGithub,
   IconBrandGoogle,
 } from "@tabler/icons-react";
-
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom'
-import { login } from '../redux/authSlice';
+import React,{useState} from "react";
+import {toast} from "react-hot-toast";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-import {toast} from "react-hot-toast";
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom'
+
+import { cn } from "@/utils/cn";
+
+import { Input } from "../components/ui/InputAcc";
+import { Label } from "../components/ui/LabelAccer";
+import { login } from '../redux/authSlice';
 
 function Login() {
     const navigate = useNavigate()
@@ -36,7 +37,7 @@ function Login() {
       }
       
       const response = await dispatch(login(userInfo))
-      if(response?.payload.message){
+      if(response?.payload?.data?.user?._id){
         return navigate('/')
       }
     }
