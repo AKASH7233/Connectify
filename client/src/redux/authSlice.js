@@ -185,10 +185,10 @@ export const deleteUser = createAsyncThunk('auth/deleteUser',async()=>{
 export const updateRefreshToken = createAsyncThunk("/auth/updateRefreshToken", async () => {
     try {
         const response = await axiosInstance.post("user/refreshToken");
-        if(response?.data?.error){
-            toast.error(response?.data?.error)
-            localStorage.clear();
-        }
+        // if(response?.data?.error){
+        //     toast.error(response?.data?.error)
+        //     localStorage.clear();
+        // }
         return response.data;
     } catch (error) {
         localStorage.clear();
