@@ -127,7 +127,7 @@ function ChatApp() {
                 window.location.href = 'https://github.com/daemonX10/Connectify';
                 break;
             case 'Whatsapp':
-                window.location.href = 'https://wa.me/9082362144?text=I%27m%20here%20from%20Connectify';
+                window.location.href = 'https://wa.me/9082362144?text=I%27m%20here%20from%20Connectify'; // Add your number here
                 break;
             default:
                 break;

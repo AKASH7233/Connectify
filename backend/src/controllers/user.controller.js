@@ -95,7 +95,7 @@ const userLogin = asyncHandler( async(req,res,next) => {
         const {username, email , password} = req.body
     
         if([email,username,password].some((field)=> field?.trim() === "")){
-            return next(new ApiError(400,'Every Field should be filled'))
+            throw next(new ApiError(400,'Every Field should be filled'))
         }
     
         const user = await User.findOne({
@@ -126,7 +126,7 @@ const userLogin = asyncHandler( async(req,res,next) => {
             SameSite : "None"
         }
     
-        res
+        return res
         .status(200)
         .cookie("accessToken", accessToken,options )
         .cookie("refreshToken", refreshToken , options)
@@ -140,9 +140,7 @@ const userLogin = asyncHandler( async(req,res,next) => {
             )
         )
     } catch (error) {
-        return res.json(
-            new ApiErrResponse(error)
-        )
+        return next( new ApiError(error));
     }
 })
 

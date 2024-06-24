@@ -25,7 +25,6 @@ export const getPosts = createAsyncThunk('post/getpost',async()=>{
         //     }
         // })
         const response = await responsePromise
-        console.log('post response',response)
         return response.data
     } catch (error) {
         return error

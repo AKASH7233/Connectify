@@ -34,23 +34,23 @@ export const createAccount = createAsyncThunk('auth/register', async(data)=>{
 export const login = createAsyncThunk('auth/login',async(data)=>{
     try {
         const responsePromise =  axiosInstance.post('/user/login',data)
-        // toast.promise(responsePromise, {
-        //     loading: "logining...",
-        //     success: (response) => {
-        //         return response.data?.message
-        //     },
-        //     error: (error) => {
-        //         return error.response?.message || "Login Failed ! in redux part"
-        //     }
-        // })
+        toast.promise(responsePromise, {
+            loading: "logining...",
+            success: (response) => {
+                return response?.data?.message
+            },
+            error: (error) => {
+                return error.response?.message || "Login Failed"
+            }
+        })
         const response = await responsePromise;
 
-        if(response?.data?.message){
-            toast.success(response?.data?.message)
-        }
-        if(response?.data?.error){
-            toast.error(response?.data?.error)
-        }
+        // if(response?.data?.message){
+        //     toast.success(response?.data?.message)
+        // }
+        // if(response?.data?.error){
+        //     toast.error(response?.data?.error)
+        // }
         // console.log(response)
         return response.data;
     } catch (error) {
@@ -189,7 +189,6 @@ export const updateRefreshToken = createAsyncThunk("/auth/updateRefreshToken", a
             toast.error(response?.data?.error)
             localStorage.clear();
         }
-        console.log('response updateRefreshToken',response.data,response)
         return response.data;
     } catch (error) {
         localStorage.clear();
