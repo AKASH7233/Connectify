@@ -10,11 +10,9 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     try {
         const token = req?.cookies?.accessToken || req?.header("Authorization")?.replace("Bearer ", "");
         logger.info(`token given by user: ${token}`)
-        logger.info(`cookes: ${req.cookies}`);
-
+        logger.info(`cookies: ${JSON.stringify(req.cookies)}`);
 
         if (!token) {
-            logger.error(`cookes: ${req.cookies}`, { error: new Error("No token provided") });
             logger.error("No token provided", { error: new Error("No token provided") });
             throw new ApiError(401, "Unauthorized user");
         }
