@@ -30,12 +30,8 @@ import chatRouter from "./src/routes/ChatRoute.js"
 import messageRouter from "./src/routes/MessageRouter.js"
 import bookmarkRouter from "./src/routes/Bookmark.route.js"
 import blinkRouter from "./src/routes/blink.route.js"
-import logger from './src/utils/logger.js'
 
-app.use((req, res, next) => {
-    logger.info(`Cookies: ${req.cookies}`);
-    next();
-});
+
 app.use('/api/v1/user', router)
 app.use('/api/v1/post', postrouter)
 app.use('/api/v1/like', likeRouter)
