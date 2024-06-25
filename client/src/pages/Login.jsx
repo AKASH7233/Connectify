@@ -34,13 +34,10 @@ function Login() {
       const response = await dispatch(login(userInfo));
       if (response?.payload?.data?.user?._id) {
         navigate('/');
-      } else {
-        // Handle the case where login is unsuccessful but no error was thrown
-        toast.error('Login failed. Please check your credentials.');
       }
     } catch (error) {
       // Handle any errors that occur during the login process
-      toast.error('An error occurred during login. Please try again.');
+      
     }
   };
 
