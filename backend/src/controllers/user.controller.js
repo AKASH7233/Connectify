@@ -130,8 +130,8 @@ const userLogin = asyncHandler(async (req, res, next) => {
             secure: true,
             SameSite: "None",
         };
-        logger.info(`${res.cookie("accessToken", accessToken, options)}`)
-        logger.info(`${res.cookie("refreshToken", refreshToken, options)}`)
+        logger.info(`${JSON.stringifyres.cookie("accessToken", accessToken, options) }`)
+        logger.info(`${JSON.stringifyres.cookie("refreshToken", refreshToken, options) }`)
 
         res
             .status(200)
