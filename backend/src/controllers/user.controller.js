@@ -9,6 +9,7 @@ import {Follow} from "../models/follow.model.js"
 import mongoose from "mongoose"
 import  logger  from '../utils/logger.js'
 
+
 const generateRefreshTokenAndAccessToken = async(userid) => {
     const user = await User.findById(userid)
     const accessToken =  user.generateAccessToken()
@@ -127,8 +128,10 @@ const userLogin = asyncHandler(async (req, res, next) => {
         const options = {
             httpOnly: true,
             secure: true,
-            SameSite: "None"
+            SameSite: "None",
         };
+        logger.info(`${res.cookie("accessToken", accessToken, options)}`)
+        logger.info(`${res.cookie("refreshToken", refreshToken, options)}`)
 
         res
             .status(200)
