@@ -11,9 +11,31 @@ const logDir = path.join(__dirname, '..', 'log'); // Define log directory
 const { format } = winston;
 const { combine, timestamp, printf, colorize, errors } = format;
 
+// Function to capture and parse error stack trace
+function parseErrorStack(err) {
+    const stack = err.stack || '';
+    const stackLines = stack.split('\n');
+    const callerLine = stackLines[2] || ''; // Adjust this line number as needed
+    const match = callerLine.match(/at (.+) \((.+):(\d+):(\d+)\)$/);
+    if (match) {
+        return {
+            functionName: match[1],
+            filePath: match[2],
+            line: match[3],
+            column: match[4],
+        };
+    }
+    return { functionName: '', filePath: '', line: '', column: '' };
+}
+
 // Custom log format
-const myFormat = printf(({ level, message, timestamp, stack }) => {
-    return `${timestamp} ${level}: ${stack || message}`;
+const myFormat = printf(({ level, message, timestamp, stack, ...metadata }) => {
+    let logMessage = `${timestamp} ${level}: ${message}`;
+    if (metadata.error instanceof Error) {
+        const { functionName, filePath, line } = parseErrorStack(metadata.error);
+        logMessage += ` [Error in ${functionName} at ${filePath}:${line}]`;
+    }
+    return logMessage;
 });
 
 // Create a more advanced logger

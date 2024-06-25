@@ -93,34 +93,34 @@ const UserRegister = asyncHandler( async (req,res) => {
 
 const userLogin = asyncHandler(async (req, res, next) => {
     try {
-        const { username, email, password } = req.body
+        const { username, email, password } = req.body;
 
         if ([email, username, password].some((field) => field?.trim() === "")) {
             logger.warn('Login attempt with missing fields');
-            throw next(new ApiError(400, 'Every Field should be filled'))
+            throw new ApiError(400, 'Every Field should be filled');
         }
 
         const user = await User.findOne({
             $or: [
                 { username }, { email }
             ]
-        })
+        });
 
         if (!user) {
             logger.warn(`Login attempt for non-existing user: ${username || email}`);
-            throw (new ApiError(401, "User does not exists !"))
+            throw new ApiError(401, "User does not exists !");
         }
 
-        const isPasswordCorrect = await user.isPasswordCorrect(password)
+        const isPasswordCorrect = await user.isPasswordCorrect(password);
 
         if (!isPasswordCorrect) {
             logger.warn(`Invalid password attempt for user: ${username || email}`);
-            throw (new ApiError(401, "Invalid password"))
+            throw new ApiError(401, "Invalid password");
         }
 
-        const { accessToken, refreshToken } = await generateRefreshTokenAndAccessToken(user?._id)
+        const { accessToken, refreshToken } = await generateRefreshTokenAndAccessToken(user?._id);
 
-        const loggedInUser = await User.findById(user?._id).select('-password ')
+        const loggedInUser = await User.findById(user?._id).select('-password ');
 
         logger.info(`User logged in successfully: ${username || email}`);
 
@@ -128,7 +128,7 @@ const userLogin = asyncHandler(async (req, res, next) => {
             httpOnly: true,
             secure: true,
             SameSite: "None"
-        }
+        };
 
         res
             .status(200)
@@ -142,12 +142,14 @@ const userLogin = asyncHandler(async (req, res, next) => {
                     },
                     "User Loggedin Successfully"
                 )
-            )
+            );
     } catch (error) {
-        logger.error(`Login error: ${error.message}`);
-        return next(new ApiError(error));
+        // Ensure the error object is passed correctly to leverage the advanced logger's error parsing
+        logger.error(`Login error: ${error.message}`, { error });
+        return next(new ApiError(error.statusCode || 500, error.message));
     }
-})
+});
+
 const userLogout = asyncHandler( async(req,res)=>{
    try {
      await User.findByIdAndUpdate(
