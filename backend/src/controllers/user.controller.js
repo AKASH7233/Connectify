@@ -90,60 +90,63 @@ const UserRegister = asyncHandler( async (req,res) => {
    }
 })  
 
-const userLogin = asyncHandler( async(req,res,next) => {
+const userLogin = asyncHandler(async (req, res, next) => {
     try {
-        const {username, email , password} = req.body
-    
-        if([email,username,password].some((field)=> field?.trim() === "")){
-            throw next(new ApiError(400,'Every Field should be filled'))
+        const { username, email, password } = req.body
+
+        if ([email, username, password].some((field) => field?.trim() === "")) {
+            logger.warn('Login attempt with missing fields');
+            throw next(new ApiError(400, 'Every Field should be filled'))
         }
-    
+
         const user = await User.findOne({
             $or: [
-                {username}, {email}
+                { username }, { email }
             ]
         })
-    
-        if(!user){
+
+        if (!user) {
+            logger.warn(`Login attempt for non-existing user: ${username || email}`);
             throw (new ApiError(401, "User does not exists !"))
         }
-    
-        
-      
+
         const isPasswordCorrect = await user.isPasswordCorrect(password)
-        
-        if(!isPasswordCorrect){
+
+        if (!isPasswordCorrect) {
+            logger.warn(`Invalid password attempt for user: ${username || email}`);
             throw (new ApiError(401, "Invalid password"))
         }
-    
-        const {accessToken,refreshToken} = await generateRefreshTokenAndAccessToken(user?._id)
-    
+
+        const { accessToken, refreshToken } = await generateRefreshTokenAndAccessToken(user?._id)
+
         const loggedInUser = await User.findById(user?._id).select('-password ')
-    
+
+        logger.info(`User logged in successfully: ${username || email}`);
+
         const options = {
             httpOnly: true,
-            secure : true,
-            SameSite : "None"
+            secure: true,
+            SameSite: "None"
         }
-    
-        return res
-        .status(200)
-        .cookie("accessToken", accessToken,options )
-        .cookie("refreshToken", refreshToken , options)
-        .json(
-            new ApiResponse(
-                201,
-                {
-                    user: loggedInUser, accessToken, refreshToken
-                },
-                "User Loggedin Successfully"
+
+        res
+            .status(200)
+            .cookie("accessToken", accessToken, options)
+            .cookie("refreshToken", refreshToken, options)
+            .json(
+                new ApiResponse(
+                    201,
+                    {
+                        user: loggedInUser, accessToken, refreshToken
+                    },
+                    "User Loggedin Successfully"
+                )
             )
-        )
     } catch (error) {
-        return next( new ApiError(error));
+        logger.error(`Login error: ${error.message}`);
+        return next(new ApiError(error));
     }
 })
-
 const userLogout = asyncHandler( async(req,res)=>{
    try {
      await User.findByIdAndUpdate(

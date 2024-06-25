@@ -1,6 +1,7 @@
 const io = require('socket.io')(8800, {
     cors: {
-        origin:"https://connectify-omega.vercel.app/" ,//||  'http://localhost:5173'
+        origin://"https://connectify-omega.vercel.app/" ,  
+        'http://localhost:5173',
     }
 });
 

@@ -2,6 +2,7 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from 'jsonwebtoken'
+import logger from "../utils/logger.js";
 
 export const verifyJWT = asyncHandler( async (req,res,next) => {
 
@@ -25,15 +26,13 @@ export const verifyJWT = asyncHandler( async (req,res,next) => {
         }
 
         req.user = user;
-    } catch (error) {
+    }  catch (error) {
+        logger.error(`Authentication error: ${error.message}`, { error });
         return res.json({
             "statuscode": error.statuscode,
-            "error" : error.message
-        })
+            "error": error.message
+        });
     }
-    
     next();
-
-
 
 })

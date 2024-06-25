@@ -5,7 +5,7 @@ import  cookieParser from 'cookie-parser'
 const app = express()
 
 app.use(cors({
-    origin:  "https://connectify-omega.vercel.app",
+    origin:  "http://localhost:5173" , // "https://connectify-omega.vercel.app",
     credentials: true
 }))
 app.use(cookieParser())
@@ -35,6 +35,10 @@ app.use('/api/v1/chat', chatRouter)
 app.use('/api/v1/message', messageRouter)
 app.use('/api/v1/bookmark', bookmarkRouter)
 app.use('/api/v1/blink', blinkRouter)
+
+app.use('/', (req,res) => {
+    res.send("Welcome to Connectify API")
+})
 //http://localhost:8000/api/v1/user/register
 
 export {app}
