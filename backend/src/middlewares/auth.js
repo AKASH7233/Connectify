@@ -5,11 +5,16 @@ import jwt from 'jsonwebtoken';
 import logger from "../utils/logger.js"; // Assuming this import now points to the advanced logger setup
 
 
+
 export const verifyJWT = asyncHandler(async (req, res, next) => {
     try {
         const token = req?.cookies?.accessToken || req?.header("Authorization")?.replace("Bearer ", "");
+        logger.info("Cookies ",req?.cookies)
+        logger.info("token given by user",{token:token});
+
 
         if (!token) {
+            logger.error("No token provided", { error: new Error("No token provided") });
             throw new ApiError(401, "Unauthorized user");
         }
 
