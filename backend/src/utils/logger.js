@@ -1,7 +1,7 @@
 const winston = require('winston');
 const path = require('path');
 
-const logDir = 'backend\src\log'; // Define log directory
+const logDir = path.join(__dirname, '..', 'log'); // Define log directory
 
 const { format } = winston;
 const { combine, timestamp, printf, colorize, errors } = format;
@@ -39,3 +39,5 @@ const logger = winston.createLogger({
         new winston.transports.File({ filename: path.join(logDir, 'rejections.log') })
     ]
 });
+
+export default logger;

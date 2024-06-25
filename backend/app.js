@@ -36,9 +36,10 @@ app.use('/api/v1/message', messageRouter)
 app.use('/api/v1/bookmark', bookmarkRouter)
 app.use('/api/v1/blink', blinkRouter)
 
-app.use('/', (req,res) => {
+app.get('/', (req,res) => {
     res.send("Welcome to Connectify API")
 })
+
 //http://localhost:8000/api/v1/user/register
 
 export {app}

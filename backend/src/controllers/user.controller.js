@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken"
 import { ApiErrResponse } from "../utils/ApiErrResponse.js"
 import {Follow} from "../models/follow.model.js"
 import mongoose from "mongoose"
+import { logger } from "../utils/logger.js"
 
 const generateRefreshTokenAndAccessToken = async(userid) => {
     const user = await User.findById(userid)
