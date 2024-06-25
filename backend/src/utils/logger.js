@@ -11,19 +11,22 @@ const logDir = path.join(__dirname, '..', 'log'); // Define log directory
 const { format } = winston;
 const { combine, timestamp, printf, colorize, errors } = format;
 
-// Function to capture and parse error stack trace
+// Updated function to capture and parse error stack trace
 function parseErrorStack(err) {
     const stack = err.stack || '';
     const stackLines = stack.split('\n');
-    const callerLine = stackLines[2] || ''; // Adjust this line number as needed
-    const match = callerLine.match(/at (.+) \((.+):(\d+):(\d+)\)$/);
-    if (match) {
-        return {
-            functionName: match[1],
-            filePath: match[2],
-            line: match[3],
-            column: match[4],
-        };
+    // Adjusted to be more flexible in matching stack trace formats
+    const callerLine = stackLines.find(line => line.includes('at '));
+    if (callerLine) {
+        const match = callerLine.match(/at\s+(.*?)\s+\((.+):(\d+):(\d+)\)/) || callerLine.match(/at\s+(.+):(\d+):(\d+)/);
+        if (match) {
+            return {
+                functionName: match[1],
+                filePath: match[2],
+                line: match[3],
+                column: match[4],
+            };
+        }
     }
     return { functionName: '', filePath: '', line: '', column: '' };
 }
@@ -32,8 +35,8 @@ function parseErrorStack(err) {
 const myFormat = printf(({ level, message, timestamp, stack, ...metadata }) => {
     let logMessage = `${timestamp} ${level}: ${message}`;
     if (metadata.error instanceof Error) {
-        const { functionName, filePath, line } = parseErrorStack(metadata.error);
-        logMessage += ` [Error in ${functionName} at ${filePath}:${line}]`;
+        const { functionName, filePath, line, column } = parseErrorStack(metadata.error);
+        logMessage += ` [Error in ${functionName} at ${filePath}:${line}:${column}]`;
     }
     return logMessage;
 });

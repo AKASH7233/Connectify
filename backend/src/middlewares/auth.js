@@ -4,6 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from 'jsonwebtoken';
 import logger from "../utils/logger.js"; // Assuming this import now points to the advanced logger setup
 
+
 export const verifyJWT = asyncHandler(async (req, res, next) => {
     try {
         const token = req?.cookies?.accessToken || req?.header("Authorization")?.replace("Bearer ", "");
@@ -26,7 +27,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
 
         req.user = user;
     } catch (error) {
-        // Modified to use the advanced logger with error stack trace
+        // Use the advanced logger with error stack trace
         logger.error(`Authentication error: ${error.message}`, { error });
         return res.json({
             "statuscode": error.statuscode || 500,

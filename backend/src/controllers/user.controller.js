@@ -96,7 +96,7 @@ const userLogin = asyncHandler(async (req, res, next) => {
         const { username, email, password } = req.body;
 
         if ([email, username, password].some((field) => field?.trim() === "")) {
-            logger.warn('Login attempt with missing fields');
+            logger.warn(`Login attempt with missing fields: ${JSON.stringify({ username, email })}`);
             throw new ApiError(400, 'Every Field should be filled');
         }
 
@@ -122,7 +122,7 @@ const userLogin = asyncHandler(async (req, res, next) => {
 
         const loggedInUser = await User.findById(user?._id).select('-password ');
 
-        logger.info(`User logged in successfully: ${username || email}`);
+        logger.info(`User logged in successfully: ${username || email} with ID: ${user?._id}`);
 
         const options = {
             httpOnly: true,
@@ -144,8 +144,8 @@ const userLogin = asyncHandler(async (req, res, next) => {
                 )
             );
     } catch (error) {
-        // Ensure the error object is passed correctly to leverage the advanced logger's error parsing
-        logger.error(`Login error: ${error.message}`, { error });
+        // Log the error with its stack trace
+        logger.error(`Login error for user: ${req.body.username || req.body.email} - ${error.message}`, error);
         return next(new ApiError(error.statusCode || 500, error.message));
     }
 });
