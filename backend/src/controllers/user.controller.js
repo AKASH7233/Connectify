@@ -7,6 +7,9 @@ import jwt from "jsonwebtoken"
 import { ApiErrResponse } from "../utils/ApiErrResponse.js"
 import {Follow} from "../models/follow.model.js"
 import mongoose from "mongoose"
+import  logger  from '../utils/logger.js'
+import path from "path"
+
 
 const generateRefreshTokenAndAccessToken = async(userid) => {
     const user = await User.findById(userid)
@@ -15,10 +18,17 @@ const generateRefreshTokenAndAccessToken = async(userid) => {
 
     user.refreshToken = refreshToken
     await user.save({validateBeforeSave: false})
-
+    console.log('accessToken',accessToken, 'refreshToken', refreshToken)
     return {accessToken, refreshToken}
 }
 
+
+const options = {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'None', // Correct capitalization
+    domain: '.connectify-g8bt.onrender.com' // Ensure the domain is prefixed with a dot for broader applicability
+};
 
 const UserRegister = asyncHandler( async (req,res) => {
    
@@ -90,59 +100,60 @@ const UserRegister = asyncHandler( async (req,res) => {
    }
 })  
 
-const userLogin = asyncHandler( async(req,res,next) => {
+const userLogin = asyncHandler(async (req, res, next) => {
     try {
-        const {username, email , password} = req.body
-    
-        if([email,username,password].some((field)=> field?.trim() === "")){
-            throw next(new ApiError(400,'Every Field should be filled'))
+        const { username, email, password } = req.body;
+
+        if ([email, username, password].some((field) => field?.trim() === "")) {
+            logger.warn(`Login attempt with missing fields: ${JSON.stringify({ username, email })}`);
+            throw new ApiError(400, 'Every Field should be filled');
         }
-    
+
         const user = await User.findOne({
             $or: [
-                {username}, {email}
+                { username }, { email }
             ]
-        })
-    
-        if(!user){
-            throw (new ApiError(401, "User does not exists !"))
+        });
+
+        if (!user) {
+            logger.warn(`Login attempt for non-existing user: ${username || email}`);
+            throw new ApiError(401, "User does not exists !");
         }
-    
-        
-      
-        const isPasswordCorrect = await user.isPasswordCorrect(password)
-        
-        if(!isPasswordCorrect){
-            throw (new ApiError(401, "Invalid password"))
+
+        const isPasswordCorrect = await user.isPasswordCorrect(password);
+
+        if (!isPasswordCorrect) {
+            logger.warn(`Invalid password attempt for user: ${username || email}`);
+            throw new ApiError(401, "Invalid password");
         }
-    
-        const {accessToken,refreshToken} = await generateRefreshTokenAndAccessToken(user?._id)
-    
-        const loggedInUser = await User.findById(user?._id).select('-password ')
-    
-        const options = {
-            httpOnly: true,
-            secure : true,
-            SameSite : "None"
-        }
-    
-        return res
-        .status(200)
-        .cookie("accessToken", accessToken,options )
-        .cookie("refreshToken", refreshToken , options)
-        .json(
-            new ApiResponse(
-                201,
-                {
-                    user: loggedInUser, accessToken, refreshToken
-                },
-                "User Loggedin Successfully"
-            )
-        )
+
+        const { accessToken, refreshToken } = await generateRefreshTokenAndAccessToken(user?._id);
+
+        const loggedInUser = await User.findById(user?._id).select('-password ');
+
+        logger.info(`User logged in successfully: ${username || email} with ID: ${user?._id}`);
+
+        logger.info(`accessToken, ${accessToken} and refreshToken ${refreshToken}`)
+
+        res
+            .status(200)
+            .cookie("accessToken", accessToken, options)
+            .cookie("refreshToken", refreshToken, options)
+            .json(
+                new ApiResponse(
+                    201,
+                    {
+                        user: loggedInUser
+                    },
+                    "User Loggedin Successfully"
+                )
+            );
     } catch (error) {
-        return next( new ApiError(error));
+        // Log the error with its stack trace
+        logger.error(`Login error for user: ${req.body.username || req.body.email} - ${error.message}`, error);
+        return next(new ApiError(error.statusCode || 500, error.message));
     }
-})
+});
 
 const userLogout = asyncHandler( async(req,res)=>{
    try {
@@ -157,11 +168,6 @@ const userLogout = asyncHandler( async(req,res)=>{
              new: true
          }
      )
- 
-     const options = {
-         httpOnly: true,
-         secure : true,
-     }
  
      return res
      .status(200)
@@ -436,10 +442,6 @@ const refreshAccessToken = asyncHandler( async(req, res)=>{
             throw new ApiError(401, "Invalid refresh Token")
         }
         
-        const options = {
-            httpOnly:true,
-            secure: true,
-        }
     
         const {accessToken, refreshToken} = await generateRefreshTokenAndAccessToken(user._id)
     

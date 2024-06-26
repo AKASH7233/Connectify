@@ -9,12 +9,12 @@ function HiddenPost() {
     const [post,setPost] = useState('')
     const navigate = useNavigate()
     useEffect(()=>{
-        ;(async()=>{
+        (async()=>{
             let response = await dispatch(showHiddenPost())
-            if(response?.payload?.error){
-              toast.error(response?.payload.error)
-              navigate('/login')
-            }
+            // if(response?.payload?.error){
+            //   toast.error(response?.payload.error)
+            //   navigate('/login')
+            // }
             setPost(response?.payload?.data)
         })()
     },[])

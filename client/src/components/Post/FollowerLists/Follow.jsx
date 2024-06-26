@@ -21,10 +21,10 @@ function Follow() {
     const load = async() => {
       let response ;
       {listType == 'Followers' ? response = await dispatch(Followers(userId)) : response = await dispatch(Following(userId))}
-      if(response?.payload?.error){
-        toast.error(response?.payload.error)
-        navigate('/login')
-      }
+      // if(response?.payload?.error){
+      //   toast.error(response?.payload.error)
+      //   navigate('/login')
+      // }
       setUser(response?.payload?.data)
     }
     useEffect(()=>{

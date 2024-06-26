@@ -16,37 +16,37 @@ function ViewPost() {
     const navigate =  useNavigate()
     const [allComment,setAllComment] = useState()
     const [showSection,setShowSection] = useState(type)
-    const [reRender,setReRender] = useState(true)
+    const [,setReRender] = useState(true)
 
     const load = () => {
       setReRender(prev => !prev)
     }
-    console.log(reRender);
+    console.log();
     const moveToTop = () =>{
       window.scrollTo(0,0)
     }
     moveToTop()
     useEffect(()=>{
-      ;(async()=>{
+      (async()=>{
         let response = await dispatch(getVisitedPosts(postId))
         setPostInfo(response?.payload?.data[0])
       })()
-    },[reRender])
+    },[postId])
     
     useEffect(()=>{
       setShowSection(type)
     },[type])
 
     useEffect(()=>{
-      ;(async()=>{
+      (async()=>{
         let response= await dispatch(showComments(postId))
-          if(response?.payload?.error){
-          toast.error(response?.payload.error)
-          navigate('/login')
-        }
+        //   if(response?.payload?.error){
+        //   toast.error(response?.payload.error)
+        //   navigate('/login')
+        // }
         setAllComment(response?.payload?.data)
       })()
-    },[reRender])
+    },[  ])
     console.log();
     return (
     <div className='bg-gray-950 [100vh]'>
