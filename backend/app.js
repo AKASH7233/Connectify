@@ -11,7 +11,8 @@ app.use(cookieParser());
 
 const allowedOrigins = [
     'http://localhost:5173',
-    'https://connectify-six.vercel.app/'
+    'https://connectify-six.vercel.app/',
+    'https://connectify-omega.vercel.app/',
 ];
 
 app.use(cors({
