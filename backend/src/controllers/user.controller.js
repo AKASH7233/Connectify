@@ -22,6 +22,14 @@ const generateRefreshTokenAndAccessToken = async(userid) => {
 }
 
 
+const options = {
+    httpOnly: true,
+    secure: true,
+    SameSite: "none",
+    domain: 'connectify-g8bt.onrender.com'
+
+};
+
 const UserRegister = asyncHandler( async (req,res) => {
    
    try {
@@ -125,14 +133,6 @@ const userLogin = asyncHandler(async (req, res, next) => {
 
         logger.info(`User logged in successfully: ${username || email} with ID: ${user?._id}`);
 
-        const options = {
-            httpOnly: true,
-            secure: true,
-            SameSite: "none",
-            domain:'connectify-g8bt.onrender.com'
-
-        };
-
         res
             .status(200)
             .cookie("accessToken", accessToken, options)
@@ -166,11 +166,6 @@ const userLogout = asyncHandler( async(req,res)=>{
              new: true
          }
      )
- 
-     const options = {
-         httpOnly: true,
-         secure : true,
-     }
  
      return res
      .status(200)
@@ -445,10 +440,6 @@ const refreshAccessToken = asyncHandler( async(req, res)=>{
             throw new ApiError(401, "Invalid refresh Token")
         }
         
-        const options = {
-            httpOnly:true,
-            secure: true,
-        }
     
         const {accessToken, refreshToken} = await generateRefreshTokenAndAccessToken(user._id)
     
