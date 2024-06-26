@@ -128,7 +128,9 @@ const userLogin = asyncHandler(async (req, res, next) => {
         const options = {
             httpOnly: true,
             secure: true,
-            SameSite: "None",
+            SameSite: "none",
+            domain:'connectify-g8bt.onrender.com'
+
         };
 
         res
