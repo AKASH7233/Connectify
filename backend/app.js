@@ -31,6 +31,8 @@ import messageRouter from "./src/routes/MessageRouter.js"
 import bookmarkRouter from "./src/routes/Bookmark.route.js"
 import blinkRouter from "./src/routes/blink.route.js"
 
+import errorMiddleware from './src/middlewares/error.middleware.js'
+
 
 app.use('/api/v1/user', router)
 app.use('/api/v1/post', postrouter)
@@ -48,5 +50,6 @@ app.get('/', (req,res) => {
 })
 
 //http://localhost:8000/api/v1/user/register
+app.use(errorMiddleware)
 
 export {app}

@@ -15,10 +15,10 @@ function ViewReplies() {
 
     const load = async() => {
         let response = await dispatch(showReplyComments(commentId))
-        if(response?.payload?.error){
-          toast.error(response?.payload.error)
-          navigate('/login')
-        }
+        // if(response?.payload?.error){
+        //   toast.error(response?.payload.error)
+        //   navigate('/login')
+        // }
         setReplyComments(response?.payload?.data)
     }
     useState(()=>{

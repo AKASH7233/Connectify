@@ -8,6 +8,7 @@ import { ApiErrResponse } from "../utils/ApiErrResponse.js"
 import {Follow} from "../models/follow.model.js"
 import mongoose from "mongoose"
 import  logger  from '../utils/logger.js'
+import path from "path"
 
 
 const generateRefreshTokenAndAccessToken = async(userid) => {

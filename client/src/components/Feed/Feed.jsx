@@ -17,10 +17,10 @@ import toast from 'react-hot-toast'
   useEffect(()=>{
     (async()=>{
       let data = await (dispatch(getPosts()))
-      if(data?.payload?.error){
-        toast.error(data?.payload?.error)
-        navigate('/login')
-      }
+      // if(data?.payload?.error){
+      //   toast.error(data?.payload?.error)
+      //   navigate('/login')
+      // }
       setPosts(data?.payload.data)
     })()
   },[])

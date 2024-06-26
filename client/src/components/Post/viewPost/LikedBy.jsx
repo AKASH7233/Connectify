@@ -13,12 +13,12 @@ function LikedBy() {
     const [likedBy,setLikedBy] = useState()
     const navigate = useNavigate()
     useEffect(()=>{
-        ;(async()=>{
+        (async()=>{
           let response = await dispatch(postlikes(postId))
-          if(response?.payload?.error){
-            toast.error(response?.payload.error)
-            navigate('/login')
-          }
+          // if(response?.payload?.error){
+          //   toast.error(response?.payload.error)
+          //   navigate('/login')
+          // }
           setLikedBy(response?.payload?.data?.likedUsers)
         })()
       },[])

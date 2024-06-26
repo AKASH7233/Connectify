@@ -17,10 +17,10 @@ function UserProfile() {
     
     const search = async() =>{
       let response = await dispatch(profile(userId))
-      if(response?.payload?.error){
-        toast.error(response?.payload.error)
-        navigate('/login')
-      }
+      // if(response?.payload?.error){
+      //   toast.error(response?.payload.error)
+      //   navigate('/login')
+      // }
       setUser(response?.payload?.data[0]);
     }
 
