@@ -18,7 +18,7 @@ const generateRefreshTokenAndAccessToken = async(userid) => {
 
     user.refreshToken = refreshToken
     await user.save({validateBeforeSave: false})
-
+    console.log('accessToken',accessToken, 'refreshToken', refreshToken)
     return {accessToken, refreshToken}
 }
 
@@ -133,6 +133,8 @@ const userLogin = asyncHandler(async (req, res, next) => {
 
         logger.info(`User logged in successfully: ${username || email} with ID: ${user?._id}`);
 
+        logger.info(`accessToken, ${accessToken} and refreshToken ${refreshToken}`)
+
         res
             .status(200)
             .cookie("accessToken", accessToken, options)
@@ -141,7 +143,7 @@ const userLogin = asyncHandler(async (req, res, next) => {
                 new ApiResponse(
                     201,
                     {
-                        user: loggedInUser, accessToken, refreshToken
+                        user: loggedInUser
                     },
                     "User Loggedin Successfully"
                 )
