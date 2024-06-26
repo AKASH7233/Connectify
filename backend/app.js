@@ -10,8 +10,8 @@ app.use(cookieParser());
 
 
 const allowedOrigins = [
-    'https://connectify-six.vercel.app/',
-    'https://connectify-omega.vercel.app/',
+    'https://connectify-six.vercel.app',
+    'https://connectify-omega.vercel.app',
 ];
 
 app.use(cors({
