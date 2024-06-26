@@ -26,9 +26,8 @@ const generateRefreshTokenAndAccessToken = async(userid) => {
 const options = {
     httpOnly: true,
     secure: true,
-    SameSite: "none",
-    domain: 'connectify-g8bt.onrender.com'
-
+    sameSite: 'None', // Correct capitalization
+    domain: '.connectify-g8bt.onrender.com' // Ensure the domain is prefixed with a dot for broader applicability
 };
 
 const UserRegister = asyncHandler( async (req,res) => {
