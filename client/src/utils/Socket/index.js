@@ -1,7 +1,8 @@
 const io = require('socket.io')(8800, {
     cors: {
-        origin:"https://connectify-six.vercel.app/" ,  
-        // 'http://localhost:5173'
+        origin: ["https://connectify-six.vercel.app", "https://connectify-omega.vercel.app", "https://connectify-socket-wixg.onrender.com"],
+        methods: ["GET", "POST"],
+        credentials: true
     }
 });
 
