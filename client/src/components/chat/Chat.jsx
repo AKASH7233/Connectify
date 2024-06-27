@@ -39,6 +39,35 @@ function ChatApp() {
 
     const navigate = useNavigate();
 
+    function openFullScreen() {
+        let elem = document.documentElement;
+
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { // Firefox
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE/Edge
+            elem.msRequestFullscreen();
+        }
+    }
+
+    function closeFullScreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { // Firefox
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { // IE/Edge
+            document.msExitFullscreen();
+        }
+    }
+
+    useEffect(()=>{
+       isMobile ? openFullScreen() : closeFullScreen();
+    },[isMobile])
     useEffect(() => {
         const loadChatId = async () => {
             if (person && user) {
@@ -178,8 +207,15 @@ function ChatApp() {
 
                 {/* Main Chat Area or User List */}
                 {!showChatArea ? (
-                    <div className="w-full h-[100vh]  flex items-center justify-center bg-gradient-to-r from-gray-800 to-gray-900">
-                        <h2 className="text-3xl text-white">Select a person to chat with</h2>
+                    <div className={`w-full h-[100vh]  flex items-center justify-center bg-gradient-to-r from-gray-800 to-gray-900 ${isMobile ? '-my-10' : ''}`}>
+                        <div>
+                            <h2 className="text-3xl text-white">Select a person to chat </h2>
+                            {isMobile && !showChatArea && (
+                                <button className="fixed bottom-20 right-10 bg-gray-700 text-white p-2 text-2xl rounded-full shadow-lg z-50" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                                    {isSidebarOpen ? <IoIosClose /> : <IoChatbubbleEllipsesOutline />}
+                                </button>
+                            )}
+                        </div>
                     </div>
                 ) : (
                     <div className={`w-full h-[100vh] ${isMobile ? '' : 'md:w-4/5'} bg-gradient-to-l from-black via-gray-700 to-gray-900 h-screen flex flex-col justify-between relative mt-4 md:mt-0 shadow-lg`}>
@@ -234,11 +270,6 @@ function ChatApp() {
                     </div>
                 )}
                 {/* Mobile Toggle Button */}
-                {isMobile && !showChatArea && (
-                    <button className="fixed bottom-4 right-4 bg-gray-700 text-white p-2 text-2xl rounded-full shadow-lg z-50" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-                        {isSidebarOpen ? <IoIosClose /> : <IoChatbubbleEllipsesOutline />}
-                    </button>
-                )}
             </div>
         </div>
     );

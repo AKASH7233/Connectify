@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import RequireAuth from './components/auth/RequireAuth'
 import UpdateProfile from './components/Profile/UpdateProfile'
 import BookedPostPage from './pages/Bookmarked'
-import Chat from './pages/Chat'
+import Chat from './components/chat/Chat'
 import CommentRepliesPage from './pages/CommentRepliesPage'
 import FollowPage from './pages/FollowPage'
 import HiddenPostPage from './pages/HiddenPostPage'
@@ -21,6 +21,7 @@ import UploadPage from './pages/UploadPage'
 import UserAccount from './pages/UserAccount'
 import VisitedPostPage from './pages/VistiedPost'
 import DataFetch from './utils/DataFetch'
+import ChatPage from './pages/ChatPage'
 
 function App() {
 
@@ -43,7 +44,7 @@ function App() {
 
             <Route path='/followlist/:type/:userId' element={<FollowPage />} />
 
-            <Route path='/chat' element={<Chat />} />
+            <Route path='/chat' element={<ChatPage />} />
             <Route path='/viewpost/:postId/:type' element={<VisitedPostPage />} />
             <Route path='viewreplies/:commentId' element={<CommentRepliesPage />} />
             <Route path='/likes/:postId' element={<LikedByPage />} />
