@@ -40,10 +40,9 @@ function ViewComment({info , reply = true }) {
 console.log(info);
 
     const [replyComments,setReplyComments] = useState()
-    const ownerOfComment = currentUserId == info?.commentedBy._id
+    const ownerOfComment = currentUserId == info?.commentedBy?._id
     const [isCommentLiked,setIsCommentLiked] = useState(false)
     const [likeCount,setLikeCount] = useState()
-    const [reload,setReload] = useState(true)
     const [editable,setEditable] = useState(false)
     const [comment,setComment] = useState(info?.comment)
     const [edited,setEdited] = useState(false)
@@ -54,7 +53,7 @@ console.log(info);
           setReplyComments(response?.payload?.data)
           console.log(response?.payload?.data);
       })()
-    },[reload])
+    },[])
 
     const load = async()=>{
       let response = await dispatch(commentlikes(info?._id))
@@ -63,7 +62,7 @@ console.log(info);
     }
     useEffect(()=>{
      load()
-    },[reload])
+    },[])
 
     const toggleCommentLike = async() => {
       await dispatch(toggleCommentlike(info?._id))
@@ -71,10 +70,7 @@ console.log(info);
     }
 
   return (
-    <>
-      {
-        reload && 
-        <div className= {`relative bg-black  py-5 px-4`} >
+    <div className= {`relative bg-black  py-5 px-4`} >
       <div className='flex items-center justify-between '>
         <div className='text-white'>
           <div className=' text-gray-400 flex gap-x-3 items-center '>
@@ -94,7 +90,7 @@ console.log(info);
           <h2 className={`my-1 mx-8 w-[55vw] lg:w-[20vw] break-words bg-transparent outline-none ${readMore ? '' : 'truncate'} ${editable ? 'hidden' : 'block'}`} onClick={()=>{setReadMore(prev => !prev)}} >{comment}</h2>
          {
            reply && replyComments?.length > 0 && <Link to = {`/viewreplies/${info?._id}`}>
-              <div className='px-8'>
+              <div className='px-8' onClick={()=>{dispatch(addRepliedComment(info))}}>
                 <h2 className='text-blue-500 text-sm font-medium'>{replyComments?.length} {replyComments?.length == 1 ? 'Reply' : 'Replies'}</h2>
               </div>
           </Link>
@@ -106,8 +102,6 @@ console.log(info);
         </div>
       </div>
     </div>
-      }
-    </>
   )
 }
 

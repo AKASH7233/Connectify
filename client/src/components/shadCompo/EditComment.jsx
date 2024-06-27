@@ -18,10 +18,14 @@ import {
     Flag
 } from "lucide-react";
 import { EditTitle } from "./EditTitle";
+import { addRepliedComment } from "@/redux/commentSlice";
+import { useDispatch } from "react-redux";
 
 export function CommentOpt({currentComment,selfID, isAlreadyReply}) {
   console.log(`currentComment ${currentComment?._id}`);
   console.log(`currentComment ${currentComment?.comment}`);
+  const dispatch = useDispatch()
+
 
   return ( 
     <Drawer>
@@ -35,7 +39,7 @@ export function CommentOpt({currentComment,selfID, isAlreadyReply}) {
               {selfID && <EditTitle comment={currentComment}/>}
               {isAlreadyReply && 
               <Link to={`/viewreplies/${currentComment?._id}`}>
-                <DrawerDescription className='text-md flex gap-x-4 items-center my-2'><span><FaRegComment/></span>Reply</DrawerDescription>
+                <DrawerDescription  onClick={()=>{dispatch(addRepliedComment(info))}} className='text-md flex gap-x-4 items-center my-2'><span><FaRegComment/></span>Reply</DrawerDescription>
               </Link>
               }
               {selfID && <DrawerDescription  className='text-md flex gap-x-4 my-2 text-red-400'><span><Trash2/></span>Delete</DrawerDescription>}      

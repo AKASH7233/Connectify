@@ -28,7 +28,7 @@ function ViewReplies() {
   return (
     <div className='bg-gray-900 relative h-[100vh] py-4 w-full'>
         <div className='relative mb-5'>
-          <h2 className='text-white text-xl italic text-center'>Comment</h2>
+          <h2 className='text-white text-xl italic text-center'>Replies</h2>
           <h2 className='bg-white text-center w-24  h-1 rounded-xl absolute left-[37%] my-1'></h2>
         </div>
         <div className='py-7 mb-10 bg-black'>
