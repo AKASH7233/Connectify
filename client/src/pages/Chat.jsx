@@ -59,7 +59,7 @@ function ChatApp() {
     }, [person]);
 
     useEffect(() => {
-        socket.current = io('http://localhost:8800');
+        socket.current = io('https://connectify-socket-wixg.onrender.com');
         socket.current.emit('addUser', user?._id);
         socket.current.on('getUsers', (users) => {
             setOnlineUsers(users);
