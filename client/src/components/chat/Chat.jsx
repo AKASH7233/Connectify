@@ -18,6 +18,8 @@ import { io } from "socket.io-client";
 
 import { fetchChatId, fetchPerson } from "@/redux/chatSlice";
 import { fetchMessages, sendMessageDispatch } from "@/redux/messageSlice";
+import Navbar from "../navForMobile/Navbar";
+import Footer from "../navForMobile/Footer";
 
 function ChatApp() {
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
@@ -208,7 +210,8 @@ function ChatApp() {
                 {/* Main Chat Area or User List */}
                 {!showChatArea ? (
                     <div className={`w-full h-[100vh]  flex items-center justify-center bg-gradient-to-r from-gray-800 to-gray-900 ${isMobile ? '-my-10' : ''}`}>
-                        <div>
+                       {isMobile && <Navbar />}
+                       <div>
                             <h2 className="text-3xl text-white">Select a person to chat </h2>
                             {isMobile && !showChatArea && (
                                 <button className="fixed bottom-20 right-10 bg-gray-700 text-white p-2 text-2xl rounded-full shadow-lg z-50" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
@@ -216,6 +219,7 @@ function ChatApp() {
                                 </button>
                             )}
                         </div>
+                        {isMobile && <Footer />}
                     </div>
                 ) : (
                     <div className={`w-full h-[100vh] ${isMobile ? '' : 'md:w-4/5'} bg-gradient-to-l from-black via-gray-700 to-gray-900 h-screen flex flex-col justify-between relative mt-4 md:mt-0 shadow-lg`}>

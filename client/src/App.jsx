@@ -21,7 +21,6 @@ import UploadPage from './pages/UploadPage'
 import UserAccount from './pages/UserAccount'
 import VisitedPostPage from './pages/VistiedPost'
 import DataFetch from './utils/DataFetch'
-import ChatPage from './pages/ChatPage'
 
 function App() {
 
@@ -44,7 +43,7 @@ function App() {
 
             <Route path='/followlist/:type/:userId' element={<FollowPage />} />
 
-            <Route path='/chat' element={<ChatPage />} />
+            <Route path='/chat' element={<Chat />} />
             <Route path='/viewpost/:postId/:type' element={<VisitedPostPage />} />
             <Route path='viewreplies/:commentId' element={<CommentRepliesPage />} />
             <Route path='/likes/:postId' element={<LikedByPage />} />
