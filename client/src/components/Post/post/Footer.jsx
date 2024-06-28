@@ -58,7 +58,7 @@ function Footer({post}) {
 
     const userId = currentUserId == LikedBy?._id ? 'myprofile' : `user/${LikedBy?._id}`
 
-    const shareLink = `localhost:5173/viewpost/${post?._id}/comment`
+    const shareLink = `https://connectify-omega.vercel.app/viewpost/${post?._id}/comment`
     const title = post?.title
     return (
       <>

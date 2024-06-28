@@ -37,7 +37,7 @@ function DrawerPost({show,selfID,toggle,post}) {
     sethidden(!hidden)
   }
 
-  const shareLink = `localhost:5173/viewpost/${post?._id}/comment`
+  const shareLink = `https://connectify-omega.vercel.app/viewpost/${post?._id}/comment`
   const title = post?.title
 
   const res = () => {

@@ -50,7 +50,7 @@ import AlertBox from "./AlertBox";
         navigate('/')
     }
 
-    const shareLink = `localhost:5173/user/${user?._id}`
+    const shareLink = `https://connectify-omega.vercel.app/user/${user?._id}`
     const title = user?.username
 
     // console.log(shareLink,title);

@@ -45,7 +45,7 @@ const ProfileHeader = ({user, follow, toggle, toggleview}) => {
     })
 
     // console.log(user);
-    const sharelink = `localhost:5173/user/${user?._id}`
+    const sharelink = `https://connectify-omega.vercel.app/user/${user?._id}`
     const title = user?.username 
     
     return (
