@@ -95,7 +95,7 @@ export default function StoryViewer({ story, onClose}) {
 
 
   return (
-    <div className={`fixed inset-0 flex items-center justify-center ${window.screen.availWidth >= 500 ? 'bg-black' : 'bg-[#111]' } z-50`}>
+    <div className={`fixed inset-0 flex z-50 items-center justify-center ${window.screen.availWidth >= 500 ? 'bg-black' : 'bg-[#111]' } z-50`}>
       <button className="hidden md:block lg:block xl:block absolute top-4 right-4 text-white" onClick={onClose}>
         X
       </button>
