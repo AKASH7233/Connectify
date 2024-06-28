@@ -6,8 +6,8 @@ import Navbar from "@/components/navForMobile/Navbar";
 import Footer from "@/components/navForMobile/Footer";
 
 const BookedPostPage = () => {
-    const isMobile = useMediaQuery({ query: '(max-width: 500px)' })
-    console.log(isMobile);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
+    
     return (
         <div className="h-[100vh]">
             {

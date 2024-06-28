@@ -76,7 +76,7 @@ function UploadPost() {
     // console.log(`taggedUser`, taggedUser);
 
   return (
-    <div className='w-full h-[100vh] flex items-center align-center  bg-[#000000] overflow-hidden' method='post'>
+    <div className='w-full h-[100vh] flex items-center justify-center  bg-[#000000] overflow-hidden' method='post'>
         <div className='bg-gray-800 lg:mx-20 py-12 mx-10 bg-opacity-50 rounded-xl text-white text-center'>
             <h2 className='text-lg'>Upload the Pictures</h2>
             <p className='text-gray-400 text-sm'>in JPEG,PNG or WEBP</p>

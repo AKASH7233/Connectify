@@ -4,8 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import LikedBy from "@/components/Post/viewPost/LikedBy";
 
 const LikedByPage = () => {
-    const isMobile = useMediaQuery({ query: '(max-width: 400px)' })
-    console.log(isMobile);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
     return (
         <div className="h-[100vh]">
             {

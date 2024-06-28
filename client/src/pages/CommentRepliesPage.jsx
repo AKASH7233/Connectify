@@ -1,15 +1,12 @@
 import MenuBar from "@/components/Feed/MenuBar"
-
 import UpcomingUpdates from "@/components/Feed/UpcomingUpdates";
 import { useMediaQuery } from "react-responsive";
 import ViewReplies from "@/components/Post/viewPost/viewReplies";
 import Navbar from "@/components/navForMobile/Navbar";
 import Footer from "@/components/navForMobile/Footer";
 
-const CommentRepliesPage
- = () => {
-    const isMobile = useMediaQuery({ query: '(max-width: 500px)' })
-    console.log(isMobile);
+const CommentRepliesPage = () => {
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
     return (
         <div className="h-[90vh]">
             {

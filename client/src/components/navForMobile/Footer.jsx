@@ -45,7 +45,7 @@ const Footer = ({ActiveMenuItem}) => {
   }, []);
   return (
     <div>
-        <footer className={`fixed  bottom-0 left-0 z-50 w-full bg-black shadow-md transition-transform duration-300 ${show ? 'transform translate-y-0' : 'transform translate-y-full'}`}>
+        <footer className={`fixed  bottom-0 left-0 z-30 w-full bg-black shadow-md transition-transform duration-300 ${show ? 'transform translate-y-0' : 'transform translate-y-full'}`}>
       <div className="container mx-auto px-4 pt-2 pb-1  flex justify-around  items-center">
         {/* <Link to={'/'}><div className="text-xl  text-white font-bold" onClick={()=>{window.scrollTo({top: 0 , behavior: 'smooth'})}}><FaHome/></div></Link>
         <Link to={'/search'}><div className="text-xl  text-white font-bold"><FaSearch/></div></Link>

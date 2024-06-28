@@ -97,7 +97,7 @@ const ProfileHeader = ({user, follow, toggle, toggleview}) => {
            </Link>
           </div>
           {
-            follow ? <div className='flex mt-7 gap-3 px-2 lg:justify-evenly xl:justify-evenly'>
+            follow ? <div className='flex mt-7 gap-3 px-2 w-full justify-around  lg:justify-evenly xl:justify-evenly'>
             <button className='px-6 py-2 w-40 rounded-xl bg-blue-500 ' onClick={togglefollow}>{user?.isFollowed ? 'UnFollow' : 'Follow' }</button>
             <button onClick={handleMessageClick} className='px-6 py-2 w-40 rounded-xl bg-gray-800 '>
               Message
