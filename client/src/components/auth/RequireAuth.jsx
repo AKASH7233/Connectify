@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import { updateRefreshToken } from '@/redux/authSlice';
 
 const RequireAuth = () => {
     const dispatch = useDispatch();
     // Use useSelector to get the current state of isLoggedIn
-    let isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-
+    const accessToken = Cookies.get('accessToken');
+    let isLoggedIn = !!accessToken;
+    
     useEffect(() => {
         const checkAndRefreshToken = async () => {
             try {
