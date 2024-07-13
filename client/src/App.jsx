@@ -21,12 +21,15 @@ import UploadPage from './pages/UploadPage'
 import UserAccount from './pages/UserAccount'
 import VisitedPostPage from './pages/VistiedPost'
 import DataFetch from './utils/DataFetch'
-
+import { CookiesProvider } from 'react-cookie'
+import { Analytics} from '@vercel/analytics/react'
 function App() {
 
   return (
     <div className=''>
+      <CookiesProvider>
       <BrowserRouter>
+        <Analytics />
         <Routes>
           <Route path='/register' element = {<Register/>} />
           <Route path='/login' element = {<Login/>} />
@@ -54,6 +57,7 @@ function App() {
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </CookiesProvider>
     </div>
   )
 }
