@@ -24,10 +24,10 @@ const generateRefreshTokenAndAccessToken = async(userid) => {
 
 
 const options = {
-    httpOnly: true,
+    // httpOnly: true,
     secure: true,
     sameSite: 'None', // Correct capitalization
-    domain: '.connectify-g8bt.onrender.com' // Ensure the domain is prefixed with a dot for broader applicability
+    // domain: '.connectify-g8bt.onrender.com' // Ensure the domain is prefixed with a dot for broader applicability
 };
 
 const UserRegister = asyncHandler( async (req,res) => {
@@ -135,7 +135,7 @@ const userLogin = asyncHandler(async (req, res, next) => {
 
         logger.info(`accessToken, ${accessToken} and refreshToken ${refreshToken}`)
 
-        res
+        return res
             .status(200)
             .cookie("accessToken", accessToken, options)
             .cookie("refreshToken", refreshToken, options)
