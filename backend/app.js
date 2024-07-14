@@ -12,7 +12,8 @@ app.use(cookieParser());
 const allowedOrigins = [
     'https://connectify-six.vercel.app',
     'https://connectify-omega.vercel.app',
-    'https://connectify-socket-wixg.onrender.com'
+    'https://connectify-socket-wixg.onrender.com',
+    'http://localhost:5173'
 ];
 
 app.use(cors({
