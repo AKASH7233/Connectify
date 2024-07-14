@@ -16,6 +16,7 @@ import { deleteUser } from '@/redux/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { deleteBlink } from '@/redux/blinkSlice'
 import toast from 'react-hot-toast'
+import { Cookies } from 'react-cookie'
   
 function AlertBox({warning,open,resFunc,id = ''}) {
   
@@ -30,6 +31,11 @@ function AlertBox({warning,open,resFunc,id = ''}) {
 
     const deleteCurrentuser = async() =>{
       await dispatch(deleteUser())
+      Cookies.remove('isLoggedIn',{
+        expires: 1,
+        secure: true,
+        sameSite : 'None'
+      });
       navigate('/login')
     }
 

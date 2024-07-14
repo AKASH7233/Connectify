@@ -13,7 +13,7 @@ import { logout } from '@/redux/authSlice';
 
 import icon from "../../assets/icon.jpg" 
 import RenderMenuItem from './RenderMenu';
-
+import Cookies from 'js-cookie';
 function MenuBar({ActiveMenuItem}) {
   const currentUser = useSelector(state=> state?.auth?.user) 
   const currentUserId = currentUser?.user?._id
@@ -43,6 +43,11 @@ function MenuBar({ActiveMenuItem}) {
 
   const logoutUser = async() => {
     await dispatch(logout())
+    Cookies.remove('isLoggedIn',{
+      expires: 1,
+      secure: true,
+      sameSite : 'None'
+    });
     navigate('/login')
   }
 

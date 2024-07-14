@@ -36,6 +36,7 @@ import { DialogDemo } from "./Dialog";
 import { useState } from "react";
 import { DialogCloseButton } from "./Share";
 import AlertBox from "./AlertBox";
+import Cookies from "js-cookie";
   
   export function DropdownMenuDemo({user}) {
     const dispatch = useDispatch()
@@ -46,8 +47,13 @@ import AlertBox from "./AlertBox";
     }
     console.log(edit);
     const logoutUser = async() => {
+        Cookies.remove('isLoggedIn',{
+            expires: 1,
+            secure: true,
+            sameSite : 'None'
+        });
         await dispatch(logout())
-        navigate('/')
+        navigate('/login')
     }
 
     const shareLink = `https://connectify-omega.vercel.app/user/${user?._id}`
