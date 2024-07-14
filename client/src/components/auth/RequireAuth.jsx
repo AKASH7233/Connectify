@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, Outlet } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {  Navigate, Outlet } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 import { updateRefreshToken } from '@/redux/authSlice';
@@ -8,8 +8,8 @@ import { updateRefreshToken } from '@/redux/authSlice';
 const RequireAuth = () => {
     const dispatch = useDispatch();
     // Use useSelector to get the current state of isLoggedIn
-    const accessToken = Cookies.get('accessToken');
-    let isLoggedIn = !!accessToken;
+    const isLoggedIn = Cookies.get('isLoggedIn');
+    console.log(isLoggedIn);
     
     useEffect(() => {
         const checkAndRefreshToken = async () => {
@@ -25,7 +25,7 @@ const RequireAuth = () => {
         checkAndRefreshToken();
     }, [isLoggedIn,dispatch]); // Add dispatch to the dependency array to adhere to exhaustive-deps rule
     console.log("Is logged in", isLoggedIn)
-    return isLoggedIn ? <Outlet /> : <Navigate to='/login' />;
+    return isLoggedIn ? <Outlet /> : <Navigate to={'/login'}/>;
 }
 
 export default RequireAuth;
