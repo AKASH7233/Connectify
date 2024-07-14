@@ -8,6 +8,7 @@ import { cn } from "@/utils/cn";
 import { Input } from "../components/ui/InputAcc";
 import { Label } from "../components/ui/LabelAccer";
 import { login } from '../redux/authSlice';
+import Cookies from "js-cookie";
 
 function Login() {
   const navigate = useNavigate();
@@ -33,6 +34,11 @@ function Login() {
     try {
       const response = await dispatch(login(userInfo));
       if (response?.payload?.data?.user?._id) {
+        Cookies.set('isLoggedIn', true,{
+          expires: 1,
+          secure: true,
+          sameSite : 'None'
+        });
         navigate('/');
       }
     } catch (error) {
